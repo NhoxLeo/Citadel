@@ -1,0 +1,249 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7ba7a43222473d4292f91ae936fe2cc, type: 3}
+  m_Name: SM_Bld_CityHall_01_Impostor
+  m_EditorClassIdentifier: 
+  Material: {fileID: 21380671437155654}
+  Mesh: {fileID: 43500525528226600}
+  Version: 9100
+  ImpostorType: 1
+  LockedSizes: 1
+  SelectedSize: 2048
+  TexSize: {x: 2048, y: 2048}
+  DecoupleAxisFrames: 0
+  HorizontalFrames: 15
+  VerticalFrames: 15
+  PixelPadding: 23
+  MaxVertices: 16
+  Tolerance: 0.2
+  NormalScale: 0.081
+  ShapePoints:
+  - {x: 0, y: 0.69657135}
+  - {x: 0.021544099, y: 0.8346123}
+  - {x: 0.14295615, y: 0.9641484}
+  - {x: 0.26934934, y: 1}
+  - {x: 0.64982426, y: 1}
+  - {x: 0.8933416, y: 0.9477216}
+  - {x: 1, y: 0.7157581}
+  - {x: 1, y: 0.41145837}
+  - {x: 0.950076, y: 0.16114599}
+  - {x: 0.7654199, y: 0.025478005}
+  - {x: 0.5836992, y: 0}
+  - {x: 0.42061898, y: 0}
+  - {x: 0.1887077, y: 0.04124254}
+  - {x: 0.04622639, y: 0.17600012}
+  - {x: 0, y: 0.42083335}
+  Preset: {fileID: 11400000, guid: e4786beb7716da54dbb02a632681cc37, type: 2}
+  OverrideOutput: []
+--- !u!21 &21380671437155654
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: SM_Bld_CityHall_01_Impostor
+  m_Shader: {fileID: 4800000, guid: 572f9be5706148142b8da6e9de53acdb, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Albedo:
+        m_Texture: {fileID: 2800000, guid: 74a43692bd1e948a3912fe6c41090952, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Emission:
+        m_Texture: {fileID: 2800000, guid: 94a7c3d79934e4b54b1f722b50e08c28, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normals:
+        m_Texture: {fileID: 2800000, guid: 8dac6e6726374433a873cd7846dd9253, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Specular:
+        m_Texture: {fileID: 2800000, guid: 029ee3788666e49618d6e392463c9cac, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - _ClipMask: 0.5
+    - _DepthSize: 27.967026
+    - _Frames: 15
+    - _FramesX: 15
+    - _FramesY: 15
+    - _Hemi: 0
+    - _Hue: 0
+    - _ImpostorSize: 27.607199
+    - _Parallax: 1
+    - _ShadowBias: 0.25
+    - _TextureBias: -1
+    m_Colors:
+    - _HueVariation: {r: 0, g: 0, b: 0, a: 0}
+    - _Offset: {r: -0.000006061795, g: 4.372661, b: 0.00000061989806, a: 0}
+--- !u!43 &43500525528226600
+Mesh:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: SM_Bld_CityHall_01_Impostor
+  serializedVersion: 9
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 39
+    topology: 0
+    baseVertex: 0
+    firstVertex: 0
+    vertexCount: 15
+    localAABB:
+      m_Center: {x: 0, y: 0, z: 0}
+      m_Extent: {x: 13.803599, y: 13.803599, z: 0}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexFormat: 0
+  m_IndexBuffer: 0d0009000500050001000d000d000b00090009000700050005000300010001000e000d000d000c000b000b000a000900090008000700070006000500050004000300030002000100010000000e00
+  m_VertexData:
+    serializedVersion: 2
+    m_VertexCount: 15
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 12
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 24
+      format: 0
+      dimension: 2
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 480
+    _typelessdata: 8bdb5cc138a8adc0000000000000000000000000000080bf00000000005b9b3e5b5753c1a7cd13c1000000000000000000000000000080bf407db03c645b293e31b61dc17a054dc1000000000000000000000000000080bf1963123e20d9123d88c3cbc08bdb5cc1000000000000000000000000000080bf28e8893e00000000fb5b84408bdb5cc1000000000000000000000000000080bfe25a263f00000000b5be2d41f3c345c1000000000000000000000000000080bf09b2643fe021563d8bdb5c41749bbec0000000000000000000000000ffff7fbf0000803f2888913e8bdb5c41d3701c40000000000000000000000000ffff7fbf0000803faaaa163f2ece46414dad1541000000000000000000000000000080bf2e38733f23bf563fe17aea40839a5141000000000000000000000000000080bf8ff2433f467a793f87e213408bdb5c41000000000000000000000000000080bf506d153f0000803f55410cc08bdb5c41000000000000000000000000000080bf5f5bd73e0000803fa68009c1e0a34a41000000000000000000000000000080bf973c413e2171753f4e7048c19c1d0f41000000000000000000000000000080bfe2573d3da8f1523f8bdb5cc15fe00b40000000000000000000000000000080bf000000004444143f
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: -0.000006061795, y: 4.372661, z: 0.00000061989806}
+    m_Extent: {x: 8.817073, y: 4.372661, z: 10.042941}
+  m_MeshUsageFlags: 0
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  m_MeshMetrics[0]: 1
+  m_MeshMetrics[1]: 1
+  m_MeshOptimized: 0
