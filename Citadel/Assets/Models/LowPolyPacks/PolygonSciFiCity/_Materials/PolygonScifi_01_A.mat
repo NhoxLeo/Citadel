@@ -8,8 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PolygonScifi_01_A
-  m_Shader: {fileID: 4800000, guid: e5fbf2c44c61cdb4a9f113a0995b488f, type: 3}
-  m_ShaderKeywords: _EMISSION _NORMALMAP
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -180,7 +180,7 @@ Material:
     - __dirty: 0
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+    - _EmissionColor: {r: 3.4415908, g: 3.4415908, b: 3.4415908, a: 0.972549}
     - _MatcapTint: {r: 1, g: 1, b: 1, a: 1}
     - _OcclusionColor: {r: 0, g: 0, b: 0, a: 0}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
