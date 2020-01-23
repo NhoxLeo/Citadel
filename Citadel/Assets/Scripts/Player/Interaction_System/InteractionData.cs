@@ -15,9 +15,9 @@ namespace VHS
             set => m_interactable = value;
         }
 
-        public void Interact()
+        public void Interact(Vector3 contactPoint, Transform playerGrip = null)
         {
-            m_interactable.OnInteract();
+            m_interactable.OnInteract(contactPoint, playerGrip);
             ResetData();
         }
 

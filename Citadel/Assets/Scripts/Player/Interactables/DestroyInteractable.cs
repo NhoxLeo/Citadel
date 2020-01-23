@@ -7,10 +7,8 @@ namespace VHS
     public class DestroyInteractable : InteractableBase
     {
 
-        public override void OnInteract()
+        public override void OnInteract(Vector3 contactPoint, Transform playerGrip = null)
         {
-            base.OnInteract();
-
             Destroy(gameObject);
         }
     }

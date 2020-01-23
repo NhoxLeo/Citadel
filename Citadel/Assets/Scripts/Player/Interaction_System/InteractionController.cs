@@ -17,6 +17,8 @@ namespace VHS
         [SerializeField] private LayerMask interactableLayer = ~0;
 
         public Animator crossHair;
+        public Transform grabPoint;
+        public Vector3 rayPoint;
 
         #region Private
         private Camera m_cam;
@@ -53,6 +55,7 @@ namespace VHS
             if (_hitSomething)
             {
                 InteractableBase _interactable = _hitInfo.transform.GetComponent<InteractableBase>();
+                rayPoint = _hitInfo.point;
 
                 if (_interactable != null)
                 {
@@ -115,13 +118,13 @@ namespace VHS
 
                     if (m_holdTimer >= interactionData.Interactable.HoldDuration)
                     {
-                        interactionData.Interact();
+                        interactionData.Interact(rayPoint, grabPoint);
                         m_interacting = false;
                     }
                 }
                 else
                 {
-                    interactionData.Interact();
+                    interactionData.Interact(rayPoint, grabPoint);
                     m_interacting = false;
                 }
             }
