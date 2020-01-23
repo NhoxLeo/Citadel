@@ -10,7 +10,9 @@ namespace VHS
             [SerializeField] private CameraInputData cameraInputData = null;
             [SerializeField] private MovementInputData movementInputData = null;
             [SerializeField] private InteractionInputData interactionInputData = null;
+        [HideInInspector]
         public string previousInputs;
+        [HideInInspector]
         public int maxPreviousFrames;
         #endregion
 
