@@ -9,37 +9,47 @@ namespace VHS
     {
         private Rigidbody rigid;
         private Transform playerGrip;
+        private SpringJoint joint;
         private Vector3 contactPoint;
-        private ConfigurableJoint joint;
-        private GameObject stuckOnObject;
-        private float t;
-        private float timeToReachTarget = 1;
+        private LineRenderer lineRenderer;
+        private Vector3 myGrabPoint, myHandPoint;
+        private bool picked;
 
         private void Awake()
         {
             rigid = GetComponent<Rigidbody>();
         }
 
+        private void Update()
+        {
+            if(picked)
+            {
+                if (Input.GetKey(KeyCode.E))
+                {
+                    DrawGrabbing();
+                    OnPickUp();
+                }
+                else
+                {
+                    OnRelease();
+                }
+            }
+            else
+            {
+                if (lineRenderer)
+                {
+                    StartCoroutine(FadeLine(0, 1, true));
+                }
+            }
+        }
+
         public override void OnInteract(Vector3 contactPoint, Transform playerGrip = null)
         {
-            if(!Picked)
+            if(!picked)
             {
                 this.playerGrip = playerGrip;
                 this.contactPoint = contactPoint;
                 OnPickUp();
-            }
-        }
-
-        private void Update()
-        {
-            if(Picked && stuckOnObject && joint && Input.GetKey(KeyCode.E))
-            {
-                t += Time.deltaTime / (timeToReachTarget);
-                stuckOnObject.transform.position = Vector3.Lerp(stuckOnObject.transform.position, playerGrip.position, t);
-            }
-            else
-            {
-                OnRelease();
             }
         }
 
@@ -49,66 +59,116 @@ namespace VHS
             set => rigid = value;
         }
 
-        private bool Picked
-        {
-            get;
-            set;
-        }
-
         public void OnHold()
         {
+            joint.connectedAnchor = playerGrip.position;
+            if (lineRenderer)
+            {
+                lineRenderer.widthCurve = AnimationCurve.Linear(0, 0.1f, 1, 0.1f);
+            }
 
+            if(rigid.velocity == Vector3.zero)
+            {
+                rigid.AddForce(new Vector3(0f, 0.000001f, 0f));
+            }
+        }
+
+        private void StartGrab()
+        {          
+            joint = gameObject.AddComponent<SpringJoint>();
+            joint.autoConfigureConnectedAnchor = false;
+            joint.anchor = contactPoint;
+            joint.minDistance = 0f;
+            joint.maxDistance = 0f;
+            joint.damper = 4f;
+            joint.spring = 40f;
+            joint.massScale = 5f;
+            rigid.angularDrag = 5f;
+            rigid.drag = 1f;
+
+            lineRenderer = gameObject.AddComponent<LineRenderer>();
+            lineRenderer = gameObject.GetComponent<LineRenderer>();
+            lineRenderer.positionCount = 2;
+            lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+            lineRenderer.numCapVertices = 10;
+            lineRenderer.numCornerVertices = 10;
+            lineRenderer.widthCurve = AnimationCurve.Linear(0, 0.1f, 1, 0.1f);
+            lineRenderer.startColor = new Color(255, 255, 255, 0);
+            lineRenderer.endColor = new Color(255, 255, 255, 0);
+
+            StopAllCoroutines();
+            StartCoroutine(FadeLine(1, 1, false));
         }
 
         public void OnPickUp()
         {
-            Debug.Log("Picked Up " + gameObject.name);
-            Picked = true;
+            if (picked == false)
+            {
+                picked = true;
+                StartGrab();
+            }
+            else if(joint)
+            {
+                OnHold();
+            }
+        }
 
-            stuckOnObject = new GameObject();
-            stuckOnObject.name = "StickPoint";
-            stuckOnObject.AddComponent<SphereCollider>().isTrigger = true;
-            stuckOnObject.AddComponent<Rigidbody>().isKinematic = true;
+        private void StopGrab()
+        {
+            Destroy(joint);
+            StopAllCoroutines();
+            if (lineRenderer)
+            {
+                StartCoroutine(FadeLine(0, 1, true));
+            }
 
-            stuckOnObject.transform.position = contactPoint;
+            rigid.angularDrag = 0.05f;
+            rigid.drag = 0f;
+            picked = false;
+        }
 
-            #region Joint Config
-            joint = gameObject.AddComponent<ConfigurableJoint>();
-            //gameObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            joint.connectedBody = stuckOnObject.GetComponent<Rigidbody>();
-            joint.autoConfigureConnectedAnchor = false;
-            //joint.enableProjection = true;
-            joint.anchor = transform.InverseTransformPoint(contactPoint);
-            joint.axis = new Vector3(1f, 0, 0);
-            joint.connectedAnchor = Vector3.zero;
-
-
-            joint.yMotion = ConfigurableJointMotion.Locked;
-            JointDrive jointDrive = new JointDrive();
-            jointDrive.positionSpring = 50f;
-            jointDrive.positionDamper = 1f;
-            jointDrive.maximumForce = 10000f;
-
-            joint.xDrive = jointDrive;
-            joint.yDrive = jointDrive;
-            joint.zDrive = jointDrive;
-            #endregion
-
+        private void DrawGrabbing()
+        {
+            if (picked && lineRenderer)
+            {
+                myGrabPoint = Vector3.Lerp(myGrabPoint, transform.TransformPoint(contactPoint), Time.deltaTime * 45f);
+                myHandPoint = Vector3.Lerp(myHandPoint, joint.connectedAnchor, Time.deltaTime * 45f);
+                lineRenderer.SetPosition(0, myGrabPoint);
+                lineRenderer.SetPosition(1, myHandPoint);
+            }
         }
 
         public void OnRelease()
         {
-            Debug.Log("Released " + gameObject.name);
-            Picked = false;
-
-            if (joint != null)
-            {
-                Destroy(joint);
-                Destroy(stuckOnObject);
-            }
-
+            StopGrab();
+     
             this.playerGrip = null;
             this.contactPoint = Vector3.zero;
+
+            picked = false;
+        }
+
+        public IEnumerator FadeLine(float totalAlpha, float lerpDuration, bool destroy)
+        {
+            float t = 0;
+            Color totalColor = Color.white;
+            totalColor.a = totalAlpha;
+         
+            while (lineRenderer != null && (lineRenderer.startColor.a != totalAlpha))
+            {
+                t += Time.deltaTime / lerpDuration;
+                lineRenderer.startColor = Color.Lerp(lineRenderer.startColor, totalColor, t);
+                lineRenderer.endColor = lineRenderer.startColor;
+                yield return null;
+            }
+
+            if (lineRenderer != null && (lineRenderer.startColor.a == totalAlpha))
+            {
+                if (destroy)
+                {
+                    Destroy(lineRenderer);
+                }
+            }
         }
     }
 }

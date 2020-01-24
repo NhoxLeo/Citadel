@@ -34,6 +34,7 @@ namespace VHS
         void Awake()
         {
             m_cam = FindObjectOfType<Camera>();
+            //grabPoint.position = new Vector3(0, 0, 1.5f);
         }
 
         void Update()
@@ -55,7 +56,10 @@ namespace VHS
             if (_hitSomething)
             {
                 InteractableBase _interactable = _hitInfo.transform.GetComponent<InteractableBase>();
-                rayPoint = _hitInfo.point;
+                if (_hitInfo.point != null && _interactable != null)
+                {
+                    rayPoint = _interactable.transform.InverseTransformPoint(_hitInfo.point);
+                }
 
                 if (_interactable != null)
                 {

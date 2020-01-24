@@ -116,7 +116,7 @@ namespace VHS
         [Space]
         [ReadOnly] private float m_finalRayLength;
         [ReadOnly] private bool m_hitWall;
-        [SerializeField] [ReadOnly] private bool m_isGrounded;
+        [SerializeField] [ReadOnly] public bool m_isGrounded;
         [ReadOnly] private bool m_previouslyGrounded;
 
         [Space]
@@ -342,8 +342,19 @@ namespace VHS
 
         protected virtual void CalculateSpeed()
         {
-            m_currentSpeed = movementInputData.IsRunning ? runSpeed : walkSpeed;
-            if(m_isGrounded)
+            if(movementInputData.IsRunning)
+            {
+                m_currentSpeed = runSpeed;
+            }
+            else
+            {
+                if(!movementInputData.IsCrouching)
+                {
+                    m_currentSpeed = walkSpeed;
+                }
+            }
+
+            if (m_isGrounded)
             {
                 if (movementInputData.IsCrouching)
                 {

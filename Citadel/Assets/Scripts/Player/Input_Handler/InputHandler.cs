@@ -10,6 +10,8 @@ namespace VHS
             [SerializeField] private CameraInputData cameraInputData = null;
             [SerializeField] private MovementInputData movementInputData = null;
             [SerializeField] private InteractionInputData interactionInputData = null;
+
+        public FirstPersonController fpsController;
         [HideInInspector]
         public string previousInputs;
         [HideInInspector]
@@ -66,13 +68,13 @@ namespace VHS
                 movementInputData.InputVectorX = Input.GetAxisRaw("Horizontal");
                 movementInputData.InputVectorY = Input.GetAxisRaw("Vertical");
 
-                movementInputData.RunClicked = Input.GetKeyDown(KeyCode.LeftShift);
+                movementInputData.RunClicked = Input.GetKey(KeyCode.LeftShift);
                 movementInputData.RunReleased = Input.GetKeyUp(KeyCode.LeftShift);
 
-                if(movementInputData.RunClicked)
+                if(movementInputData.RunClicked && fpsController.m_isGrounded && !movementInputData.IsCrouching)
                     movementInputData.IsRunning = true;
 
-                if(movementInputData.RunReleased)
+                if(movementInputData.RunReleased || movementInputData.IsCrouching)
                     movementInputData.IsRunning = false;
 
                 movementInputData.JumpClicked = Input.GetKeyDown(KeyCode.Space);
