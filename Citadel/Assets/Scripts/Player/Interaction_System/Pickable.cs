@@ -12,7 +12,6 @@ namespace VHS
         private SpringJoint joint;
         private Vector3 contactPoint;
         private LineRenderer lineRenderer;
-        private Vector3 myGrabPoint, myHandPoint;
         private bool picked;
 
         private void Awake()
@@ -22,7 +21,7 @@ namespace VHS
 
         private void Update()
         {
-            if(picked)
+            if(picked && joint)
             {
                 if (Input.GetKey(KeyCode.E))
                 {
@@ -45,7 +44,7 @@ namespace VHS
 
         public override void OnInteract(Vector3 contactPoint, Transform playerGrip = null)
         {
-            if(!picked)
+            if(!picked && !joint)
             {
                 this.playerGrip = playerGrip;
                 this.contactPoint = contactPoint;
@@ -62,12 +61,13 @@ namespace VHS
         public void OnHold()
         {
             joint.connectedAnchor = playerGrip.position;
+            joint.anchor = contactPoint;
             if (lineRenderer)
             {
                 lineRenderer.widthCurve = AnimationCurve.Linear(0, 0.1f, 1, 0.1f);
             }
 
-            if(rigid.velocity == Vector3.zero)
+            if (rigid.velocity == Vector3.zero)
             {
                 rigid.AddForce(new Vector3(0f, 0.000001f, 0f));
             }
@@ -77,7 +77,7 @@ namespace VHS
         {          
             joint = gameObject.AddComponent<SpringJoint>();
             joint.autoConfigureConnectedAnchor = false;
-            joint.anchor = contactPoint;
+
             joint.minDistance = 0f;
             joint.maxDistance = 0f;
             joint.damper = 4f;
@@ -98,16 +98,22 @@ namespace VHS
 
             StopAllCoroutines();
             StartCoroutine(FadeLine(1, 1, false));
+
+            joint.connectedAnchor = playerGrip.position;
+            joint.anchor = contactPoint;
+
+            //Debug.Log("Anchor: " + joint.anchor);
+            //Debug.Log("ConnectedAnchor: " + joint.connectedAnchor);
+            picked = true;
         }
 
         public void OnPickUp()
         {
             if (picked == false)
             {
-                picked = true;
                 StartGrab();
             }
-            else if(joint)
+            else if (picked && joint)
             {
                 OnHold();
             }
@@ -115,7 +121,6 @@ namespace VHS
 
         private void StopGrab()
         {
-            Destroy(joint);
             StopAllCoroutines();
             if (lineRenderer)
             {
@@ -124,28 +129,22 @@ namespace VHS
 
             rigid.angularDrag = 0.05f;
             rigid.drag = 0f;
-            picked = false;
+            Destroy(joint);
         }
 
         private void DrawGrabbing()
         {
             if (picked && lineRenderer)
             {
-                myGrabPoint = Vector3.Lerp(myGrabPoint, transform.TransformPoint(contactPoint), Time.deltaTime * 45f);
-                myHandPoint = Vector3.Lerp(myHandPoint, joint.connectedAnchor, Time.deltaTime * 45f);
-                lineRenderer.SetPosition(0, myGrabPoint);
-                lineRenderer.SetPosition(1, myHandPoint);
+                lineRenderer.SetPosition(0, transform.TransformPoint(contactPoint));
+                lineRenderer.SetPosition(1, joint.connectedAnchor);
             }
         }
 
         public void OnRelease()
         {
-            StopGrab();
-     
-            this.playerGrip = null;
-            this.contactPoint = Vector3.zero;
-
             picked = false;
+            StopGrab();
         }
 
         public IEnumerator FadeLine(float totalAlpha, float lerpDuration, bool destroy)

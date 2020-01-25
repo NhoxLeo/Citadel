@@ -144,6 +144,7 @@ namespace VHS
         #region BuiltIn Methods     
         protected virtual void Start()
         {
+            Application.targetFrameRate = 60;
             GetComponents();
             InitVariables();
         }
