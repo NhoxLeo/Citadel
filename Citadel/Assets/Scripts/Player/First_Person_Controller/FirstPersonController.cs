@@ -22,6 +22,8 @@ namespace VHS
         [SerializeField] private float walkSpeed = 2f;
         [SerializeField] private float runSpeed = 3f;
         [SerializeField] private float jumpSpeed = 5f;
+        [SerializeField] private float pullingSpeed = 1f;
+
         [SerializeField] private float crouchJumpSpeed = 5f;
         [Slider(0f, 1f)] [SerializeField] private float moveBackwardsSpeedPercent = 0.5f;
         [Slider(0f, 1f)] [SerializeField] private float moveSideSpeedPercent = 0.75f;
@@ -274,7 +276,26 @@ namespace VHS
             bool _hitGround = Physics.SphereCast(_origin, raySphereRadius, Vector3.down, out m_hitInfo, m_finalRayLength, groundLayer);
             Debug.DrawRay(_origin, Vector3.down * (m_finalRayLength), Color.red);
 
-            m_isGrounded = _hitGround ? true : false;
+            if (InteractionController.instance.currentInteractingObject != null && m_hitInfo.collider != null)
+            {
+                if (m_hitInfo.collider.gameObject != InteractionController.instance.currentInteractingObject)
+                {
+                    m_isGrounded = _hitGround ? true : false;
+                }
+                else
+                {
+                    Pickable current = m_hitInfo.collider.gameObject.GetComponent<Pickable>();
+                    if (current)
+                    {
+                        current.OnRelease();
+                    }
+                    m_isGrounded = false;
+                }
+            }
+            else
+            {
+                m_isGrounded = _hitGround ? true : false;
+            }
         }
 
         protected virtual void CheckIfWall()
@@ -318,7 +339,7 @@ namespace VHS
                 _normalizedDir = m_smoothFinalMoveDir.normalized;
 
             float _dot = Vector3.Dot(transform.forward, _normalizedDir);
-            return _dot >= canRunThreshold && m_isGrounded && !movementInputData.IsCrouching ? true : false;
+            return _dot >= canRunThreshold && m_isGrounded && InteractionController.instance.currentInteractingObject == null && !movementInputData.IsCrouching ? true : false;
         }
 
         protected virtual void CalculateMovementDirection()
@@ -343,7 +364,7 @@ namespace VHS
 
         protected virtual void CalculateSpeed()
         {
-            if(movementInputData.IsRunning)
+            if(movementInputData.IsRunning && !InteractionController.instance.currentInteractingObject)
             {
                 m_currentSpeed = runSpeed;
             }
@@ -351,7 +372,14 @@ namespace VHS
             {
                 if(!movementInputData.IsCrouching)
                 {
-                    m_currentSpeed = walkSpeed;
+                    if (!InteractionController.instance.currentInteractingObject)
+                    {
+                        m_currentSpeed = walkSpeed;
+                    }
+                    else
+                    {
+                        m_currentSpeed = pullingSpeed;
+                    }
                 }
             }
 

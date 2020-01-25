@@ -101,7 +101,7 @@ Transform:
   m_GameObject: {fileID: 268212867}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 1.8}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1344409390130389822}
   m_RootOrder: 0
@@ -547,9 +547,9 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_Camera: {fileID: 1344409390130389821}
+  m_PlaneDistance: 1
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -575,7 +575,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -943,6 +943,7 @@ MonoBehaviour:
   walkSpeed: 8
   runSpeed: 15
   jumpSpeed: 10
+  pullingSpeed: 4
   crouchJumpSpeed: 7
   moveBackwardsSpeedPercent: 1
   moveSideSpeedPercent: 1
@@ -1077,6 +1078,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   crossHair: {fileID: 771392514}
+  currentInteractingObject: {fileID: 0}
   grabPoint: {fileID: 268212868}
   rayPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &1344409390522671018

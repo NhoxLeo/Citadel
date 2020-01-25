@@ -17,8 +17,12 @@ namespace VHS
         [SerializeField] private LayerMask interactableLayer = ~0;
 
         public Animator crossHair;
+        public GameObject currentInteractingObject;
         public Transform grabPoint;
         public Vector3 rayPoint;
+
+        [HideInInspector]
+        public static InteractionController instance; //Singleton
 
         #region Private
         private Camera m_cam;
@@ -33,6 +37,10 @@ namespace VHS
         #region Built In Methods      
         void Awake()
         {
+            if (instance == null)
+            {
+                instance = this;
+            }
             m_cam = FindObjectOfType<Camera>();
             //grabPoint.position = new Vector3(0, 0, 1.5f);
         }

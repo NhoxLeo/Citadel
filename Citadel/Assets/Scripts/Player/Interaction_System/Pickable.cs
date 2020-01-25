@@ -48,6 +48,7 @@ namespace VHS
             {
                 this.playerGrip = playerGrip;
                 this.contactPoint = contactPoint;
+                InteractionController.instance.currentInteractingObject = gameObject;
                 OnPickUp();
             }
         }
@@ -61,7 +62,7 @@ namespace VHS
         public void OnHold()
         {
             joint.connectedAnchor = playerGrip.position;
-            joint.anchor = contactPoint;
+            //joint.anchor = contactPoint;
             if (lineRenderer)
             {
                 lineRenderer.widthCurve = AnimationCurve.Linear(0, 0.1f, 1, 0.1f);
@@ -144,6 +145,7 @@ namespace VHS
         public void OnRelease()
         {
             picked = false;
+            InteractionController.instance.currentInteractingObject = null;
             StopGrab();
         }
 
