@@ -535,6 +535,7 @@ namespace VHS
                 {
                     m_headBob.ScrollHeadBob(movementInputData.IsRunning && CanRun(), movementInputData.IsCrouching, movementInputData.InputVector);
                     m_yawTransform.localPosition = Vector3.Lerp(m_yawTransform.localPosition, (Vector3.up * m_headBob.CurrentStateHeight) + m_headBob.FinalOffset, Time.deltaTime * smoothHeadBobSpeed);
+                    InteractionController.instance.weaponStorageParent.transform.localPosition = Vector3.Lerp(m_yawTransform.localPosition, (Vector3.up * m_headBob.CurrentStateHeight) + m_headBob.FinalOffset, Time.deltaTime * (smoothHeadBobSpeed * 4));
                 }
             }
             else // if we are not moving or we are not grounded
@@ -546,6 +547,7 @@ namespace VHS
 
                 if (!m_duringCrouchAnimation) // we want to reset our head bob only if we are standing still and not during crouch routine
                     m_yawTransform.localPosition = Vector3.Lerp(m_yawTransform.localPosition, new Vector3(0f, m_headBob.CurrentStateHeight, 0f), Time.deltaTime * smoothHeadBobSpeed);
+                    InteractionController.instance.weaponStorageParent.transform.localPosition = Vector3.Lerp(m_yawTransform.localPosition, new Vector3(0f, m_headBob.CurrentStateHeight, 0f), Time.deltaTime * (smoothHeadBobSpeed * 4));
             }
 
             //m_camTransform.localPosition = Vector3.Lerp(m_camTransform.localPosition,m_headBob.FinalOffset,Time.deltaTime * smoothHeadBobSpeed);

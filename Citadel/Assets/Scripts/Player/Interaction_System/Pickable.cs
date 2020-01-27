@@ -87,8 +87,11 @@ namespace VHS
             rigid.angularDrag = 5f;
             rigid.drag = 1f;
 
-            lineRenderer = gameObject.AddComponent<LineRenderer>();
-            lineRenderer = gameObject.GetComponent<LineRenderer>();
+            if (!gameObject.GetComponent<LineRenderer>())
+            {
+                lineRenderer = gameObject.AddComponent<LineRenderer>();
+            }
+
             lineRenderer.positionCount = 2;
             lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
             lineRenderer.numCapVertices = 10;

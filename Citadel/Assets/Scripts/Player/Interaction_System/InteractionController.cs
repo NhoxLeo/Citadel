@@ -16,13 +16,27 @@ namespace VHS
         [SerializeField] private float raySphereRadius = 0f;
         [SerializeField] private LayerMask interactableLayer = ~0;
 
-        public Animator crossHair;
-        public GameObject currentInteractingObject;
+        [Space, Header("References")]
         public Transform grabPoint;
         public Vector3 rayPoint;
+        public Animator crossHair;
+        public GameObject bulletHolePrefab;
+        public GameObject weaponStorageParent;
+        public LayerMask bulletLayers;
+
+        [Space, Header("Storage")]
+        public GameObject currentInteractingObject;
+        public GameObject currentWeapon;
+        public List<GameObject> weaponStorge;
 
         [HideInInspector]
+        public List<GameObject> bulletHoles;
+        [HideInInspector]
+        public bool switchingWeapons = false, wasHolding;
+        [HideInInspector]
         public static InteractionController instance; //Singleton
+        //[HideInInspector]
+        public int currentWeaponIndex = 0;
 
         #region Private
         private Camera m_cam;
@@ -42,6 +56,14 @@ namespace VHS
                 instance = this;
             }
             m_cam = FindObjectOfType<Camera>();
+            
+            if(weaponStorge == null)
+            {
+                weaponStorge = new List<GameObject>();
+            }
+
+            weaponStorageParent.GetComponent<Animator>().SetBool("Equip", true);
+            CheckForWeapon();
             //grabPoint.position = new Vector3(0, 0, 1.5f);
         }
 
@@ -49,6 +71,115 @@ namespace VHS
         {
             CheckForInteractable();
             CheckForInteractableInput();
+            CheckForWeapon();
+
+            if (!wasHolding)
+            {
+                #region Weapon Shortcuts
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                {
+                    if (weaponStorge.Count > 0)
+                    {
+                        ChangeWeapon(0, 0);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha2))
+                {
+                    if (weaponStorge.Count > 1)
+                    {
+                        ChangeWeapon(0, 1);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    if (weaponStorge.Count > 2)
+                    {
+                        ChangeWeapon(0, 2);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha4))
+                {
+                    if (weaponStorge.Count > 3)
+                    {
+                        ChangeWeapon(0, 3);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha5))
+                {
+                    if (weaponStorge.Count > 4)
+                    {
+                        ChangeWeapon(0, 4);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha6))
+                {
+                    if (weaponStorge.Count > 5)
+                    {
+                        ChangeWeapon(0, 5);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha7))
+                {
+                    if (weaponStorge.Count > 6)
+                    {
+                        ChangeWeapon(0, 6);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha8))
+                {
+                    if (weaponStorge.Count > 7)
+                    {
+                        ChangeWeapon(0, 7);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha9))
+                {
+                    if (weaponStorge.Count > 8)
+                    {
+                        ChangeWeapon(0, 8);
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.Alpha0))
+                {
+                    if (weaponStorge.Count > 9)
+                    {
+                        ChangeWeapon(0, 9);
+                    }
+                }
+                #endregion
+
+                if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                {
+                    ChangeWeapon(1);
+                }
+                else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                {
+                    ChangeWeapon(-1);
+                }
+                else if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    ChangeWeapon(1);
+                }
+
+                if (bulletHoles.Count > 50)
+                {
+                    bulletHoles.RemoveAt(0);
+                }
+            }
+
+            if(currentInteractingObject && !switchingWeapons)
+            {
+                switchingWeapons = true;
+                wasHolding = true;
+                weaponStorageParent.GetComponent<Animator>().SetBool("Equip", false);
+                weaponStorageParent.GetComponent<Animator>().SetTrigger("Unequip");
+            }
+            else if (!currentInteractingObject && wasHolding)
+            {
+                weaponStorageParent.GetComponent<Animator>().SetBool("Equip", true);
+                wasHolding = false;
+                switchingWeapons = false;
+            }
         }
         #endregion
 
@@ -102,6 +233,81 @@ namespace VHS
             Debug.DrawRay(_ray.origin, _ray.direction * rayDistance, _hitSomething ? Color.green : Color.red);
         }
 
+        void CheckForWeapon()
+        {
+            if(weaponStorge != null && weaponStorge.Count > 0 && !switchingWeapons)
+            {
+                if (currentWeapon)
+                {
+                    if (currentWeapon != weaponStorge[currentWeaponIndex])
+                    {
+                        currentWeapon.SetActive(false);
+                        currentWeapon = weaponStorge[currentWeaponIndex];
+                        currentWeapon.SetActive(true);
+                    }
+                }
+                else
+                {
+                    currentWeapon = weaponStorge[currentWeaponIndex];
+                    currentWeapon.SetActive(true);
+                }
+            }
+        }
+
+        public void ChangeWeapon(int shiftBy, int toIndex = -1)
+        {
+            if (weaponStorge.Count > 1)
+            {
+                if (toIndex == -1)
+                {
+                    if (shiftBy > 0)
+                    {
+                        if (currentWeaponIndex == weaponStorge.Count - 1)
+                        {
+                            currentWeaponIndex = 0;
+                        }
+                        else
+                        {
+                            currentWeaponIndex += shiftBy;
+                        }
+                    }
+                    else
+                    {
+                        if (currentWeaponIndex == 0)
+                        {
+                            currentWeaponIndex = weaponStorge.Count - 1;
+                        }
+                        else
+                        {
+                            currentWeaponIndex += shiftBy;
+                        }
+                    }
+                }
+                else
+                {
+                    currentWeaponIndex = toIndex;
+                }
+
+                switchingWeapons = true;
+                StartCoroutine(SwitchWeapons());
+            }
+
+            CheckForWeapon();
+        }
+
+        public IEnumerator SwitchWeapons()
+        {
+            weaponStorageParent.GetComponent<Animator>().SetTrigger("Unequip");
+            yield return new WaitForSeconds(0.2f);
+            switchingWeapons = false;
+        }
+
+        public void AddWeapon(GameObject newWeapon)
+        {
+            weaponStorge.Add(newWeapon);
+            currentWeaponIndex = weaponStorge.Count-1;
+        }
+
         void CheckForInteractableInput()
         {
             if (interactionData.IsEmpty())
@@ -142,5 +348,18 @@ namespace VHS
             }
         }
         #endregion
+
+        private void OnDrawGizmos()
+        {
+            if(weaponStorge != null && weaponStorge.Count > 0)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(Camera.main.transform.position, Camera.main.transform.position + (Camera.main.transform.forward * weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRange));
+                if(weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.weaponType == Weapon.WeaponType.Melee)
+                {
+                    Gizmos.DrawSphere(Camera.main.transform.position + (Camera.main.transform.forward * weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRange), weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRadius);
+                }
+            }
+        }
     }
 }

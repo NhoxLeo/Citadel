@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8ff7cdb18d43b42b1664d0647658a3, type: 3}
+  m_Name: Foot_Duke
+  m_EditorClassIdentifier: 
+  weaponName: Mighty Foot
+  weaponType: 0
+  attackSound: {fileID: 8300000, guid: 96bf104ad77e84d45a496d04c40d3a8c, type: 3}
+  reloadSound: {fileID: 8300000, guid: 63889d8fe7ebacd4da99116afc5a5ef6, type: 3}
+  equipSound: {fileID: 0}
+  attackDamange: 10
+  attackRange: 1.5
+  attackRadius: 1
+  impactForce: 2000
+  doesNeedReload: 0
+  reloadOnShot: 0
+  roundsPerClip: 8
+  totalAmmoOnPickup: 20
+  totalRoundsPerShot: 1
+  spreadMaxDivation: 0
+  attackStateLength: 0.4
+  reloadStateLength: 1.2
+  isMelee: 1
+  isMultiShot: 0

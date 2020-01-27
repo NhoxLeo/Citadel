@@ -45,9 +45,16 @@ public class AudioManager : MonoBehaviour
         {
             for(int i = sfxPlayers.Count-1; i > -1; i--)
             {
-                if(sfxPlayers[i].isPlaying == false)
+                if (sfxPlayers[i])
                 {
-                    Destroy(sfxPlayers[i].gameObject);
+                    if (sfxPlayers[i].isPlaying == false)
+                    {
+                        Destroy(sfxPlayers[i].gameObject);
+                        sfxPlayers.RemoveAt(i);
+                    }
+                }
+                else
+                {
                     sfxPlayers.RemoveAt(i);
                 }
             }
@@ -104,7 +111,7 @@ public class AudioManager : MonoBehaviour
         audioSource.Stop();
     }
 
-    public void PlaySFX(AudioClip soundToPlay, float relativeVolume, Vector3 position, string soundTag = null)
+    public void PlaySFX(AudioClip soundToPlay, float relativeVolume, Vector3 position, string soundTag = null, float reverb = 0)
     {
         GameObject sfxPlayer = Instantiate(sfxPlayerPrefab, position, Quaternion.identity);
         sfxPlayer.name = sfxPlayer.name + "_" + soundToPlay.name;
@@ -114,6 +121,7 @@ public class AudioManager : MonoBehaviour
         }
         AudioSource sfxPlayerSource = sfxPlayer.GetComponent<AudioSource>();
         sfxPlayerSource.volume = GetGlobalSFXVolume(relativeVolume);
+        sfxPlayerSource.reverbZoneMix = reverb;
         sfxPlayerSource.PlayOneShot(soundToPlay);
         sfxPlayers.Add(sfxPlayerSource);
     }

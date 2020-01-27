@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 203302525}
   - component: {fileID: 203302527}
   - component: {fileID: 203302526}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,6 +151,61 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &618959486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 618959487}
+  - component: {fileID: 618959488}
+  m_Layer: 5
+  m_Name: Weapon
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &618959487
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618959486}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2095911298}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!95 &618959488
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 618959486}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 04996ee13c85d1240bd6659cfe6e8e43, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &771392512
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 771392513}
   - component: {fileID: 771392514}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -221,7 +276,7 @@ GameObject:
   - component: {fileID: 944751004}
   - component: {fileID: 944751006}
   - component: {fileID: 944751005}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +350,7 @@ GameObject:
   - component: {fileID: 1105337848}
   - component: {fileID: 1105337850}
   - component: {fileID: 1105337849}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -369,7 +424,7 @@ GameObject:
   - component: {fileID: 1672140506}
   - component: {fileID: 1672140508}
   - component: {fileID: 1672140507}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -510,7 +565,7 @@ GameObject:
   - component: {fileID: 2095911301}
   - component: {fileID: 2095911300}
   - component: {fileID: 2095911299}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PlayerUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,6 +584,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 771392513}
+  - {fileID: 618959487}
   m_Father: {fileID: 2882282971457573382}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -546,9 +602,9 @@ Canvas:
   m_GameObject: {fileID: 2095911297}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1344409390130389821}
-  m_PlaneDistance: 1
+  m_PlaneDistance: 0.02
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -1077,10 +1133,23 @@ MonoBehaviour:
   interactableLayer:
     serializedVersion: 2
     m_Bits: 512
-  crossHair: {fileID: 771392514}
-  currentInteractingObject: {fileID: 0}
   grabPoint: {fileID: 268212868}
   rayPoint: {x: 0, y: 0, z: 0}
+  crossHair: {fileID: 771392514}
+  bulletHolePrefab: {fileID: 1374204245455647726, guid: d7993092cf1f95541a974f648630fd16,
+    type: 3}
+  weaponStorageParent: {fileID: 618959486}
+  bulletLayers:
+    serializedVersion: 2
+    m_Bits: 513
+  currentInteractingObject: {fileID: 0}
+  currentWeapon: {fileID: 0}
+  weaponStorge:
+  - {fileID: 0}
+  - {fileID: 0}
+  bulletHoles: []
+  switchingWeapons: 0
+  currentWeaponIndex: 0
 --- !u!114 &1344409390522671018
 MonoBehaviour:
   m_ObjectHideFlags: 0
