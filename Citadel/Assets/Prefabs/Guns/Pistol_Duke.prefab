@@ -253,9 +253,12 @@ MonoBehaviour:
   defaultState: {fileID: 7437550920699478288}
   attackState: {fileID: 7437550921225815252}
   weaponShell: {fileID: 971844429}
+  attackParticle: {fileID: 88749485564433142, guid: db81707ef4bc3d94ba5aae26fe47a13d,
+    type: 3}
   reloadState: {fileID: 7437550922377475717}
   weaponState: 0
   isMelee: 0
+  totalRounds: 0
 --- !u!1 &7437550921225815252
 GameObject:
   m_ObjectHideFlags: 0

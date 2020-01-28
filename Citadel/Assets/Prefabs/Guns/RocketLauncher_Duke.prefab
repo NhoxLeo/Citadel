@@ -1,0 +1,268 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7576025600942066300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7576025600942066303}
+  - component: {fileID: 7576025600942066297}
+  - component: {fileID: 7576025600942066302}
+  m_Layer: 5
+  m_Name: RocketLauncher_Default
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7576025600942066303
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025600942066300}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_Children: []
+  m_Father: {fileID: 7576025601027835433}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 979.4, y: -1001.6}
+  m_SizeDelta: {x: 1080, y: 1080}
+  m_Pivot: {x: 1, y: 0}
+--- !u!222 &7576025600942066297
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025600942066300}
+  m_CullTransparentMesh: 0
+--- !u!114 &7576025600942066302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025600942066300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: f1044e848c19d094881c373ef4c1695d, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 741a9d30141bcb2409f86726037d48df, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!1 &7576025601027835438
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7576025601027835433}
+  - component: {fileID: 7576025601027835432}
+  m_Layer: 5
+  m_Name: RocketLauncher_Duke
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7576025601027835433
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025601027835438}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 7576025600942066303}
+  - {fileID: 7576025601468633019}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7576025601027835432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025601027835438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2e41ad0ba6565c409780a62e0ba1273, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponParams: {fileID: 11400000, guid: 071b7d5379c9bf241ba68295a452b955, type: 2}
+  defaultState: {fileID: 7576025600942066300}
+  attackState: {fileID: 7576025601468633016}
+  weaponShell: {fileID: 0}
+  attackParticle: {fileID: 88749485564433142, guid: db81707ef4bc3d94ba5aae26fe47a13d,
+    type: 3}
+  reloadState: {fileID: 0}
+  weaponState: 0
+  isMelee: 0
+  totalRounds: 0
+--- !u!1 &7576025601468633016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7576025601468633019}
+  - component: {fileID: 7576025601468633013}
+  - component: {fileID: 7576025601468633018}
+  - component: {fileID: 7576025601468633012}
+  m_Layer: 5
+  m_Name: RocketLauncher_Shoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &7576025601468633019
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025601468633016}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.35, y: 1.35, z: 1.35}
+  m_Children: []
+  m_Father: {fileID: 7576025601027835433}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 1036.2, y: -1055.4}
+  m_SizeDelta: {x: 1080, y: 1080}
+  m_Pivot: {x: 1, y: 0}
+--- !u!222 &7576025601468633013
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025601468633016}
+  m_CullTransparentMesh: 0
+--- !u!114 &7576025601468633018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025601468633016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: -6957633702770296772, guid: 948dd394b0dd72848ac25f1a2969585b,
+    type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+--- !u!114 &7576025601468633012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576025601468633016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bd028356f9592148aeb8d818c40d1e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FPS: 40
+  outputRenderer: {fileID: 7576025601468633018}
+  frames:
+  - {fileID: -6957633702770296772, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 2035052204793216408, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 805901633402113289, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 3747469237283908211, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1051980794583219813, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -5166305673045556747, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 2443090856756612134, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -8263536688766383768, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -7974407232322133476, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -4903452092322180371, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 2981893650892431446, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 4361422880836922176, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 4620765412330385352, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -1101427589943349380, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -8104121138530237286, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -3455880923423080556, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 7785282014328390341, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 477927706220348566, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -9016462774636393235, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -8195459698313824875, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 6412574503469579802, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 2319587629134194706, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -7534920974588687139, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: -2903332661700814261, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  - {fileID: 1783426629431158225, guid: 948dd394b0dd72848ac25f1a2969585b, type: 3}
+  destroyThis: 0

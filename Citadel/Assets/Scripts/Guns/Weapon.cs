@@ -14,15 +14,20 @@ public class Weapon : ScriptableObject
     public AudioClip attackSound;
     [ConditionalHide("isMelee", true, true)]
     public AudioClip reloadSound;
+    [ConditionalHide("isMelee", true)]
+    public AudioClip missSound;
     public AudioClip equipSound;
+    [ConditionalHide("isProjectile", true)]
+    public GameObject projectilePrefab;
 
     [Header("Weapon Settings")]
     [Space(10)]
-    public float attackDamange = 10;
+    public float attackDamage = 10;
+    [ConditionalHide("isProjectile", true, true)]
     public float attackRange = 100;
     [ConditionalHide("isMelee", true)]
     public float attackRadius = 2;
-    public float impactForce = 100;
+    public float attackForce = 100;
     [ConditionalHide("isMelee", true, true)]
     public bool doesNeedReload = true;
     [ConditionalHide("isMelee", true, true)]
@@ -39,12 +44,14 @@ public class Weapon : ScriptableObject
     public float attackStateLength = 0.2f;
     [ConditionalHide("isMelee", true, true)]
     public float reloadStateLength = 2;
+    [ConditionalHide("isMelee", true, true)]
+    public float shellEjectionDelay = 0;
 
     [HideInInspector]
-    public bool isMelee;
+    public bool isMelee, isProjectile;
     [HideInInspector]
     public bool isMultiShot;
-    public enum WeaponType { Melee, Ranged}
+    public enum WeaponType { Melee, Ranged, Projectile}
 
     /// <summary>
     /// Conditional Hide Inspector Tools
@@ -54,6 +61,7 @@ public class Weapon : ScriptableObject
         if (weaponType == WeaponType.Melee && !isMelee)
         {
             isMelee = true;
+            isProjectile = false;
             doesNeedReload = false;
         }
         else if (weaponType != WeaponType.Melee && isMelee)
@@ -61,7 +69,17 @@ public class Weapon : ScriptableObject
             isMelee = false;
         }
 
-        if(totalRoundsPerShot > 1 && !isMultiShot)
+        if(weaponType == WeaponType.Projectile && !isProjectile)
+        {
+            isProjectile = true;
+            isMelee = false;
+        }
+        else if (weaponType != WeaponType.Projectile && isProjectile)
+        {
+            isProjectile = false;
+        }
+
+        if (totalRoundsPerShot > 1 && !isMultiShot)
         {
             isMultiShot = true;
         }

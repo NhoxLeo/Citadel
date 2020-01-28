@@ -32,7 +32,7 @@ namespace VHS
         [HideInInspector]
         public List<GameObject> bulletHoles;
         [HideInInspector]
-        public bool switchingWeapons = false, wasHolding;
+        public bool switchingWeapons = false, wasHolding, switchWeaponLock;
         [HideInInspector]
         public static InteractionController instance; //Singleton
         //[HideInInspector]
@@ -148,15 +148,15 @@ namespace VHS
                 }
                 #endregion
 
-                if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                if (Input.GetAxis("Mouse ScrollWheel") > 0 && !switchWeaponLock)
                 {
                     ChangeWeapon(1);
                 }
-                else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                else if (Input.GetAxis("Mouse ScrollWheel") < 0 && !switchWeaponLock)
                 {
                     ChangeWeapon(-1);
                 }
-                else if (Input.GetKeyDown(KeyCode.Q))
+                else if (Input.GetKeyDown(KeyCode.Q) && !switchingWeapons)
                 {
                     ChangeWeapon(1);
                 }
@@ -172,7 +172,7 @@ namespace VHS
                 switchingWeapons = true;
                 wasHolding = true;
                 weaponStorageParent.GetComponent<Animator>().SetBool("Equip", false);
-                weaponStorageParent.GetComponent<Animator>().SetTrigger("Unequip");
+                weaponStorageParent.GetComponent<Animator>().SetBool("Unequip", true);
             }
             else if (!currentInteractingObject && wasHolding)
             {
@@ -235,77 +235,128 @@ namespace VHS
 
         void CheckForWeapon()
         {
-            if(weaponStorge != null && weaponStorge.Count > 0 && !switchingWeapons)
+            if(weaponStorge != null && weaponStorge.Count > 0)
             {
-                if (currentWeapon)
+                if (!switchingWeapons)
                 {
-                    if (currentWeapon != weaponStorge[currentWeaponIndex])
+                    if (currentWeapon)
                     {
-                        currentWeapon.SetActive(false);
+                        if (currentWeapon != weaponStorge[currentWeaponIndex])
+                        {
+                            currentWeapon.SetActive(false);
+                            currentWeapon = weaponStorge[currentWeaponIndex];
+                            currentWeapon.SetActive(true);
+                        }
+                    }
+                    else
+                    {
                         currentWeapon = weaponStorge[currentWeaponIndex];
                         currentWeapon.SetActive(true);
                     }
-                }
-                else
-                {
-                    currentWeapon = weaponStorge[currentWeaponIndex];
-                    currentWeapon.SetActive(true);
                 }
             }
         }
 
         public void ChangeWeapon(int shiftBy, int toIndex = -1)
         {
-            if (weaponStorge.Count > 1)
-            {
-                if (toIndex == -1)
+            if (weaponStorge.Count > 1 && toIndex != currentWeaponIndex)
+            {   
+                if (switchWeaponLock)
                 {
-                    if (shiftBy > 0)
+                    StartCoroutine(SwitchWeapons(shiftBy, toIndex, true));
+
+                }
+                else
+                {
+                    switchingWeapons = true;
+                    switchWeaponLock = true;
+                    StartCoroutine(SwitchWeapons(shiftBy, toIndex, false));
+                }             
+            }
+        }
+
+        public IEnumerator SwitchWeapons(int shiftBy, int toIndex = -1, bool toWait = false)
+        {
+            if(toWait)
+            {
+                yield return new WaitUntil(() => (switchWeaponLock == false));
+                switchingWeapons = true;
+                switchWeaponLock = true;
+            }
+
+            weaponStorageParent.GetComponent<Animator>().SetBool("Unequip", true);
+            weaponStorageParent.GetComponent<Animator>().SetBool("Equip", false);
+            yield return new WaitForSeconds(0.2f);
+
+            if (toIndex == -1)
+            {
+                if (shiftBy > 0)
+                {
+                    if (currentWeaponIndex == weaponStorge.Count - 1)
                     {
-                        if (currentWeaponIndex == weaponStorge.Count - 1)
-                        {
-                            currentWeaponIndex = 0;
-                        }
-                        else
-                        {
-                            currentWeaponIndex += shiftBy;
-                        }
+                        currentWeaponIndex = 0;
                     }
                     else
                     {
-                        if (currentWeaponIndex == 0)
-                        {
-                            currentWeaponIndex = weaponStorge.Count - 1;
-                        }
-                        else
-                        {
-                            currentWeaponIndex += shiftBy;
-                        }
+                        currentWeaponIndex += shiftBy;
                     }
                 }
                 else
                 {
-                    currentWeaponIndex = toIndex;
+                    if (currentWeaponIndex == 0)
+                    {
+                        currentWeaponIndex = weaponStorge.Count - 1;
+                    }
+                    else
+                    {
+                        currentWeaponIndex += shiftBy;
+                    }
                 }
-
-                switchingWeapons = true;
-                StartCoroutine(SwitchWeapons());
             }
-
-            CheckForWeapon();
-        }
-
-        public IEnumerator SwitchWeapons()
-        {
-            weaponStorageParent.GetComponent<Animator>().SetTrigger("Unequip");
-            yield return new WaitForSeconds(0.2f);
+            else
+            {
+                currentWeaponIndex = toIndex;
+            }
             switchingWeapons = false;
+            weaponStorageParent.GetComponent<Animator>().SetBool("Equip", true);
+            weaponStorageParent.GetComponent<Animator>().SetBool("Unequip", false);
+            yield return new WaitForSeconds(0.45f);
+            switchWeaponLock = false;
         }
 
         public void AddWeapon(GameObject newWeapon)
         {
-            weaponStorge.Add(newWeapon);
-            currentWeaponIndex = weaponStorge.Count-1;
+            GameObject foundWeapon = SearchForWeapon(newWeapon);
+            if (!foundWeapon)
+            {
+                GameObject weapon = Instantiate(newWeapon, transform.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                weapon.SetActive(false);
+                weapon.transform.parent = weaponStorageParent.transform;
+                weapon.transform.localPosition = Vector3.zero;
+                weapon.transform.localScale = Vector3.one;
+                weapon.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                weaponStorge.Add(weapon);
+                ChangeWeapon(0,weaponStorge.Count - 1);
+                //Debug.Log("Added " + newWeapon.GetComponent<WeaponController>().weaponParams.name + " To The Inventory");
+            }
+            else
+            {
+                foundWeapon.GetComponent<WeaponController>().totalRounds += foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnPickup;
+                //Debug.Log("Added " + foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnPickup + " Rounds To " + foundWeapon.GetComponent<WeaponController>().weaponParams.name);
+            }
+        }
+
+        public GameObject SearchForWeapon(GameObject newWeapon)
+        {
+            foreach(GameObject weapon in weaponStorge)
+            {
+                if(weapon.GetComponent<WeaponController>().weaponParams.name == newWeapon.GetComponent<WeaponController>().weaponParams.name)
+                {
+                    return weapon;
+                }
+            }
+
+            return null;
         }
 
         void CheckForInteractableInput()

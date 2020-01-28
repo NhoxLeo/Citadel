@@ -16,18 +16,22 @@ MonoBehaviour:
   weaponType: 1
   attackSound: {fileID: 8300000, guid: 09d7b768fcbcab943aa7f829b6d1d2b6, type: 3}
   reloadSound: {fileID: 8300000, guid: 63889d8fe7ebacd4da99116afc5a5ef6, type: 3}
+  missSound: {fileID: 0}
   equipSound: {fileID: 8300000, guid: 668262f257088e3428b997d620384a1a, type: 3}
-  attackDamange: 5
+  projectilePrefab: {fileID: 0}
+  attackDamage: 20
   attackRange: 50
   attackRadius: 2
-  impactForce: 1000
+  attackForce: 1000
   doesNeedReload: 1
   reloadOnShot: 0
-  roundsPerClip: 8
-  totalAmmoOnPickup: 20
+  roundsPerClip: 12
+  totalAmmoOnPickup: 48
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
   attackStateLength: 0.1
   reloadStateLength: 1.2
+  shellEjectionDelay: 0
   isMelee: 0
+  isProjectile: 0
   isMultiShot: 0

@@ -10,18 +10,21 @@ public class WeaponController : MonoBehaviour
     public Weapon weaponParams;
     public GameObject defaultState;
     public GameObject attackState;
-    public GameObject weaponShell;
     [ConditionalHide("isMelee", true, true)]
     public GameObject reloadState;
+    public GameObject weaponShell;
+    public GameObject attackParticle;
     public WeaponState weaponState = WeaponState.Default;
 
     [HideInInspector]
     public enum WeaponState { Default, Attacking, Reloading}
     [HideInInspector]
     public bool isMelee;
+    [HideInInspector]
+    public int totalRounds;
 
     private int currentLoadedRounds;
-    private int totalRounds;   
+  
 
     /// <summary>
     /// Conditional Hide Inspector Tools
@@ -65,17 +68,25 @@ public class WeaponController : MonoBehaviour
     {
         if(weaponState == WeaponState.Default)
         {
-            if (weaponParams.weaponType == Weapon.WeaponType.Ranged)
+            if (weaponParams.weaponType != Weapon.WeaponType.Melee)
             {
-                if (currentLoadedRounds > 0)
+                if (currentLoadedRounds > 0 && weaponParams.doesNeedReload)
                 {
                     weaponState = WeaponState.Attacking;
                     StartCoroutine(Attack());
                 }
                 else if (totalRounds > 0)
                 {
-                    weaponState = WeaponState.Reloading;
-                    StartCoroutine(Reload());
+                    if (weaponParams.doesNeedReload)
+                    {
+                        weaponState = WeaponState.Reloading;
+                        StartCoroutine(Reload());
+                    }
+                    else if(totalRounds >= weaponParams.totalRoundsPerShot)
+                    {
+                        weaponState = WeaponState.Attacking;
+                        StartCoroutine(Attack());
+                    }
                 }
             }
             else
@@ -111,18 +122,23 @@ public class WeaponController : MonoBehaviour
 
     public void FinishedReload()
     {
-        int neededRounds = weaponParams.roundsPerClip - currentLoadedRounds;
+        int neededRounds;
+        if (weaponParams.doesNeedReload)
+        {
+            neededRounds = weaponParams.roundsPerClip - currentLoadedRounds;
 
-        if(totalRounds > neededRounds)
-        {
-            totalRounds -= neededRounds;
-            currentLoadedRounds += neededRounds;
+            if (totalRounds > neededRounds)
+            {
+                totalRounds -= neededRounds;
+                currentLoadedRounds += neededRounds;
+            }
+            else
+            {
+                currentLoadedRounds = totalRounds;
+                totalRounds = 0;
+            }
         }
-        else
-        {
-            currentLoadedRounds = totalRounds;
-            totalRounds = 0;
-        }
+        
         weaponState = WeaponState.Default;
     }
 
@@ -143,15 +159,27 @@ public class WeaponController : MonoBehaviour
         attackState.SetActive(true);
         if (weaponShell)
         {
-            GameObject newShell = Instantiate(weaponShell, weaponShell.transform.position, weaponShell.transform.rotation);
-            newShell.transform.parent = weaponShell.transform.parent;
-            newShell.transform.localScale = weaponShell.transform.localScale;
-            newShell.SetActive(true);
+            StartCoroutine(EjectShell());
         }
-        GameVars.instance.audioManager.PlaySFX(weaponParams.attackSound, 0.8f, transform.position, "WeaponSound");
+
+        if (weaponParams.weaponType != Weapon.WeaponType.Melee)
+        {
+            GameVars.instance.audioManager.PlaySFX(weaponParams.attackSound, 0.8f, transform.position, "WeaponSound");
+        }
+        if (weaponParams.doesNeedReload)
+        {
+            currentLoadedRounds -= weaponParams.totalRoundsPerShot;
+        }
+        else
+        {
+            totalRounds -= weaponParams.totalRoundsPerShot;
+        }
+        if(attackParticle)
+        {
+            Instantiate(attackParticle, transform.position, Quaternion.identity);
+        }
         Damage();
         yield return new WaitForSeconds(weaponParams.attackStateLength);
-        currentLoadedRounds--;
         if (weaponParams.reloadOnShot)
         {
             OnReload();
@@ -161,6 +189,15 @@ public class WeaponController : MonoBehaviour
         weaponState = WeaponState.Default;
     }
 
+    public IEnumerator EjectShell()
+    {
+        yield return new WaitForSeconds(weaponParams.shellEjectionDelay);
+        GameObject newShell = Instantiate(weaponShell, weaponShell.transform.position, weaponShell.transform.rotation);
+        newShell.transform.parent = weaponShell.transform.parent;
+        newShell.transform.localScale = weaponShell.transform.localScale;
+        newShell.SetActive(true);
+    }
+
     public void Damage()
     {
         RaycastHit hitInfo = new RaycastHit();
@@ -168,40 +205,71 @@ public class WeaponController : MonoBehaviour
 
         for (int i = 0; i < weaponParams.totalRoundsPerShot; i++)
         {
-            if (weaponParams.weaponType == Weapon.WeaponType.Ranged)
+            if (weaponParams.weaponType != Weapon.WeaponType.Projectile)
             {
-                Vector3 forwardVector = Vector3.forward;
-                float deviation = Random.Range(0f, weaponParams.spreadMaxDivation);
-                float angle = Random.Range(0f, 360f);
-                forwardVector = Quaternion.AngleAxis(deviation, Vector3.up) * forwardVector;
-                forwardVector = Quaternion.AngleAxis(angle, Vector3.forward) * forwardVector;
-                forwardVector = Camera.main.transform.rotation * forwardVector;
+                if (weaponParams.weaponType == Weapon.WeaponType.Ranged)
+                {
+                    Vector3 forwardVector = Vector3.forward;
+                    float deviation = Random.Range(0f, weaponParams.spreadMaxDivation);
+                    float angle = Random.Range(0f, 360f);
+                    forwardVector = Quaternion.AngleAxis(deviation, Vector3.up) * forwardVector;
+                    forwardVector = Quaternion.AngleAxis(angle, Vector3.forward) * forwardVector;
+                    forwardVector = Camera.main.transform.rotation * forwardVector;
 
-                rayCast = Physics.Raycast(Camera.main.transform.position, forwardVector, out hitInfo, weaponParams.attackRange, InteractionController.instance.bulletLayers);
+                    rayCast = Physics.Raycast(Camera.main.transform.position, forwardVector, out hitInfo, weaponParams.attackRange, InteractionController.instance.bulletLayers);
+                }
+                else
+                {
+                    rayCast = Physics.SphereCast(Camera.main.transform.position, weaponParams.attackRadius, Camera.main.transform.forward, out hitInfo, weaponParams.attackRange, InteractionController.instance.bulletLayers);
+                }
+
+                if (rayCast)
+                {
+                    if (hitInfo.rigidbody != null)
+                    {
+                        hitInfo.rigidbody.AddForce(-hitInfo.normal * weaponParams.attackForce);
+                    }
+
+                    //If not an enemy
+                    if (hitInfo.transform.gameObject.layer == 0 && weaponParams.weaponType == Weapon.WeaponType.Ranged)
+                    {
+                        GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
+                        bulletHole.transform.parent = hitInfo.transform;
+                        InteractionController.instance.bulletHoles.Add(bulletHole);
+                    }
+
+                    if (weaponParams.weaponType == Weapon.WeaponType.Melee)
+                    {
+                        GameVars.instance.audioManager.PlaySFX(weaponParams.attackSound, 0.8f, transform.position, "WeaponSound");
+                    }
+
+                    //Take Damange Here If Enemy
+                }
+                else
+                {
+                    if (weaponParams.weaponType == Weapon.WeaponType.Melee)
+                    {
+                        if (weaponParams.missSound)
+                        {
+                            GameVars.instance.audioManager.PlaySFX(weaponParams.missSound, 0.8f, transform.position, "WeaponSound");
+                        }
+                    }
+                }
             }
             else
             {
-                rayCast = Physics.SphereCast(Camera.main.transform.position, weaponParams.attackRadius, Camera.main.transform.forward, out hitInfo, weaponParams.attackRange, InteractionController.instance.bulletLayers);
-            }
-
-            if (rayCast)
-            {
-                if (hitInfo.rigidbody != null)
-                {
-                    hitInfo.rigidbody.AddForce(-hitInfo.normal * weaponParams.impactForce);
-                }
-
-                //If not an enemy
-                if (hitInfo.transform.gameObject.layer == 0 && weaponParams.weaponType == Weapon.WeaponType.Ranged)
-                {
-                    GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.001f), Quaternion.LookRotation(-hitInfo.normal));
-                    bulletHole.transform.parent = hitInfo.transform;
-                    InteractionController.instance.bulletHoles.Add(bulletHole);
-                }
-
-                //Take Damange Here If Enemy
+                StartCoroutine(FireProjectile());
             }
         }
+    }
+
+    public IEnumerator FireProjectile()
+    {
+        yield return new WaitForSeconds(weaponParams.shellEjectionDelay);
+        GameObject projectile = Instantiate(weaponParams.projectilePrefab, transform.position, Camera.main.transform.rotation);
+        projectile.GetComponent<Projectile>().damage = weaponParams.attackDamage;
+        projectile.GetComponent<Projectile>().hitForce = weaponParams.attackForce;
+        projectile.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * weaponParams.attackForce);
     }
 
     private void OnDisable()
@@ -232,9 +300,19 @@ public class WeaponController : MonoBehaviour
     {
         if(weaponParams.equipSound)
         {
-            if (currentLoadedRounds > 0 || totalRounds > 0)
+            if (weaponParams.doesNeedReload)
             {
-                GameVars.instance.audioManager.PlaySFX(weaponParams.equipSound, 0.8f, transform.position, "WeaponSound");
+                if (currentLoadedRounds > 0 || totalRounds > 0)
+                {
+                    GameVars.instance.audioManager.PlaySFX(weaponParams.equipSound, 0.8f, transform.position, "WeaponSound");
+                }
+            }
+            else
+            {
+                if (totalRounds > weaponParams.totalRoundsPerShot)
+                {
+                    GameVars.instance.audioManager.PlaySFX(weaponParams.equipSound, 0.8f, transform.position, "WeaponSound");
+                }
             }
         }
     }
