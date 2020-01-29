@@ -26,7 +26,8 @@ MonoBehaviour:
   doesNeedReload: 1
   reloadOnShot: 0
   roundsPerClip: 12
-  totalAmmoOnPickup: 48
+  totalAmmoOnInitialPickup: 60
+  totalAmmoOnAmmoPickup: 24
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
   attackStateLength: 0.1

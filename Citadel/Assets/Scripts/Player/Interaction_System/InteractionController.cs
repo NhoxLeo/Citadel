@@ -341,8 +341,21 @@ namespace VHS
             }
             else
             {
-                foundWeapon.GetComponent<WeaponController>().totalRounds += foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnPickup;
+                foundWeapon.GetComponent<WeaponController>().totalRounds += foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnInitialPickup;
                 //Debug.Log("Added " + foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnPickup + " Rounds To " + foundWeapon.GetComponent<WeaponController>().weaponParams.name);
+            }
+        }
+
+        public void ClearPlayerWeapons()
+        {
+            if (weaponStorge.Count > 1)
+            {
+                ChangeWeapon(0, 0);
+                for (int i = 1; i < weaponStorge.Count; i++)
+                {
+                    Destroy(weaponStorge[i]);
+                    weaponStorge.RemoveAt(i);
+                }
             }
         }
 

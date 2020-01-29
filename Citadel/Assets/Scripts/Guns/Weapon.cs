@@ -35,7 +35,9 @@ public class Weapon : ScriptableObject
     [ConditionalHide("doesNeedReload", true)]
     public int roundsPerClip = 8;
     [ConditionalHide("isMelee", true, true)]
-    public int totalAmmoOnPickup = 20;
+    public int totalAmmoOnInitialPickup = 20;
+    [ConditionalHide("isMelee", true, true)]
+    public int totalAmmoOnAmmoPickup = 20;
     public int totalRoundsPerShot = 1;
     [ConditionalHide("isMultiShot", true)]
     public float spreadMaxDivation = 0;

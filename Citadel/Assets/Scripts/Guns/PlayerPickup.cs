@@ -10,6 +10,7 @@ public class PlayerPickup : MonoBehaviour
     public List<Pickup> pickUps;
 
     private GameObject player;
+    private bool hasPickedUp;
 
     // Start is called before the first frame update
     void Start()
@@ -24,8 +25,9 @@ public class PlayerPickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.gameObject.layer == 8) //Player
+        if(col.gameObject.layer == 8 && !hasPickedUp) //Player
         {
+            hasPickedUp = true;
             Pickup();
         }
     }

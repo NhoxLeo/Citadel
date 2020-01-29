@@ -55,7 +55,7 @@ public class WeaponController : MonoBehaviour
     {
         if (weaponParams)
         {
-            totalRounds = weaponParams.totalAmmoOnPickup;
+            totalRounds = weaponParams.totalAmmoOnInitialPickup;
             currentLoadedRounds = weaponParams.roundsPerClip;
         }
         else
