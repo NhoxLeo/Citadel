@@ -9,7 +9,8 @@ namespace VHS
         #region Variables    
         [Space, Header("Data")]
         [SerializeField] private InteractionInputData interactionInputData = null;
-        [SerializeField] private InteractionData interactionData = null;
+        [HideInInspector]
+        [SerializeField] public InteractionData interactionData = null;
 
         [Space, Header("Ray Settings")]
         [SerializeField] private float rayDistance = 0f;
@@ -351,10 +352,13 @@ namespace VHS
             if (weaponStorge.Count > 1)
             {
                 ChangeWeapon(0, 0);
-                for (int i = 1; i < weaponStorge.Count; i++)
+                for (int i = weaponStorge.Count-1; i > 0; i--)
                 {
-                    Destroy(weaponStorge[i]);
-                    weaponStorge.RemoveAt(i);
+                    if (weaponStorge[i] != null)
+                    {
+                        Destroy(weaponStorge[i]);
+                        weaponStorge.RemoveAt(i);
+                    }
                 }
             }
         }
