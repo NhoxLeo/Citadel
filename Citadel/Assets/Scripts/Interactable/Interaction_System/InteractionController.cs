@@ -178,6 +178,7 @@ namespace VHS
             else if (!currentInteractingObject && wasHolding)
             {
                 weaponStorageParent.GetComponent<Animator>().SetBool("Equip", true);
+                weaponStorageParent.GetComponent<Animator>().SetBool("Unequip", false);
                 wasHolding = false;
                 switchingWeapons = false;
             }
