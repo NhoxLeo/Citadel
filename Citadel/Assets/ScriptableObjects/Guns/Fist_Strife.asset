@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee8ff7cdb18d43b42b1664d0647658a3, type: 3}
-  m_Name: Foot_Duke
+  m_Name: Fist_Strife
   m_EditorClassIdentifier: 
-  weaponName: Mighty Foot
+  weaponName: Fist
   weaponType: 0
   attackSound: {fileID: 8300000, guid: 96bf104ad77e84d45a496d04c40d3a8c, type: 3}
   reloadSound: {fileID: 8300000, guid: 63889d8fe7ebacd4da99116afc5a5ef6, type: 3}
   missSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
   equipSound: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  attackDamage: 20
-  attackRange: 1.5
+  attackDamage: 10
+  attackRange: 1.3
   attackRadius: 1
-  attackForce: 2000
+  attackForce: 1800
   doesNeedReload: 0
   reloadOnShot: 0
   roundsPerClip: 8
@@ -30,7 +30,7 @@ MonoBehaviour:
   totalAmmoOnAmmoPickup: 20
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
-  attackStateLength: 0.4
+  attackStateLength: 0.38
   reloadStateLength: 1.2
   shellEjectionDelay: 1
   isMelee: 1

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4998157924320159088}
   - component: {fileID: 4998157924320159095}
   m_Layer: 5
-  m_Name: Foot_Default
+  m_Name: Axe_Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27,14 +27,14 @@ RectTransform:
   m_GameObject: {fileID: 4998157924320159093}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 4998157924372408608}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 440, y: -490}
+  m_AnchoredPosition: {x: 913.5, y: -862.6}
   m_SizeDelta: {x: 1080, y: 1080}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4998157924320159088
@@ -65,7 +65,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 5228151214941037262, guid: 8230eac72052a0d408246ad44ea71f8b,
+  m_Sprite: {fileID: 6737528200528985246, guid: e767f3e07f9edbb4eb30f7318843a348,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4998157924372408608}
   - component: {fileID: 4998157924372408609}
   m_Layer: 5
-  m_Name: Foot_Duke
+  m_Name: Axe_Doom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2e41ad0ba6565c409780a62e0ba1273, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponParams: {fileID: 11400000, guid: 1eff4eede8d7749458b8aeb1c9eb6a70, type: 2}
+  weaponParams: {fileID: 11400000, guid: 1aaf86749822ea143a571914dba4ccaa, type: 2}
   defaultState: {fileID: 4998157924320159093}
   attackState: {fileID: 4998157924880572593}
   reloadState: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 4998157924880572595}
   - component: {fileID: 4998157924880572605}
   m_Layer: 5
-  m_Name: Foot_Attack
+  m_Name: Axe_Attack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,14 +162,14 @@ RectTransform:
   m_GameObject: {fileID: 4998157924880572593}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 4998157924372408608}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 440, y: -490}
+  m_AnchoredPosition: {x: 913.5, y: -862.6}
   m_SizeDelta: {x: 1080, y: 1080}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &4998157924880572604
@@ -200,7 +200,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 5228151214941037262, guid: 8230eac72052a0d408246ad44ea71f8b,
+  m_Sprite: {fileID: 6737528200528985246, guid: e767f3e07f9edbb4eb30f7318843a348,
     type: 3}
   m_Type: 0
   m_PreserveAspect: 0
@@ -222,11 +222,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bd028356f9592148aeb8d818c40d1e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FPS: 10
+  FPS: 18
   outputRenderer: {fileID: 4998157924880572595}
   frames:
-  - {fileID: 5228151214941037262, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
-  - {fileID: -7863296267709453574, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
-  - {fileID: -7604567081329240508, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
-  - {fileID: -5906367577714461876, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
+  - {fileID: 6737528200528985246, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: 301370414031558644, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: -5155880476771874572, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: -3462870180474554089, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: -9083580473411332686, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: -4177050772347748211, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: 7731655323782617445, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: 4091250672219114964, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: -8678374360022960346, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: -7205592994244910964, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: 5853570335242882831, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
+  - {fileID: 2776291931688934419, guid: e767f3e07f9edbb4eb30f7318843a348, type: 3}
   destroyThis: 0

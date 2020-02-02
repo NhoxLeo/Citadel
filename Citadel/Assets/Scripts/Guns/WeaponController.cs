@@ -220,7 +220,7 @@ public class WeaponController : MonoBehaviour
                 }
                 else
                 {
-                    rayCast = Physics.SphereCast(Camera.main.transform.position, weaponParams.attackRadius, Camera.main.transform.forward, out hitInfo, weaponParams.attackRange, InteractionController.instance.bulletLayers);
+                    rayCast = Physics.SphereCast(Camera.main.transform.position, weaponParams.attackRadius, Camera.main.transform.forward, out hitInfo, weaponParams.attackRange);
                 }
 
                 if (rayCast)
