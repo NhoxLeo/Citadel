@@ -11,9 +11,12 @@ public class SpriteSheet : MonoBehaviour
 
     [HideInInspector]
     public bool destroyThis = false;
-    private float secondsToWait;
+    [HideInInspector]
+    public int currentFrame;
+    //[HideInInspector]
+    public int startingFrame = -1;
 
-    private int currentFrame;
+    private float secondsToWait;
     private bool stopped = false;
 
     public void Awake()
@@ -35,7 +38,14 @@ public class SpriteSheet : MonoBehaviour
 
     public void Play()
     {
-        currentFrame = 0;
+        if (startingFrame != -1)
+        {
+            currentFrame = startingFrame;
+        }
+        else
+        {
+            currentFrame = 0;
+        }
 
         stopped = false;
         outputRenderer.enabled = true;
