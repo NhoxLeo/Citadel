@@ -8,8 +8,9 @@ public class Billboard : MonoBehaviour
 
     Quaternion originalRotation;
 
-    void Start()
+    void OnEnable()
     {
+        transform.parent.rotation = Quaternion.identity;
         originalRotation = transform.rotation;
     }
 

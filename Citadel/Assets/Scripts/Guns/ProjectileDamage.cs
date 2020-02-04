@@ -12,6 +12,7 @@ public class ProjectileDamage : MonoBehaviour
 
     [HideInInspector]
     public List<GameObject> haveBeenHit;
+    public Vector3 incomingVector;
 
     private void OnEnable()
     {
@@ -24,9 +25,31 @@ public class ProjectileDamage : MonoBehaviour
         if (damageMask == (damageMask | (1 << col.gameObject.layer)))
         {
             Rigidbody colRigid = col.gameObject.GetComponent<Rigidbody>();
-            if (colRigid)
+            if (col.gameObject.layer == 12)
             {
-                colRigid.AddExplosionForce(explosionForce, transform.position, transform.localScale.magnitude);
+                if (col.transform.parent)
+                {
+                    AIController controller = col.transform.parent.gameObject.GetComponent<AIController>();
+                    if (controller)
+                    {
+                        if (!controller.isDead)
+                        {
+                            controller.TakeDamage(damage, incomingVector * explosionForce * 25);
+                        }
+                        else
+                        {
+                            col.transform.parent.GetComponent<Rigidbody>().AddExplosionForce(explosionForce * 10, transform.position, transform.localScale.magnitude);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                
+                if (colRigid)
+                {
+                    colRigid.AddExplosionForce(explosionForce, transform.position, transform.localScale.magnitude);
+                }
             }
         }
     }

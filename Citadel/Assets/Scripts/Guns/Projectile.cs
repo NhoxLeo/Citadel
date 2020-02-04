@@ -33,14 +33,15 @@ public class Projectile : MonoBehaviour
             {
                 colRigid.AddForce(transform.forward * GetComponent<Rigidbody>().velocity.magnitude);
             }
-            ActivateProjectile();
+            ActivateProjectile(col.contacts[0].normal);
         }
     }
 
-    public void ActivateProjectile()
+    public void ActivateProjectile(Vector3 hitNormal = new Vector3())
     {
         GameObject damageObject = Instantiate(damagePrefab, transform.position, Quaternion.identity);
         damageObject.tag = "PlayerProjectile";
+        damageObject.GetComponent<ProjectileDamage>().incomingVector = -hitNormal;
         damageObject.GetComponent<ProjectileDamage>().damage = damage;
         damageObject.GetComponent<ProjectileDamage>().damageMask = collisionLayers;
         damageObject.transform.localScale = Vector3.one * sizeOfDamage;

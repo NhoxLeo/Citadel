@@ -10,6 +10,7 @@ TagManager:
   - PlayerProjectile
   - FxTemporaire
   - EnemyProjectile
+  - DamageSound
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Projectiles
   - Interactable
   - Enemy
-  - 
+  - EnemyBounds
   - 
   - 
   - 

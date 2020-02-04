@@ -220,7 +220,7 @@ public class WeaponController : MonoBehaviour
                 }
                 else
                 {
-                    rayCast = Physics.SphereCast(Camera.main.transform.position, weaponParams.attackRadius, Vector3.Normalize(Camera.main.transform.forward), out hitInfo, weaponParams.attackRange);
+                    rayCast = Physics.SphereCast(Camera.main.transform.position, weaponParams.attackRadius, Camera.main.transform.forward, out hitInfo, weaponParams.attackRange, InteractionController.instance.punchLayers);
                 }
 
                 if (rayCast)
@@ -230,7 +230,6 @@ public class WeaponController : MonoBehaviour
                         hitInfo.rigidbody.AddForce(-hitInfo.normal * weaponParams.attackForce);
                     }
 
-                    //If not an enemy
                     if (hitInfo.transform.gameObject.layer == 0 && weaponParams.weaponType == Weapon.WeaponType.Ranged)
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
@@ -244,6 +243,17 @@ public class WeaponController : MonoBehaviour
                     }
 
                     //Take Damange Here If Enemy
+                    if(hitInfo.transform.gameObject.layer == 12)
+                    {
+                        if (hitInfo.transform.parent)
+                        {
+                            AIController controller = hitInfo.transform.parent.gameObject.GetComponent<AIController>();
+                            if (controller)
+                            {
+                                controller.TakeDamage(weaponParams.attackDamage, -hitInfo.normal * weaponParams.attackForce*10);
+                            }
+                        }
+                    }
                 }
                 else
                 {

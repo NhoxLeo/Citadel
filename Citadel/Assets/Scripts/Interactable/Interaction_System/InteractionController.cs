@@ -24,6 +24,7 @@ namespace VHS
         public GameObject bulletHolePrefab;
         public GameObject weaponStorageParent;
         public LayerMask bulletLayers;
+        public LayerMask punchLayers;
 
         [Space, Header("Storage")]
         public GameObject currentInteractingObject;

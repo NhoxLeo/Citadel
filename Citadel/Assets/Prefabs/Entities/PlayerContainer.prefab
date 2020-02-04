@@ -1142,7 +1142,10 @@ MonoBehaviour:
   weaponStorageParent: {fileID: 618959486}
   bulletLayers:
     serializedVersion: 2
-    m_Bits: 513
+    m_Bits: 4609
+  punchLayers:
+    serializedVersion: 2
+    m_Bits: 6657
   currentInteractingObject: {fileID: 0}
   currentWeapon: {fileID: 0}
   weaponStorge:
@@ -1506,11 +1509,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Fist_Strife
-      objectReference: {fileID: 0}
-    - target: {fileID: 4998157924372408615, guid: d92dd8f611b0e1b40bcbf291950ce5d0,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4998157924372408608, guid: d92dd8f611b0e1b40bcbf291950ce5d0,
         type: 3}
