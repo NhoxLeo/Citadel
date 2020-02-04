@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class FieldOfView : MonoBehaviour
 {
+    [Header("FOV References")]
+    [Space(10)]
     public AIController aiController;
     public Vector3 transformOffset;
 
+    [Header("FOV Masks")]
+    [Space(10)]
     public LayerMask targetMask;
     public LayerMask obstacleMask;
 
+    [Header("FOV Debug")]
+    [Space(10)]
     public List<Transform> visibleTargets = new List<Transform>();
 
     private void Start()

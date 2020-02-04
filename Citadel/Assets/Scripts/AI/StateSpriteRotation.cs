@@ -22,7 +22,7 @@ public class StateSpriteRotation : MonoBehaviour
     void Start()
     {
         rotationReference = InteractionController.instance.gameObject;
-        currentActiveSprite = spriteForward;
+        //currentActiveSprite = spriteForward;
     }
 
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class StateSpriteRotation : MonoBehaviour
         SwitchSprite(GetAngle());
         if(currentActiveSprite && !switchingSprites)
         {
-            if(!currentActiveSprite.activeSelf)
+            if (!currentActiveSprite.activeSelf)
             {
                 currentActiveSprite.SetActive(true);
             }
@@ -90,22 +90,25 @@ public class StateSpriteRotation : MonoBehaviour
             newSprite = spriteForwardRight;
         }
 
-        if(newSprite != currentActiveSprite && newSprite != null)
+        if (currentActiveSprite != null)
         {
-            SpriteSheet oldSpriteSheet = currentActiveSprite.GetComponent<SpriteSheet>();
-            SpriteSheet newSpriteSheet = newSprite.GetComponent<SpriteSheet>();
-
-            if(oldSpriteSheet && newSpriteSheet)
+            if (newSprite != currentActiveSprite && newSprite != null)
             {
-                if(oldSpriteSheet.frames.Length == newSpriteSheet.frames.Length)
+                SpriteSheet oldSpriteSheet = currentActiveSprite.GetComponent<SpriteSheet>();
+                SpriteSheet newSpriteSheet = newSprite.GetComponent<SpriteSheet>();
+
+                if (oldSpriteSheet && newSpriteSheet)
                 {
-                    newSpriteSheet.startingFrame = oldSpriteSheet.currentFrame;
+                    if (oldSpriteSheet.frames.Length == newSpriteSheet.frames.Length)
+                    {
+                        newSpriteSheet.startingFrame = oldSpriteSheet.currentFrame;
+                    }
                 }
+                currentActiveSprite.SetActive(false);
             }
-            currentActiveSprite.SetActive(false);
-            currentActiveSprite = newSprite;
         }
 
+        currentActiveSprite = newSprite;
         switchingSprites = false;
     }
 }

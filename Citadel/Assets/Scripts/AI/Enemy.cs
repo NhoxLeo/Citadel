@@ -24,10 +24,10 @@ public class Enemy : ScriptableObject
     public float walkSpeed = 10;
     public float fov = 90f;
     public float viewRange = 50f;
-    [Range(0.0f, 10.0f)]
+    [Range(0.0f, 20.0f)]
     public float playerRememberTime = 10;
-    [Range(0.0f, 10.0f)]
-    public float agressiveness = 10;
+    [Range(0.0f, 1f)]
+    public float agressiveness = 1;
 
     [Header("Weapon References")]
     [Space(10)]
@@ -52,10 +52,16 @@ public class Enemy : ScriptableObject
     public float spreadMaxDivation = 0;
 
     [Header("State Settings")]
+    [ConditionalHide("isWander", true)]
     public float minWanderStateLength = 3f;
+    [ConditionalHide("isWander", true)]
     public float maxWanderStateLength = 8f;
+    [ConditionalHide("isWander", true)]
     public float minIdleStateTime = 2f;
+    [ConditionalHide("isWander", true)]
     public float maxIdleStateTime = 5f;
+    [ConditionalHide("isWander", true)]
+    public float wanderRadius = 10;
     public float attackStateLength = 0.2f;
     public float attackDelayStateLength = 2;
     public float damageStateLength = 1;

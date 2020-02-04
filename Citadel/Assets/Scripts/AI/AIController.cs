@@ -6,10 +6,13 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
-    [Header("AI Information")]
+    [Header("AI References")]
     public Enemy enemyParams;
     public FieldOfView fieldOfView;
     public NavMeshAgent navMeshAgent;
+
+    [Header("AI States")]
+    [Space(10)]
     public GameObject aliveBody;
     public GameObject deadBody;
     public GameObject idleState;
@@ -19,6 +22,9 @@ public class AIController : MonoBehaviour
     public GameObject dieState;
     public GameObject deadState;
     public GameObject attackParticle;
+
+    [Header("Debug")]
+    [Space(10)]
     public AIState aiState = AIState.Idle;
     public List<AICollisionCheck> aiCollisionChecks;
 
@@ -26,6 +32,8 @@ public class AIController : MonoBehaviour
     public GameObject currentTarget;
     [HideInInspector]
     public bool isDead;
+    //[HideInInspector]
+    public float playerSpottedTimer;
     [HideInInspector]
     public enum AIState { Idle, Wander, Attack, Damage, Dying, Dead }
 
@@ -34,13 +42,16 @@ public class AIController : MonoBehaviour
     private GameObject player;
     private bool currentlyInState;
     private bool playerSpotted;
-    private float playerSpottedTimer;
+    private Vector3 wanderCenteralPoint;
+    
     private Vector3 launchVector;
     private Vector3 lastKnownPlayerLocation;
     private NavMeshHit navMeshHit;
     private Coroutine movingCoroutine;
     private Coroutine attackingCoroutine;
     private Coroutine damageCoroutine;
+    private Coroutine attackTimerCoroutine;
+    private Coroutine wanderCoroutine;
 
 
     // Start is called before the first frame update
@@ -49,8 +60,10 @@ public class AIController : MonoBehaviour
         player = InteractionController.instance.gameObject.transform.parent.GetChild(1).gameObject;
         currentAIHealth = enemyParams.health;
         currentState = idleState;
-        playerSpottedTimer = enemyParams.playerRememberTime;
+        //playerSpottedTimer = enemyParams.playerRememberTime;
         navMeshAgent.speed = enemyParams.walkSpeed;
+
+        wanderCenteralPoint = transform.position;
     }
 
     // Update is called once per frame
@@ -66,7 +79,7 @@ public class AIController : MonoBehaviour
                     currentTarget = null;
                 }
 
-                if (!currentlyInState)
+                if (!currentlyInState && playerSpottedTimer == 0)
                 {
                     if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Stationary)
                     {
@@ -85,7 +98,12 @@ public class AIController : MonoBehaviour
                     {
                         if (playerSpottedTimer == 0)
                         {
-                            SwitchState(AIState.Idle);
+                            currentlyInState = false;
+                            if (attackTimerCoroutine != null)
+                            {
+                                StopCoroutine(attackTimerCoroutine);
+                            }
+                            attackTimerCoroutine = null;
                         }
                         else
                         {
@@ -97,7 +115,7 @@ public class AIController : MonoBehaviour
                             {
                                 if (movingCoroutine == null)
                                 {
-                                    Debug.Log("Look Around");
+                                    //Debug.Log("Look Around");
                                     movingCoroutine = StartCoroutine(LookAround());
                                 }
                             }
@@ -110,6 +128,10 @@ public class AIController : MonoBehaviour
                 if (!currentTarget)
                 {
                     currentTarget = player;
+                    if (enemyParams.equipSound)
+                    {
+                        GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "WeaponSound");
+                    }
                     SwitchState(AIState.Attack);
                 }
             }
@@ -120,7 +142,7 @@ public class AIController : MonoBehaviour
 
     public void TakeDamage(float damageToTake, Vector3 launchVector = new Vector3())
     {
-        if(currentAIHealth > 0)
+        if (currentAIHealth > 0)
         {
             if (damageCoroutine == null)
             {
@@ -130,9 +152,15 @@ public class AIController : MonoBehaviour
                 StopAllCoroutines();
                 attackingCoroutine = null;
                 movingCoroutine = null;
+                wanderCoroutine = null;
+                attackTimerCoroutine = null;
+
+                playerSpottedTimer = enemyParams.playerRememberTime;
+                transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+
             }
 
-            if(currentAIHealth > damageToTake)
+            if (currentAIHealth > damageToTake)
             {
                 SwitchState(AIState.Damage);
             }
@@ -151,7 +179,7 @@ public class AIController : MonoBehaviour
     {
         currentlyInState = true;
         UpdateSprite(damageState);
-        if(enemyParams.damageSound)
+        if (enemyParams.damageSound)
         {
             GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound");
         }
@@ -159,7 +187,7 @@ public class AIController : MonoBehaviour
         UpdateSprite(idleState);
         damageCoroutine = null;
         currentlyInState = false;
-        yield return new WaitForSeconds(enemyParams.attackDelayStateLength/2);
+        yield return new WaitForSeconds(enemyParams.attackDelayStateLength / 2);
         SwitchState(AIState.Attack);
     }
 
@@ -181,14 +209,24 @@ public class AIController : MonoBehaviour
         currentlyInState = false;
     }
 
+    public IEnumerator AttackStateTimer()
+    {
+        if (playerSpottedTimer > 0)
+        {
+            yield return new WaitForSeconds(1);
+            playerSpottedTimer -= 1;
+            attackTimerCoroutine = StartCoroutine(AttackStateTimer());
+        }
+    }
+
     public void CheckForPlayer()
     {
         playerSpotted = false;
         if (fieldOfView)
         {
-            if(fieldOfView.visibleTargets.Count > 0)
+            if (fieldOfView.visibleTargets.Count > 0)
             {
-                playerSpottedTimer = enemyParams.playerRememberTime;              
+                playerSpottedTimer = enemyParams.playerRememberTime;
                 if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
                 {
                     lastKnownPlayerLocation = navMeshHit.position;
@@ -198,13 +236,13 @@ public class AIController : MonoBehaviour
             }
         }
 
-        if(aiCollisionChecks != null)
+        if (aiCollisionChecks != null)
         {
-            if(aiCollisionChecks.Count > 0)
+            if (aiCollisionChecks.Count > 0)
             {
-                foreach(AICollisionCheck collisionCheck in aiCollisionChecks)
+                foreach (AICollisionCheck collisionCheck in aiCollisionChecks)
                 {
-                    if(collisionCheck.isPlayerColliding)
+                    if (collisionCheck.isPlayerColliding)
                     {
                         navMeshAgent.SetDestination(transform.position);
                         navMeshAgent.velocity = Vector3.zero;
@@ -223,49 +261,56 @@ public class AIController : MonoBehaviour
 
     public void SwitchState(AIState newState)
     {
-       aiState = newState;
-            currentState.SetActive(false);
+        aiState = newState;
+        currentState.SetActive(false);
 
-            if (newState == AIState.Idle)
-            {               
-                currentState = idleState;
-            }
-            else if (newState == AIState.Wander)
+        if (newState == AIState.Idle)
+        {
+            currentState = idleState;
+        }
+        else if (newState == AIState.Wander)
+        {
+            if (wanderCoroutine == null)
             {
-                currentState = walkState;
+                wanderCoroutine = StartCoroutine(WanderState());
             }
-            else if (newState == AIState.Attack)
+        }
+        else if (newState == AIState.Attack)
+        {
+            if (attackingCoroutine == null)
             {
-                if (attackingCoroutine == null)
+                if (attackTimerCoroutine == null)
                 {
-                    attackingCoroutine = StartCoroutine(AttackState());
+                    attackTimerCoroutine = StartCoroutine(AttackStateTimer());
                 }
+                attackingCoroutine = StartCoroutine(AttackState());
             }
-            else if (newState == AIState.Damage)
+        }
+        else if (newState == AIState.Damage)
+        {
+            if (damageCoroutine == null)
             {
-                if (damageCoroutine == null)
-                {
-                    damageCoroutine = StartCoroutine(DamageState());
-                }
+                damageCoroutine = StartCoroutine(DamageState());
             }
-            else if (newState == AIState.Dying)
-            {
-                StopAllCoroutines();
-                damageCoroutine = StartCoroutine(DieState());
-            }
-            else if (newState == AIState.Dead)
-            {
-                currentState = deadState;
-                aliveBody.SetActive(false);
-                deadBody.SetActive(true);
-            }
+        }
+        else if (newState == AIState.Dying)
+        {
+            StopAllCoroutines();
+            damageCoroutine = StartCoroutine(DieState());
+        }
+        else if (newState == AIState.Dead)
+        {
+            currentState = deadState;
+            aliveBody.SetActive(false);
+            deadBody.SetActive(true);
+        }
 
-            currentState.SetActive(true);
+        currentState.SetActive(true);
     }
 
     public void UpdateSprite(GameObject newSpriteState)
     {
-        if(currentState != newSpriteState)
+        if (currentState != newSpriteState)
         {
             currentState.SetActive(false);
             currentState = newSpriteState;
@@ -273,11 +318,65 @@ public class AIController : MonoBehaviour
         }
     }
 
+    public IEnumerator WanderState()
+    {
+        currentlyInState = true;
+
+        Vector3 pointToWanderTo = GetRandomCirclePosition();
+        movingCoroutine = StartCoroutine(GoToPosition(pointToWanderTo, "", false, movingCoroutine));
+        float wanderStateLength = Random.Range(enemyParams.minWanderStateLength, enemyParams.maxWanderStateLength);
+        yield return new WaitForSeconds(wanderStateLength);
+
+        if (movingCoroutine != null)
+        {
+            StopCoroutine(movingCoroutine);
+        }
+        navMeshAgent.SetDestination(transform.position);
+        navMeshAgent.velocity = Vector3.zero;
+
+        movingCoroutine = StartCoroutine(LookAround());
+
+        float idleStateLength = Random.Range(enemyParams.minIdleStateTime, enemyParams.maxIdleStateTime);
+        yield return new WaitForSeconds(idleStateLength);
+
+        if (movingCoroutine != null)
+        {
+            StopCoroutine(movingCoroutine);
+        }
+        navMeshAgent.SetDestination(transform.position);
+        navMeshAgent.velocity = Vector3.zero;
+        movingCoroutine = null;
+        wanderCoroutine = null;
+
+        SwitchState(AIState.Idle);
+        currentlyInState = false;
+    }
+
+    public Vector3 GetRandomCirclePosition()
+    {
+        Vector3 navMeshPos;
+        NavMeshHit navMeshHit;
+
+        do
+        {
+            navMeshPos = RandomPointOnCircleEdge(Random.Range(0, enemyParams.wanderRadius)) + wanderCenteralPoint;
+
+        } while (NavMesh.SamplePosition(navMeshPos, out navMeshHit, 5.0f, NavMesh.AllAreas) != true);
+
+        return navMeshPos;
+    }
+
+    private Vector3 RandomPointOnCircleEdge(float radius)
+    {
+        var vector2 = Random.insideUnitCircle.normalized * radius;
+        return new Vector3(vector2.x, 0, vector2.y);
+    }
+
     public IEnumerator AttackState()
     {
         if (currentTarget == player)
         {
-            if(movingCoroutine != null)
+            if (movingCoroutine != null)
             {
                 StopCoroutine(movingCoroutine);
                 navMeshAgent.SetDestination(transform.position);
@@ -287,20 +386,72 @@ public class AIController : MonoBehaviour
 
             //Debug.Log("ATTACK");
             currentlyInState = true;
-            UpdateSprite(idleState);
-            EnemyAttack();
-            yield return new WaitForSeconds(enemyParams.attackStateLength);
-            UpdateSprite(idleState);
-            if (enemyParams.reloadSound)
+            if (enemyParams.enemyType != Enemy.EnemyType.Melee)
             {
-                GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound");
+                UpdateSprite(idleState);
+                EnemyAttack();
+                yield return new WaitForSeconds(enemyParams.attackStateLength);
+                UpdateSprite(idleState);
+                if (enemyParams.reloadSound)
+                {
+                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound");
+                }
+                yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
             }
-            yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
+            else
+            {
+                bool hasArrived = false;
+                if (Vector3.Distance(transform.position, player.transform.position) < 3)
+                {
+                    EnemyAttack();
+                    yield return new WaitForSeconds(enemyParams.attackStateLength);
+                    UpdateSprite(idleState);
+                    if (enemyParams.reloadSound)
+                    {
+                        GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound");
+                    }
+                    yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
+                }
+                else
+                {
+                    while (hasArrived == false)
+                    {
+                        transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                        navMeshAgent.SetDestination(player.transform.position);
+                        if (Vector3.Distance(transform.position, player.transform.position) < 3)
+                        {
+                            //Debug.Log("Arrived Local");
+                            navMeshAgent.SetDestination(transform.position);
+                            lastKnownPlayerLocation = transform.position;
+                            navMeshAgent.velocity = Vector3.zero;
+                            hasArrived = true;
+                            UpdateSprite(idleState);
+
+                            EnemyAttack();
+                            yield return new WaitForSeconds(enemyParams.attackStateLength);
+                            UpdateSprite(idleState);
+                            if (enemyParams.reloadSound)
+                            {
+                                GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound");
+                            }
+                            yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
+                        }
+                        if (!hasArrived)
+                        {
+                            UpdateSprite(walkState);
+                        }
+                        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                        yield return null;
+                    }
+
+                    yield return new WaitUntil(() => (hasArrived == true));
+                }
+            }
         }
 
         attackingCoroutine = null;
 
-        if(currentTarget == player)
+        if (currentTarget == player)
         {
             if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Stationary)
             {
@@ -309,14 +460,21 @@ public class AIController : MonoBehaviour
             }
             else if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Wander)
             {
-                //Walk Closer Then Shoot
-                attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation));
-                yield return new WaitForSeconds(1);
-                StopCoroutine(attackingCoroutine);
-                navMeshAgent.SetDestination(transform.position);
-                navMeshAgent.velocity = Vector3.zero;
-                attackingCoroutine = null;
-                SwitchState(AIState.Attack);
+                if (Vector3.Distance(transform.position, player.transform.position) > 3)
+                {
+                    //Walk Closer Then Shoot
+                    attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "" , false, attackingCoroutine));
+                    yield return new WaitForSeconds(1 * enemyParams.agressiveness);
+                    StopCoroutine(attackingCoroutine);
+                    navMeshAgent.SetDestination(transform.position);
+                    navMeshAgent.velocity = Vector3.zero;
+                    attackingCoroutine = null;
+                    SwitchState(AIState.Attack);
+                }
+                else
+                {
+                    SwitchState(AIState.Attack);
+                }
             }
         }
         else
@@ -327,7 +485,16 @@ public class AIController : MonoBehaviour
             {
                 if (movingCoroutine == null)
                 {
-                    movingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation));
+                    //Debug.Log("Hunting Player");
+                    movingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, movingCoroutine));
+                    if(enemyParams.agressiveness < 1)
+                    {
+                        yield return new WaitForSeconds(10 * enemyParams.agressiveness);
+                        StopCoroutine(movingCoroutine);
+                        navMeshAgent.SetDestination(transform.position);
+                        navMeshAgent.velocity = Vector3.zero;
+                        movingCoroutine = null;
+                    }
                 }
             }
             else
@@ -341,10 +508,10 @@ public class AIController : MonoBehaviour
         }
     }
 
-    public IEnumerator GoToPosition(Vector3 newPosition, string methodToStart = "", bool doInvoke = false)
+    public IEnumerator GoToPosition(Vector3 newPosition, string methodToStart = "", bool doInvoke = false, Coroutine myCoroutine = null)
     {
         bool hasArrived = false;
-        //Debug.Log("Going To Position");
+        transform.rotation = Quaternion.LookRotation(newPosition - transform.position, Vector3.up);
         navMeshAgent.SetDestination(newPosition);
 
         while (hasArrived == false)
@@ -370,10 +537,19 @@ public class AIController : MonoBehaviour
                     }
                 }
 
+                if (myCoroutine != null)
+                {
+                    StopCoroutine(myCoroutine);
+                }
+
                 movingCoroutine = null;
                 hasArrived = true;
+                UpdateSprite(idleState);
             }
-            UpdateSprite(walkState);
+            if (!hasArrived)
+            {
+                UpdateSprite(walkState);
+            }
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
             yield return null;
         }
@@ -381,9 +557,10 @@ public class AIController : MonoBehaviour
 
     public IEnumerator LookAround()
     {
+        UpdateSprite(idleState);
         int lookIncrement = 8;
         float turnDelay = 0.5f;
-        for(int i = 0; i < 360; i += (360/lookIncrement))
+        for (int i = 0; i < 360; i += (360 / lookIncrement))
         {
             transform.Rotate(0, (360 / lookIncrement), 0);
             yield return new WaitForSeconds(turnDelay);
@@ -403,7 +580,7 @@ public class AIController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward*2);
+        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 2);
 
         Gizmos.DrawSphere(navMeshHit.position, 4);
     }
