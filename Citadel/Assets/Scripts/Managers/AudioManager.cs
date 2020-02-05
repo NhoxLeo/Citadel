@@ -29,9 +29,9 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(SlidersUI.instance && !isLerpingFade)
+        if (SlidersUI.instance && !isLerpingFade)
         {
-            if(currentMusicTrack != null)
+            if (currentMusicTrack != null)
             {
                 musicSource.volume = currentMusicTrack.musicRelativeVolume * gameVars.musicVolumeScale;
             }
@@ -41,9 +41,9 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        if(sfxPlayers != null && sfxPlayers.Count > 0)
+        if (sfxPlayers != null && sfxPlayers.Count > 0)
         {
-            for(int i = sfxPlayers.Count-1; i > -1; i--)
+            for (int i = sfxPlayers.Count - 1; i > -1; i--)
             {
                 if (sfxPlayers[i])
                 {
@@ -63,9 +63,9 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(string musicKeyName)
     {
-        foreach(MusicTrack track in musicTracks)
+        foreach (MusicTrack track in musicTracks)
         {
-            if(track.musicIdentifier == musicKeyName)
+            if (track.musicIdentifier == musicKeyName)
             {
                 musicSource.Stop();
                 currentMusicTrack = track;
@@ -86,7 +86,7 @@ public class AudioManager : MonoBehaviour
         isLerpingFade = true;
         float t = 0;
 
-        while(audioSource.volume != totalVolume)
+        while (audioSource.volume != totalVolume)
         {
             t += Time.deltaTime / lerpDuration;
             audioSource.volume = Mathf.Lerp(audioSource.volume, totalVolume, t);
@@ -100,22 +100,36 @@ public class AudioManager : MonoBehaviour
         isLerpingFade = true;
         float defaultVolume = audioSource.volume;
         float t = 0;
+        float currentVolume = audioSource.volume;
 
-        while (audioSource.volume != 0)
+        while (currentVolume != 0)
         {
-            t += Time.deltaTime / lerpDuration;
-            audioSource.volume = Mathf.Lerp(audioSource.volume, 0, t);
+            if (audioSource != null)
+            {
+                t += Time.deltaTime / lerpDuration;
+                audioSource.volume = Mathf.Lerp(audioSource.volume, 0, t);
+                currentVolume = audioSource.volume;
+            }
+            else
+            {
+                currentVolume = 0;
+            }
             yield return null;
         }
+
         isLerpingFade = false;
-        audioSource.Stop();
+
+        if (audioSource)
+        {
+            audioSource.Stop();
+        }
     }
 
-    public void PlaySFX(AudioClip soundToPlay, float relativeVolume, Vector3 position, string soundTag = null, float reverb = 0)
+    public GameObject PlaySFX(AudioClip soundToPlay, float relativeVolume, Vector3 position, string soundTag = null, float reverb = 0)
     {
         GameObject sfxPlayer = Instantiate(sfxPlayerPrefab, position, Quaternion.identity);
         sfxPlayer.name = sfxPlayer.name + "_" + soundToPlay.name;
-        if(soundTag != null)
+        if (soundTag != null)
         {
             sfxPlayer.tag = soundTag;
         }
@@ -124,6 +138,7 @@ public class AudioManager : MonoBehaviour
         sfxPlayerSource.reverbZoneMix = reverb;
         sfxPlayerSource.PlayOneShot(soundToPlay);
         sfxPlayers.Add(sfxPlayerSource);
+        return sfxPlayer;
     }
 
     public float GetGlobalSFXVolume(float relativeVolume)

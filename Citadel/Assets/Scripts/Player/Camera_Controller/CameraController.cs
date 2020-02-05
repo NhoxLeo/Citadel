@@ -102,21 +102,24 @@ namespace VHS
 
         void HandleZoom()
         {
-            if (InteractionController.instance.switchingWeapons == false)
+            if (InteractionController.instance.hasPlayerDied == false)
             {
-                if (camInputData.ZoomClicked)
+                if (InteractionController.instance.switchingWeapons == false)
                 {
-                    if (InteractionController.instance.currentWeapon)
+                    if (camInputData.ZoomClicked)
                     {
-                        InteractionController.instance.currentWeapon.GetComponent<WeaponController>().OnAttack();
+                        if (InteractionController.instance.currentWeapon)
+                        {
+                            InteractionController.instance.currentWeapon.GetComponent<WeaponController>().OnAttack();
+                        }
                     }
-                }
 
-                if (camInputData.ReloadClicked)
-                {
-                    if (InteractionController.instance.currentWeapon)
+                    if (camInputData.ReloadClicked)
                     {
-                        InteractionController.instance.currentWeapon.GetComponent<WeaponController>().OnReload();
+                        if (InteractionController.instance.currentWeapon)
+                        {
+                            InteractionController.instance.currentWeapon.GetComponent<WeaponController>().OnReload();
+                        }
                     }
                 }
             }

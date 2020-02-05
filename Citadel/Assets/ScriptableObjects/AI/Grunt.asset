@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: Grunt
   enemyType: 1
   enemyBehavior: 0
-  damageSound: {fileID: 0}
-  deathSound: {fileID: 0}
+  damageSound: {fileID: 8300000, guid: 37dd66a35ab74594f817510d1c499c14, type: 3}
+  deathSound: {fileID: 8300000, guid: 08a2060f7ad3c1a48b6e0843b27256b7, type: 3}
   idleSound: {fileID: 0}
   walkingSound: {fileID: 0}
   health: 100
@@ -33,8 +33,8 @@ MonoBehaviour:
   attackDamage: 10
   attackRange: 100
   attackRadius: 2
-  attackForce: 100
-  totalRoundsPerShot: 1
+  attackForce: 2000
+  totalRoundsPerShot: 2
   spreadMaxDivation: 8
   minWanderStateLength: 3
   maxWanderStateLength: 8
@@ -42,7 +42,7 @@ MonoBehaviour:
   maxIdleStateTime: 5
   wanderRadius: 10
   attackStateLength: 0.2
-  attackDelayStateLength: 2
+  attackDelayStateLength: 1.7
   damageStateLength: 0.4
   dyingStateLength: 0.5
   isMelee: 0

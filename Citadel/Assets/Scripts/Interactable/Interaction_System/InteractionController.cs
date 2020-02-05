@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 namespace VHS
 {
     public class InteractionController : MonoBehaviour
@@ -16,6 +17,14 @@ namespace VHS
         [SerializeField] private float rayDistance = 0f;
         [SerializeField] private float raySphereRadius = 0f;
         [SerializeField] private LayerMask interactableLayer = ~0;
+
+        [Space, Header("Health")]
+        public Animator playerDamageAnimator;
+        public Image vignette;
+        public float playerHealth = 100;
+        public float playerRegenIncrement = 5;
+        public float playerRegenRatePerSec = 1;
+        public AudioClip playerDamageAudio;
 
         [Space, Header("References")]
         public Transform grabPoint;
@@ -37,14 +46,20 @@ namespace VHS
         public bool switchingWeapons = false, wasHolding, switchWeaponLock;
         [HideInInspector]
         public static InteractionController instance; //Singleton
-        //[HideInInspector]
+        [HideInInspector]
         public int currentWeaponIndex = 0;
+        [HideInInspector]
+        public float maxHealth;
+        [HideInInspector]
+        public bool hasPlayerDied;
 
         #region Private
         private Camera m_cam;
 
         private bool m_interacting;
         private float m_holdTimer = 0f;
+
+        private Coroutine regenCoroutine;
 
         #endregion
 
@@ -66,7 +81,7 @@ namespace VHS
 
             weaponStorageParent.GetComponent<Animator>().SetBool("Equip", true);
             CheckForWeapon();
-            //grabPoint.position = new Vector3(0, 0, 1.5f);
+            maxHealth = playerHealth;
         }
 
         void Update()
@@ -183,11 +198,49 @@ namespace VHS
                 wasHolding = false;
                 switchingWeapons = false;
             }
+
+            if (playerHealth < maxHealth)
+            {
+                vignette.color = new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1));
+                if(regenCoroutine == null)
+                {
+                    regenCoroutine = StartCoroutine(RegenHealth());
+                }
+
+                if(playerHealth <= 0)
+                {
+                    playerHealth = 0;
+                    StartCoroutine(PlayerDie());
+                }
+            }
         }
         #endregion
 
 
-        #region Custom methods         
+        #region Custom methods        
+        public IEnumerator PlayerDie()
+        {
+            if (!hasPlayerDied)
+            {
+                hasPlayerDied = true;
+                playerDamageAnimator.SetBool("HasDied", true);
+
+                AudioSource[] audioSources = GameObject.FindObjectsOfType<AudioSource>();
+                for (int i = 0; i < audioSources.Length; i++)
+                {
+                    if (audioSources[i] != null)
+                    {
+                        if (audioSources[i].gameObject.transform.parent != gameObject.transform.parent)
+                        {
+                            StartCoroutine(GameVars.instance.audioManager.FadeOutAudioTrack(audioSources[i], 7));
+                        }
+                    }
+                }
+                yield return new WaitForSeconds(5);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+
         void CheckForInteractable()
         {
             Ray _ray = new Ray(m_cam.transform.position, m_cam.transform.forward);
@@ -275,6 +328,33 @@ namespace VHS
                     switchWeaponLock = true;
                     StartCoroutine(SwitchWeapons(shiftBy, toIndex, false));
                 }             
+            }
+        }
+
+        public void TakeDamage(float damage)
+        {
+            playerHealth -= damage;
+            if(playerDamageAudio)
+            {
+                GameVars.instance.audioManager.PlaySFX(playerDamageAudio, 1, transform.position);
+            }
+        }
+
+        public IEnumerator RegenHealth()
+        {
+            if(playerHealth < maxHealth && !hasPlayerDied)
+            {
+                yield return new WaitForSeconds(playerRegenRatePerSec);
+                playerHealth += playerRegenIncrement;
+                if(playerHealth >= maxHealth)
+                {
+                    playerHealth = maxHealth;
+                    regenCoroutine = null;
+                }
+                else if(playerHealth < maxHealth)
+                {
+                    StartCoroutine(RegenHealth());
+                }
             }
         }
 

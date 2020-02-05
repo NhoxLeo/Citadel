@@ -15,8 +15,8 @@ MonoBehaviour:
   enemyName: Charger
   enemyType: 0
   enemyBehavior: 0
-  damageSound: {fileID: 0}
-  deathSound: {fileID: 0}
+  damageSound: {fileID: 8300000, guid: 37dd66a35ab74594f817510d1c499c14, type: 3}
+  deathSound: {fileID: 8300000, guid: 08a2060f7ad3c1a48b6e0843b27256b7, type: 3}
   idleSound: {fileID: 0}
   walkingSound: {fileID: 0}
   health: 100
@@ -27,13 +27,13 @@ MonoBehaviour:
   agressiveness: 1
   attackSound: {fileID: 8300000, guid: 96bf104ad77e84d45a496d04c40d3a8c, type: 3}
   reloadSound: {fileID: 0}
-  missSound: {fileID: 0}
-  equipSound: {fileID: 8300000, guid: fa2ee6969d8f6ca4590fc7436bf759f6, type: 3}
+  missSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
+  equipSound: {fileID: 8300000, guid: d5a64618e6c0ff9448ae2cd8dd90e06e, type: 3}
   projectilePrefab: {fileID: 0}
   attackDamage: 10
   attackRange: 2
   attackRadius: 1
-  attackForce: 100
+  attackForce: 1800
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
   minWanderStateLength: 3
@@ -42,7 +42,7 @@ MonoBehaviour:
   maxIdleStateTime: 5
   wanderRadius: 10
   attackStateLength: 0.2
-  attackDelayStateLength: 2
+  attackDelayStateLength: 0.5
   damageStateLength: 0.4
   dyingStateLength: 0.5
   isMelee: 1

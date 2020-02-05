@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class AIController : MonoBehaviour
 {
+    #region Variables & Inspector Settings
     [Header("AI References")]
     public Enemy enemyParams;
     public FieldOfView fieldOfView;
@@ -32,10 +33,12 @@ public class AIController : MonoBehaviour
     public GameObject currentTarget;
     [HideInInspector]
     public bool isDead;
-    //[HideInInspector]
+    [HideInInspector]
     public float playerSpottedTimer;
     [HideInInspector]
     public enum AIState { Idle, Wander, Attack, Damage, Dying, Dead }
+
+    #region Stored Data
 
     private GameObject currentState;
     private float currentAIHealth;
@@ -47,26 +50,32 @@ public class AIController : MonoBehaviour
     private Vector3 launchVector;
     private Vector3 lastKnownPlayerLocation;
     private NavMeshHit navMeshHit;
+    private Vector3 forwardVector;
     private Coroutine movingCoroutine;
     private Coroutine attackingCoroutine;
     private Coroutine damageCoroutine;
     private Coroutine attackTimerCoroutine;
     private Coroutine wanderCoroutine;
+    private GameObject damageSoundObject;
+    #endregion
+    #endregion
 
-
-    // Start is called before the first frame update
+    #region Unity Event Methods
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
     void Start()
     {
         player = InteractionController.instance.gameObject.transform.parent.GetChild(1).gameObject;
         currentAIHealth = enemyParams.health;
         currentState = idleState;
-        //playerSpottedTimer = enemyParams.playerRememberTime;
         navMeshAgent.speed = enemyParams.walkSpeed;
-
         wanderCenteralPoint = transform.position;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Update is called once per frame
+    /// </summary>
     void Update()
     {
         if (!isDead)
@@ -84,12 +93,10 @@ public class AIController : MonoBehaviour
                     if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Stationary)
                     {
                         SwitchState(AIState.Idle);
-                        //Idle Behavior
                     }
                     else if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Wander)
                     {
                         SwitchState(AIState.Wander);
-                        //Wander Behavior
                     }
                 }
                 else
@@ -115,7 +122,6 @@ public class AIController : MonoBehaviour
                             {
                                 if (movingCoroutine == null)
                                 {
-                                    //Debug.Log("Look Around");
                                     movingCoroutine = StartCoroutine(LookAround());
                                 }
                             }
@@ -140,125 +146,22 @@ public class AIController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
 
-    public void TakeDamage(float damageToTake, Vector3 launchVector = new Vector3())
+    /// <summary>
+    /// Debug Gizmos
+    /// </summary>
+    private void OnDrawGizmos()
     {
-        if (currentAIHealth > 0)
-        {
-            if (damageCoroutine == null)
-            {
-                navMeshAgent.SetDestination(transform.position);
-                navMeshAgent.velocity = Vector3.zero;
+        Gizmos.DrawLine(transform.position, transform.position + forwardVector * 2);
 
-                StopAllCoroutines();
-                attackingCoroutine = null;
-                movingCoroutine = null;
-                wanderCoroutine = null;
-                attackTimerCoroutine = null;
-
-                playerSpottedTimer = enemyParams.playerRememberTime;
-                transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
-
-            }
-
-            if (currentAIHealth > damageToTake)
-            {
-                SwitchState(AIState.Damage);
-            }
-            else if (currentAIHealth <= damageToTake)
-            {
-                this.launchVector = launchVector;
-                isDead = true;
-                SwitchState(AIState.Dying);
-            }
-
-            currentAIHealth -= damageToTake;
-        }
+        Gizmos.DrawSphere(navMeshHit.position, 0.2f);
     }
+    #endregion
 
-    public IEnumerator DamageState()
-    {
-        currentlyInState = true;
-        UpdateSprite(damageState);
-        if (enemyParams.damageSound)
-        {
-            GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound");
-        }
-        yield return new WaitForSeconds(enemyParams.damageStateLength);
-        UpdateSprite(idleState);
-        damageCoroutine = null;
-        currentlyInState = false;
-        yield return new WaitForSeconds(enemyParams.attackDelayStateLength / 2);
-        SwitchState(AIState.Attack);
-    }
-
-    public IEnumerator DieState()
-    {
-        currentlyInState = true;
-        UpdateSprite(dieState);
-        Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
-        rigidbody.mass = 100;
-        rigidbody.angularDrag = 2;
-        navMeshAgent.enabled = false;
-        rigidbody.AddForce(launchVector);
-        if (enemyParams.deathSound)
-        {
-            GameVars.instance.audioManager.PlaySFX(enemyParams.deathSound, 0.8f, transform.position, "DamageSound");
-        }
-        yield return new WaitForSeconds(enemyParams.dyingStateLength);
-        SwitchState(AIState.Dead);
-        currentlyInState = false;
-    }
-
-    public IEnumerator AttackStateTimer()
-    {
-        if (playerSpottedTimer > 0)
-        {
-            yield return new WaitForSeconds(1);
-            playerSpottedTimer -= 1;
-            attackTimerCoroutine = StartCoroutine(AttackStateTimer());
-        }
-    }
-
-    public void CheckForPlayer()
-    {
-        playerSpotted = false;
-        if (fieldOfView)
-        {
-            if (fieldOfView.visibleTargets.Count > 0)
-            {
-                playerSpottedTimer = enemyParams.playerRememberTime;
-                if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
-                {
-                    lastKnownPlayerLocation = navMeshHit.position;
-                }
-                transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
-                playerSpotted = true;
-            }
-        }
-
-        if (aiCollisionChecks != null)
-        {
-            if (aiCollisionChecks.Count > 0)
-            {
-                foreach (AICollisionCheck collisionCheck in aiCollisionChecks)
-                {
-                    if (collisionCheck.isPlayerColliding)
-                    {
-                        navMeshAgent.SetDestination(transform.position);
-                        navMeshAgent.velocity = Vector3.zero;
-                        playerSpottedTimer = enemyParams.playerRememberTime;
-                        if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
-                        {
-                            lastKnownPlayerLocation = navMeshHit.position;
-                        }
-                        transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
-                        playerSpotted = true;
-                    }
-                }
-            }
-        }
-    }
-
+    #region State Methods
+    /// <summary>
+    /// Takes a new state and switches to it
+    /// </summary>
+    /// <param name="newState"></param>
     public void SwitchState(AIState newState)
     {
         aiState = newState;
@@ -308,16 +211,10 @@ public class AIController : MonoBehaviour
         currentState.SetActive(true);
     }
 
-    public void UpdateSprite(GameObject newSpriteState)
-    {
-        if (currentState != newSpriteState)
-        {
-            currentState.SetActive(false);
-            currentState = newSpriteState;
-            currentState.SetActive(true);
-        }
-    }
-
+    /// <summary>
+    /// Handles the wandering of AI
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator WanderState()
     {
         currentlyInState = true;
@@ -352,30 +249,15 @@ public class AIController : MonoBehaviour
         currentlyInState = false;
     }
 
-    public Vector3 GetRandomCirclePosition()
-    {
-        Vector3 navMeshPos;
-        NavMeshHit navMeshHit;
-
-        do
-        {
-            navMeshPos = RandomPointOnCircleEdge(Random.Range(0, enemyParams.wanderRadius)) + wanderCenteralPoint;
-
-        } while (NavMesh.SamplePosition(navMeshPos, out navMeshHit, 5.0f, NavMesh.AllAreas) != true);
-
-        return navMeshPos;
-    }
-
-    private Vector3 RandomPointOnCircleEdge(float radius)
-    {
-        var vector2 = Random.insideUnitCircle.normalized * radius;
-        return new Vector3(vector2.x, 0, vector2.y);
-    }
-
+    /// <summary>
+    /// Handles AI attacking
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator AttackState()
     {
         if (currentTarget == player)
         {
+            #region Reset State
             if (movingCoroutine != null)
             {
                 StopCoroutine(movingCoroutine);
@@ -384,11 +266,18 @@ public class AIController : MonoBehaviour
                 movingCoroutine = null;
             }
 
-            //Debug.Log("ATTACK");
-            currentlyInState = true;
-            if (enemyParams.enemyType != Enemy.EnemyType.Melee)
+            if (wanderCoroutine != null)
             {
-                UpdateSprite(idleState);
+                StopCoroutine(wanderCoroutine);
+                navMeshAgent.SetDestination(transform.position);
+                navMeshAgent.velocity = Vector3.zero;
+                wanderCoroutine = null;
+            }
+            #endregion
+
+            currentlyInState = true;
+            if (enemyParams.enemyType != Enemy.EnemyType.Melee) //Ranged & Projectile
+            {
                 EnemyAttack();
                 yield return new WaitForSeconds(enemyParams.attackStateLength);
                 UpdateSprite(idleState);
@@ -398,10 +287,10 @@ public class AIController : MonoBehaviour
                 }
                 yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
             }
-            else
+            else //Melee
             {
                 bool hasArrived = false;
-                if (Vector3.Distance(transform.position, player.transform.position) < 3)
+                if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
                 {
                     EnemyAttack();
                     yield return new WaitForSeconds(enemyParams.attackStateLength);
@@ -418,7 +307,7 @@ public class AIController : MonoBehaviour
                     {
                         transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                         navMeshAgent.SetDestination(player.transform.position);
-                        if (Vector3.Distance(transform.position, player.transform.position) < 3)
+                        if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
                         {
                             //Debug.Log("Arrived Local");
                             navMeshAgent.SetDestination(transform.position);
@@ -451,6 +340,7 @@ public class AIController : MonoBehaviour
 
         attackingCoroutine = null;
 
+        //After Attack Check if Player Is Still Visible
         if (currentTarget == player)
         {
             if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Stationary)
@@ -460,10 +350,10 @@ public class AIController : MonoBehaviour
             }
             else if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Wander)
             {
-                if (Vector3.Distance(transform.position, player.transform.position) > 3)
+                if (Vector3.Distance(transform.position, player.transform.position) > 6)
                 {
                     //Walk Closer Then Shoot
-                    attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "" , false, attackingCoroutine));
+                    attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
                     yield return new WaitForSeconds(1 * enemyParams.agressiveness);
                     StopCoroutine(attackingCoroutine);
                     navMeshAgent.SetDestination(transform.position);
@@ -480,14 +370,12 @@ public class AIController : MonoBehaviour
         else
         {
             // Go To Where The Player Was
-            //lastKnownPlayerLocation
             if (transform.position != lastKnownPlayerLocation)
             {
                 if (movingCoroutine == null)
                 {
-                    //Debug.Log("Hunting Player");
                     movingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, movingCoroutine));
-                    if(enemyParams.agressiveness < 1)
+                    if (enemyParams.agressiveness < 1)
                     {
                         yield return new WaitForSeconds(10 * enemyParams.agressiveness);
                         StopCoroutine(movingCoroutine);
@@ -508,6 +396,275 @@ public class AIController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Handles the damage indicators
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator DamageState()
+    {
+        currentlyInState = true;
+        UpdateSprite(damageState);
+        yield return new WaitForSeconds(enemyParams.damageStateLength);
+        UpdateSprite(idleState);
+        damageCoroutine = null;
+        currentlyInState = false;
+        yield return new WaitForSeconds(enemyParams.attackDelayStateLength / 2);
+        SwitchState(AIState.Attack);
+    }
+
+    /// <summary>
+    /// Handles AI Death
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator DieState()
+    {
+        currentlyInState = true;
+        UpdateSprite(dieState);
+        Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
+        rigidbody.mass = 100;
+        rigidbody.angularDrag = 5;
+        navMeshAgent.enabled = false;
+        rigidbody.AddForce(launchVector);
+        if (enemyParams.deathSound)
+        {
+            if(damageSoundObject != null)
+            {
+                damageSoundObject.GetComponent<AudioSource>().Stop();
+            }
+            damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.deathSound, 0.8f, transform.position, "DamageSound");
+        }
+        yield return new WaitForSeconds(enemyParams.dyingStateLength);
+        SwitchState(AIState.Dead);
+        currentlyInState = false;
+    }
+    #endregion
+
+    #region State Supplimentary Methods
+    /// <summary>
+    /// Checks if player is within line of sight or touching
+    /// </summary>
+    public void CheckForPlayer()
+    {
+        if (InteractionController.instance.hasPlayerDied == false)
+        {
+            playerSpotted = false;
+            if (fieldOfView)
+            {
+                if (fieldOfView.visibleTargets.Count > 0)
+                {
+                    playerSpottedTimer = enemyParams.playerRememberTime;
+                    if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
+                    {
+                        lastKnownPlayerLocation = navMeshHit.position;
+                    }
+                    transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                    playerSpotted = true;
+                }
+            }
+
+            if (aiCollisionChecks != null)
+            {
+                if (aiCollisionChecks.Count > 0)
+                {
+                    foreach (AICollisionCheck collisionCheck in aiCollisionChecks)
+                    {
+                        if (collisionCheck.isPlayerColliding)
+                        {
+                            navMeshAgent.SetDestination(transform.position);
+                            navMeshAgent.velocity = Vector3.zero;
+                            playerSpottedTimer = enemyParams.playerRememberTime;
+                            if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
+                            {
+                                lastKnownPlayerLocation = navMeshHit.position;
+                            }
+                            transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                            playerSpotted = true;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            playerSpotted = false;
+            currentTarget = null;
+        }
+    }
+
+    /// <summary>
+    /// If the AI doesn't see the player, this timer will tick down
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator AttackStateTimer()
+    {
+        if (playerSpottedTimer > 0)
+        {
+            yield return new WaitForSeconds(1);
+            playerSpottedTimer -= 1;
+            attackTimerCoroutine = StartCoroutine(AttackStateTimer());
+        }
+    }
+
+    /// <summary>
+    /// Looks around in circle for player
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator LookAround()
+    {
+        UpdateSprite(idleState);
+        int lookIncrement = 8;
+        float turnDelay = 0.5f;
+        for (int i = 0; i < 360; i += (360 / lookIncrement))
+        {
+            transform.Rotate(0, (360 / lookIncrement), 0);
+            yield return new WaitForSeconds(turnDelay);
+        }
+        movingCoroutine = null;
+    }
+
+    /// <summary>
+    /// Takes a damage value & an impact vector
+    /// </summary>
+    /// <param name="damageToTake"></param>
+    /// <param name="launchVector"></param>
+    public void TakeDamage(float damageToTake, Vector3 launchVector = new Vector3())
+    {
+        if (currentAIHealth > 0)
+        {
+            if (damageCoroutine == null)
+            {
+                navMeshAgent.SetDestination(transform.position);
+                navMeshAgent.velocity = Vector3.zero;
+
+                //StopAllCoroutines();
+                //attackingCoroutine = null;
+                //movingCoroutine = null;
+                //wanderCoroutine = null;
+                //attackTimerCoroutine = null;
+
+                playerSpottedTimer = enemyParams.playerRememberTime;
+                transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+
+            }
+
+            if (currentAIHealth > damageToTake)
+            {
+                if (enemyParams.damageSound && damageSoundObject == null)
+                {
+                    damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound");
+                }
+                SwitchState(AIState.Damage);
+            }
+            else if (currentAIHealth <= damageToTake)
+            {
+                this.launchVector = launchVector;
+                isDead = true;
+                SwitchState(AIState.Dying);
+            }
+
+            currentAIHealth -= damageToTake;
+        }
+    }
+
+    /// <summary>
+    /// Handles the bullets & damage of the enemy attack
+    /// </summary>
+    public void EnemyAttack()
+    {
+        UpdateSprite(attackState);
+
+        if (enemyParams.enemyType != Enemy.EnemyType.Melee)
+        {
+            GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound");
+        }
+        if (attackParticle)
+        {
+            Instantiate(attackParticle, transform.position, Quaternion.identity);
+        }
+
+        RaycastHit hitInfo = new RaycastHit();
+        bool rayCast = false;
+
+        for (int i = 0; i < enemyParams.totalRoundsPerShot; i++)
+        {
+            if (enemyParams.enemyType != Enemy.EnemyType.Projectile)
+            {
+                if (enemyParams.enemyType == Enemy.EnemyType.Ranged)
+                {
+                    Vector3 deviation3D = Random.insideUnitCircle * enemyParams.spreadMaxDivation;
+                    Quaternion rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
+                    forwardVector = rot * (player.transform.position - transform.position);
+
+                    rayCast = Physics.Raycast(transform.position, forwardVector, out hitInfo, enemyParams.attackRange, InteractionController.instance.bulletLayers);
+                }
+                else
+                {
+                    rayCast = Physics.SphereCast(transform.position, enemyParams.attackRadius, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, InteractionController.instance.punchLayers);
+                }
+
+                if (rayCast)
+                {
+                    if (hitInfo.rigidbody != null)
+                    {
+                        hitInfo.rigidbody.AddForce(-hitInfo.normal * enemyParams.attackForce);
+                    }
+
+                    if (hitInfo.transform.gameObject.layer == 0 && enemyParams.enemyType == Enemy.EnemyType.Ranged)
+                    {
+                        GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
+                        bulletHole.transform.parent = hitInfo.transform;
+                        InteractionController.instance.bulletHoles.Add(bulletHole);
+                    }
+
+                    if (enemyParams.enemyType == Enemy.EnemyType.Melee)
+                    {
+                        GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound");
+                    }
+
+                    //Take Damange Here If Enemy
+                    if (hitInfo.transform.gameObject.layer == 12)
+                    {
+                        if (hitInfo.transform.parent)
+                        {
+                            AIController controller = hitInfo.transform.parent.gameObject.GetComponent<AIController>();
+                            if (controller)
+                            {
+                                controller.TakeDamage(enemyParams.attackDamage, -hitInfo.normal * enemyParams.attackForce * 10);
+                            }
+                        }
+                    }
+                    else if (hitInfo.transform.gameObject.layer == 8) //Player Damage
+                    {
+                        if (hitInfo.transform.parent)
+                        {
+                            InteractionController.instance.TakeDamage(enemyParams.attackDamage);
+                        }
+                    }
+                }
+                else
+                {
+                    if (enemyParams.enemyType == Enemy.EnemyType.Melee)
+                    {
+                        if (enemyParams.missSound)
+                        {
+                            GameVars.instance.audioManager.PlaySFX(enemyParams.missSound, 0.8f, transform.position, "WeaponSound");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    #endregion
+
+    #region Helper Methods
+    /// <summary>
+    /// Goes to a given point and can clear a coroutine if given on arrival
+    /// </summary>
+    /// <param name="newPosition"></param>
+    /// <param name="methodToStart"></param>
+    /// <param name="doInvoke"></param>
+    /// <param name="myCoroutine"></param>
+    /// <returns></returns>
     public IEnumerator GoToPosition(Vector3 newPosition, string methodToStart = "", bool doInvoke = false, Coroutine myCoroutine = null)
     {
         bool hasArrived = false;
@@ -516,7 +673,7 @@ public class AIController : MonoBehaviour
 
         while (hasArrived == false)
         {
-            if (Vector3.Distance(transform.position, newPosition) < 2)
+            if (Vector3.Distance(transform.position, newPosition) < 3)
             {
                 //Debug.Log("Arrived");
                 UpdateSprite(idleState);
@@ -532,7 +689,6 @@ public class AIController : MonoBehaviour
                     }
                     else
                     {
-                        //Debug.Log("Attacking");
                         StartCoroutine(methodToStart);
                     }
                 }
@@ -544,7 +700,6 @@ public class AIController : MonoBehaviour
 
                 movingCoroutine = null;
                 hasArrived = true;
-                UpdateSprite(idleState);
             }
             if (!hasArrived)
             {
@@ -555,33 +710,47 @@ public class AIController : MonoBehaviour
         }
     }
 
-    public IEnumerator LookAround()
+    /// <summary>
+    /// Retursn a position within a circle radius from a position
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 GetRandomCirclePosition()
     {
-        UpdateSprite(idleState);
-        int lookIncrement = 8;
-        float turnDelay = 0.5f;
-        for (int i = 0; i < 360; i += (360 / lookIncrement))
+        Vector3 navMeshPos;
+        NavMeshHit navMeshHit;
+
+        do
         {
-            transform.Rotate(0, (360 / lookIncrement), 0);
-            yield return new WaitForSeconds(turnDelay);
-        }
-        movingCoroutine = null;
+            navMeshPos = RandomPointOnCircleEdge(Random.Range(0, enemyParams.wanderRadius)) + wanderCenteralPoint;
+
+        } while (NavMesh.SamplePosition(navMeshPos, out navMeshHit, 5.0f, NavMesh.AllAreas) != true);
+
+        return navMeshPos;
     }
 
-    public void EnemyAttack()
+    /// <summary>
+    /// Gets point within circle
+    /// </summary>
+    /// <param name="radius"></param>
+    /// <returns></returns>
+    private Vector3 RandomPointOnCircleEdge(float radius)
     {
-        UpdateSprite(attackState);
-        GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound");
-        if (attackParticle)
+        var vector2 = Random.insideUnitCircle.normalized * radius;
+        return new Vector3(vector2.x, 0, vector2.y);
+    }
+
+    /// <summary>
+    /// Manually updates AI sprite to given sprite without switching state
+    /// </summary>
+    /// <param name="newSpriteState"></param>
+    public void UpdateSprite(GameObject newSpriteState)
+    {
+        if (currentState != newSpriteState)
         {
-            Instantiate(attackParticle, transform.position, Quaternion.identity);
+            currentState.SetActive(false);
+            currentState = newSpriteState;
+            currentState.SetActive(true);
         }
     }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * 2);
-
-        Gizmos.DrawSphere(navMeshHit.position, 4);
-    }
+    #endregion
 }
