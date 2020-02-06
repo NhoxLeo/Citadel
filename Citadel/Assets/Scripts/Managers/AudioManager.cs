@@ -125,7 +125,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public GameObject PlaySFX(AudioClip soundToPlay, float relativeVolume, Vector3 position, string soundTag = null, float reverb = 0)
+    public GameObject PlaySFX(AudioClip soundToPlay, float relativeVolume, Vector3 position, string soundTag = null, float reverb = 0, float spacial = 0)
     {
         GameObject sfxPlayer = Instantiate(sfxPlayerPrefab, position, Quaternion.identity);
         sfxPlayer.name = sfxPlayer.name + "_" + soundToPlay.name;
@@ -136,6 +136,7 @@ public class AudioManager : MonoBehaviour
         AudioSource sfxPlayerSource = sfxPlayer.GetComponent<AudioSource>();
         sfxPlayerSource.volume = GetGlobalSFXVolume(relativeVolume);
         sfxPlayerSource.reverbZoneMix = reverb;
+        sfxPlayerSource.spatialBlend = spacial;
         sfxPlayerSource.PlayOneShot(soundToPlay);
         sfxPlayers.Add(sfxPlayerSource);
         return sfxPlayer;
