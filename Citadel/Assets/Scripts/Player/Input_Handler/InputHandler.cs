@@ -37,31 +37,37 @@ namespace VHS
         #region Custom Methods
         void GetInteractionInputData()
         {
-            interactionInputData.InteractedClicked = Input.GetKeyDown(KeyCode.E);
-            interactionInputData.InteractedReleased = Input.GetKeyUp(KeyCode.E);
+            if (!GameVars.instance.isPaused)
+            {
+                interactionInputData.InteractedClicked = Input.GetKeyDown(KeyCode.E);
+                interactionInputData.InteractedReleased = Input.GetKeyUp(KeyCode.E);
+            }
         }
 
         void GetCameraInput()
         {
-            cameraInputData.InputVectorX = Input.GetAxis("Mouse X");
-            cameraInputData.InputVectorY = Input.GetAxis("Mouse Y");
-
-            if (InteractionController.instance.hasPlayerDied == false)
+            if (!GameVars.instance.isPaused)
             {
-                cameraInputData.ZoomClicked = Input.GetMouseButtonDown(0);
-            }
-            cameraInputData.ZoomReleased = Input.GetMouseButtonUp(0);
+                cameraInputData.InputVectorX = Input.GetAxis("Mouse X");
+                cameraInputData.InputVectorY = Input.GetAxis("Mouse Y");
 
-            if (InteractionController.instance.hasPlayerDied == false)
-            {
-                cameraInputData.ReloadClicked = Input.GetKeyDown(KeyCode.R);
+                if (InteractionController.instance.hasPlayerDied == false)
+                {
+                    cameraInputData.ZoomClicked = Input.GetMouseButtonDown(0);
+                }
+                cameraInputData.ZoomReleased = Input.GetMouseButtonUp(0);
+
+                if (InteractionController.instance.hasPlayerDied == false)
+                {
+                    cameraInputData.ReloadClicked = Input.GetKeyDown(KeyCode.R);
+                }
+                cameraInputData.ReloadReleased = Input.GetKeyUp(KeyCode.R);
             }
-            cameraInputData.ReloadReleased = Input.GetKeyUp(KeyCode.R);
         }
 
         void GetMovementInputData()
         {
-            if (InteractionController.instance.hasPlayerDied == false)
+            if (InteractionController.instance.hasPlayerDied == false && !GameVars.instance.isPaused)
             {
                 if (Input.inputString == "")
                 {

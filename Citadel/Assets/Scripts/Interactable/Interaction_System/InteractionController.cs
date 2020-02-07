@@ -34,6 +34,7 @@ namespace VHS
         public GameObject weaponStorageParent;
         public LayerMask bulletLayers;
         public LayerMask punchLayers;
+        public GameObject backupAudioManager;
 
         [Space, Header("Storage")]
         public GameObject currentInteractingObject;
@@ -82,6 +83,14 @@ namespace VHS
             weaponStorageParent.GetComponent<Animator>().SetBool("Equip", true);
             CheckForWeapon();
             maxHealth = playerHealth;
+        }
+
+        private void Start()
+        {
+            if (GameVars.instance == null)
+            {
+                Instantiate(backupAudioManager, Vector3.zero, Quaternion.identity);
+            }
         }
 
         void Update()
@@ -295,7 +304,7 @@ namespace VHS
             {
                 if (!switchingWeapons)
                 {
-                    if (currentWeapon)
+                    if (currentWeapon && weaponStorge[currentWeaponIndex])
                     {
                         if (currentWeapon != weaponStorge[currentWeaponIndex])
                         {
@@ -501,7 +510,7 @@ namespace VHS
 
         private void OnDrawGizmos()
         {
-            if(weaponStorge != null && weaponStorge.Count > 0)
+            if(weaponStorge != null && weaponStorge.Count > 0 && weaponStorge[currentWeaponIndex])
             {
                 Gizmos.color = Color.red;
                 Gizmos.DrawLine(Camera.main.transform.position, Camera.main.transform.position + (Camera.main.transform.forward * weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRange));

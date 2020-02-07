@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameVars : MonoBehaviour
 {
     public float musicVolumeScale = 0.5f, sfxVolumeScale = 0.5f;
     public AudioManager audioManager;
+    public bool isPaused;
+    public bool firstTimeSettings = true;
 
     [HideInInspector]
     public static GameVars instance; //Singleton
@@ -19,9 +22,9 @@ public class GameVars : MonoBehaviour
         {
             instance = this;
         }
-        else if (instance != this)
+        else if (instance.gameObject != gameObject)
         {
-            Destroy(instance.gameObject);
+            Destroy(gameObject);
         }
 
         DontDestroyOnLoad(gameObject);
@@ -43,22 +46,36 @@ public class GameVars : MonoBehaviour
     {
         if(SlidersUI.instance)
         {
-            if(musicVolumeScale != SlidersUI.instance.musicSlider.value)
+            if (!firstTimeSettings)
             {
-                musicVolumeScale = SlidersUI.instance.musicSlider.value;
+                if (musicVolumeScale != SlidersUI.instance.musicSlider.value)
+                {
+                    musicVolumeScale = SlidersUI.instance.musicSlider.value;
+                }
 
-                //PlayerVars.instance.audioSource.volume = gameMusicVolumeScale;
+                if (sfxVolumeScale != SlidersUI.instance.sfxSlider.value)
+                {
+                    sfxVolumeScale = SlidersUI.instance.sfxSlider.value;
+                }
             }
-
-            if (sfxVolumeScale != SlidersUI.instance.sfxSlider.value)
+            else
             {
-                sfxVolumeScale = SlidersUI.instance.sfxSlider.value;
+                if (SlidersUI.instance.musicSlider.value != musicVolumeScale)
+                {
+                    SlidersUI.instance.musicSlider.value = musicVolumeScale;
+                }
+
+                if (SlidersUI.instance.sfxSlider.value != sfxVolumeScale)
+                {
+                    SlidersUI.instance.sfxSlider.value = sfxVolumeScale;
+                }
+                firstTimeSettings = false;
             }
         }
     }
 
-    public void OnValidate()
+    private void OnLevelWasLoaded(int level)
     {
-        //UnityEditor.EditorPrefs.SetBool("DeveloperMode", false);
+        firstTimeSettings = true;
     }
 }

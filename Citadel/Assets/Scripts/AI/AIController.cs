@@ -79,7 +79,7 @@ public class AIController : MonoBehaviour
     void Update()
     {
         if (!isDead)
-        {
+        {          
             CheckForPlayer();
             if (!playerSpotted)
             {

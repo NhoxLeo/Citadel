@@ -20,10 +20,4 @@ public class SlidersUI : MonoBehaviour
             instance = this;
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
