@@ -354,9 +354,17 @@ namespace VHS
         }
 
         /// <summary>
+        /// Triggerable method for event calls to use in inspector
+        /// </summary>
+        public void ActivateReaction()
+        {
+            OnInteract();
+        }
+
+        /// <summary>
         /// Depending on the Reaction Mode(s) selected, this will trigger all reactions
         /// </summary>
-        public override void OnInteract(Vector3 contactPoint, Transform playerGrip = null)
+        public override void OnInteract(Vector3 contactPoint = new Vector3(), Transform playerGrip = null)
         {
             //Debug.Log("ActivateButton | useParticle: "+useParticle+" | useAudio: "+useAudio+" | useAnimation: "+useAnimation);
             if (reactionState == ReactionState.Ready)

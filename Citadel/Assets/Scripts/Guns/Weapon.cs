@@ -23,7 +23,7 @@ public class Weapon : ScriptableObject
     [Header("Weapon Settings")]
     [Space(10)]
     public float attackDamage = 10;
-    [ConditionalHide("isProjectile", true, true)]
+    [ConditionalHide("isRanged", true)]
     public float attackRange = 100;
     [ConditionalHide("isMelee", true)]
     public float attackRadius = 2;
@@ -50,7 +50,7 @@ public class Weapon : ScriptableObject
     public float shellEjectionDelay = 0;
 
     [HideInInspector]
-    public bool isMelee, isProjectile;
+    public bool isMelee, isProjectile, isRanged;
     [HideInInspector]
     public bool isMultiShot;
     public enum WeaponType { Melee, Ranged, Projectile}
@@ -64,6 +64,7 @@ public class Weapon : ScriptableObject
         {
             isMelee = true;
             isProjectile = false;
+            isRanged = false;
             doesNeedReload = false;
         }
         else if (weaponType != WeaponType.Melee && isMelee)
@@ -75,10 +76,22 @@ public class Weapon : ScriptableObject
         {
             isProjectile = true;
             isMelee = false;
+            isRanged = false;
         }
         else if (weaponType != WeaponType.Projectile && isProjectile)
         {
             isProjectile = false;
+        }
+
+        if (weaponType == WeaponType.Ranged && !isRanged)
+        {
+            isProjectile = false;
+            isMelee = false;
+            isRanged = true;
+        }
+        else if (weaponType != WeaponType.Ranged && isRanged)
+        {
+            isRanged = false;
         }
 
         if (totalRoundsPerShot > 1 && !isMultiShot)

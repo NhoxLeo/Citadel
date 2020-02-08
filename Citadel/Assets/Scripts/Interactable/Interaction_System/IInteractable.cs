@@ -12,6 +12,6 @@ namespace VHS
         bool MultipleUse { get; }
         bool IsInteractable { get; }
 
-        void OnInteract(Vector3 contactPoint, Transform playerGrip = null);
+        void OnInteract(Vector3 contactPoint = new Vector3(), Transform playerGrip = null);
     }
 }  

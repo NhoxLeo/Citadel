@@ -516,7 +516,7 @@ namespace VHS
                 Gizmos.DrawLine(Camera.main.transform.position, Camera.main.transform.position + (Camera.main.transform.forward * weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRange));
                 if(weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.weaponType == Weapon.WeaponType.Melee)
                 {
-                    Gizmos.DrawSphere(Camera.main.transform.position + (Camera.main.transform.forward * weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRange), weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRadius);
+                    Gizmos.DrawSphere(Camera.main.transform.position, weaponStorge[currentWeaponIndex].GetComponent<WeaponController>().weaponParams.attackRadius);
                 }
             }
         }

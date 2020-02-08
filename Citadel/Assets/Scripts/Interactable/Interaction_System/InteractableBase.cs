@@ -28,7 +28,7 @@ namespace VHS
         #endregion
 
         #region Methods
-            public virtual void OnInteract(Vector3 contactPoint, Transform playerGrip = null)
+            public virtual void OnInteract(Vector3 contactPoint = new Vector3(), Transform playerGrip = null)
             {
                 Debug.Log("INTERACTED: " + gameObject.name);
             }
