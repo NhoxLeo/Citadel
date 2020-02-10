@@ -609,6 +609,12 @@ public class AIController : MonoBehaviour
                         hitInfo.rigidbody.AddForce(-hitInfo.normal * enemyParams.attackForce);
                     }
 
+                    Breakable hitBreakable = hitInfo.collider.gameObject.GetComponent<Breakable>();
+                    if (hitBreakable)
+                    {
+                        hitBreakable.Impact(-hitInfo.normal * enemyParams.attackForce, enemyParams.attackDamage);
+                    }
+
                     if (hitInfo.transform.gameObject.layer == 0 && enemyParams.enemyType == Enemy.EnemyType.Ranged)
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));

@@ -61,12 +61,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageSound: {fileID: 8300000, guid: a42c6f85173a03f44a6301bd94fa1c02, type: 3}
   maxExistanceTime: 1
+  maxDamageTime: 0.2
   damage: 100
   explosionForce: 4000
   damageMask:
     serializedVersion: 2
-    m_Bits: 4609
+    m_Bits: 4865
   haveBeenHit: []
+  incomingVector: {x: 0, y: 0, z: 0}
+  hasHitPlayer: 0
+  doDamage: 1
 --- !u!54 &-7627930123866825894
 Rigidbody:
   m_ObjectHideFlags: 0

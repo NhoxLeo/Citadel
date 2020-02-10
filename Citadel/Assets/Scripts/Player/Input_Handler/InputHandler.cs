@@ -37,16 +37,20 @@ namespace VHS
         #region Custom Methods
         void GetInteractionInputData()
         {
-            if (!GameVars.instance.isPaused)
+            if (InteractionController.instance.hasPlayerDied == false && !GameVars.instance.isPaused)
             {
                 interactionInputData.InteractedClicked = Input.GetKeyDown(KeyCode.E);
                 interactionInputData.InteractedReleased = Input.GetKeyUp(KeyCode.E);
+            }
+            else
+            {
+                interactionInputData.InteractedReleased = true;
             }
         }
 
         void GetCameraInput()
         {
-            if (!GameVars.instance.isPaused)
+            if (InteractionController.instance.hasPlayerDied == false && !GameVars.instance.isPaused)
             {
                 cameraInputData.InputVectorX = Input.GetAxis("Mouse X");
                 cameraInputData.InputVectorY = Input.GetAxis("Mouse Y");
@@ -62,6 +66,13 @@ namespace VHS
                     cameraInputData.ReloadClicked = Input.GetKeyDown(KeyCode.R);
                 }
                 cameraInputData.ReloadReleased = Input.GetKeyUp(KeyCode.R);
+            }
+            else
+            {
+                cameraInputData.ZoomReleased = true;
+                cameraInputData.ReloadReleased = true;
+                cameraInputData.InputVectorX = 0;
+                cameraInputData.InputVectorY = 0;
             }
         }
 
@@ -96,6 +107,12 @@ namespace VHS
 
                 movementInputData.JumpClicked = Input.GetKeyDown(KeyCode.Space);
                 movementInputData.CrouchClicked = Input.GetKeyDown(KeyCode.C);
+            }
+            else
+            {
+                movementInputData.InputVectorX = 0;
+                movementInputData.InputVectorY = 0;
+                movementInputData.RunReleased = true;
             }
         }
         #endregion

@@ -230,6 +230,12 @@ public class WeaponController : MonoBehaviour
                         hitInfo.rigidbody.AddForce(-hitInfo.normal * weaponParams.attackForce);
                     }
 
+                    Breakable hitBreakable = hitInfo.collider.gameObject.GetComponent<Breakable>();
+                    if (hitBreakable)
+                    {
+                        hitBreakable.Impact(-hitInfo.normal * weaponParams.attackForce, weaponParams.attackDamage);
+                    }
+
                     if (hitInfo.transform.gameObject.layer == 0 && weaponParams.weaponType == Weapon.WeaponType.Ranged)
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));

@@ -20,6 +20,7 @@ namespace VHS
 
         [Space, Header("Health")]
         public Animator playerDamageAnimator;
+        public Animator playerDeathAnimator;
         public Image vignette;
         public float playerHealth = 100;
         public float playerRegenIncrement = 5;
@@ -231,8 +232,13 @@ namespace VHS
         {
             if (!hasPlayerDied)
             {
-                hasPlayerDied = true;
+                hasPlayerDied = true;               
                 playerDamageAnimator.SetBool("HasDied", true);
+                playerDeathAnimator.SetBool("Die", true);
+
+                switchingWeapons = true;
+                weaponStorageParent.GetComponent<Animator>().SetBool("Equip", false);
+                weaponStorageParent.GetComponent<Animator>().SetBool("Unequip", true);
 
                 AudioSource[] audioSources = GameObject.FindObjectsOfType<AudioSource>();
                 for (int i = 0; i < audioSources.Length; i++)
@@ -342,10 +348,13 @@ namespace VHS
 
         public void TakeDamage(float damage)
         {
-            playerHealth -= damage;
-            if(playerDamageAudio)
+            if (!hasPlayerDied)
             {
-                GameVars.instance.audioManager.PlaySFX(playerDamageAudio, 1, transform.position);
+                playerHealth -= damage;
+                if (playerDamageAudio)
+                {
+                    GameVars.instance.audioManager.PlaySFX(playerDamageAudio, 1, transform.position);
+                }
             }
         }
 

@@ -33,6 +33,12 @@ public class Projectile : MonoBehaviour
             {
                 colRigid.AddForce(transform.forward * GetComponent<Rigidbody>().velocity.magnitude);
             }
+
+            Breakable hitBreakable = col.gameObject.GetComponent<Breakable>();
+            if (hitBreakable)
+            {
+                hitBreakable.Impact(col.contacts[0].normal, damage);
+            }
             ActivateProjectile(col.contacts[0].normal);
         }
     }
@@ -43,7 +49,7 @@ public class Projectile : MonoBehaviour
         damageObject.tag = "PlayerProjectile";
         damageObject.GetComponent<ProjectileDamage>().incomingVector = -hitNormal;
         damageObject.GetComponent<ProjectileDamage>().damage = damage;
-        damageObject.GetComponent<ProjectileDamage>().damageMask = collisionLayers;
+        //damageObject.GetComponent<ProjectileDamage>().damageMask = collisionLayers;
         damageObject.transform.localScale = Vector3.one * sizeOfDamage;
         Destroy(gameObject);
     }
