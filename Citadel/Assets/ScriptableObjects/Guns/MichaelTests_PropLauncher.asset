@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8ff7cdb18d43b42b1664d0647658a3, type: 3}
+  m_Name: MichaelTests_PropLauncher
+  m_EditorClassIdentifier: 
+  weaponName: Prop Launcher
+  weaponType: 2
+  attackSound: {fileID: 8300000, guid: 5897aeed9b676024fbb8c694b421a861, type: 3}
+  reloadSound: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
+  missSound: {fileID: 0}
+  equipSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
+  projectilePrefab: {fileID: 3824059032406659216, guid: 000b24fd27656694c87b0121c8ed9d1c,
+    type: 3}
+  attackDamage: 10
+  attackRange: 100
+  attackRadius: 2
+  attackForce: 2000
+  doesNeedReload: 0
+  reloadOnShot: 0
+  roundsPerClip: 8
+  totalAmmoOnInitialPickup: 500
+  totalAmmoOnAmmoPickup: 20
+  totalRoundsPerShot: 1
+  spreadMaxDivation: 0
+  attackStateLength: 0.1
+  reloadStateLength: 2
+  shellEjectionDelay: 0
+  isMelee: 0
+  isProjectile: 1
+  isRanged: 0
+  isMultiShot: 0

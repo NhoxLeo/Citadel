@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee8ff7cdb18d43b42b1664d0647658a3, type: 3}
+  m_Name: MichaelTests_LaserPistol
+  m_EditorClassIdentifier: 
+  weaponName: Laser Pistol
+  weaponType: 1
+  attackSound: {fileID: 8300000, guid: 7f66f30b9be2ff54f86ae180295535ab, type: 3}
+  reloadSound: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
+  missSound: {fileID: 0}
+  equipSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
+  projectilePrefab: {fileID: 0}
+  attackDamage: 100
+  attackRange: 100
+  attackRadius: 2
+  attackForce: 100
+  doesNeedReload: 0
+  reloadOnShot: 0
+  roundsPerClip: 8
+  totalAmmoOnInitialPickup: 10000
+  totalAmmoOnAmmoPickup: 10000
+  totalRoundsPerShot: 100
+  spreadMaxDivation: 0.2
+  attackStateLength: 0
+  reloadStateLength: 2
+  shellEjectionDelay: 0
+  isMelee: 0
+  isProjectile: 0
+  isRanged: 1
+  isMultiShot: 1
