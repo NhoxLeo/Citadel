@@ -20,7 +20,7 @@ namespace VHS
         [Space, Header("Locomotion Settings")]
         [SerializeField] private float crouchSpeed = 1f;
         [SerializeField] private float walkSpeed = 2f;
-        [SerializeField] private float runSpeed = 3f;
+        [SerializeField] public float runSpeed = 3f;
         [SerializeField] private float jumpSpeed = 5f;
         [SerializeField] private float pullingSpeed = 1f;
 
@@ -110,7 +110,7 @@ namespace VHS
         [ReadOnly] private Vector3 m_finalMoveVector;
 
         [Space]
-        [ReadOnly] private float m_currentSpeed;
+        [ReadOnly] public float m_currentSpeed;
         [ReadOnly] private float m_smoothCurrentSpeed;
         [ReadOnly] private float m_finalSmoothCurrentSpeed;
         [ReadOnly] private float m_walkRunSpeedDifference;

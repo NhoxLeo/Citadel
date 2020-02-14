@@ -112,6 +112,8 @@ MonoBehaviour:
   frames:
   - {fileID: 21300000, guid: beb668f5c07eb2340baabc80a50f5e73, type: 3}
   destroyThis: 0
+  currentFrame: 0
+  startingFrame: -1
 --- !u!1 &7437550920699478288
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,6 +198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7437550920726039877}
   - component: {fileID: 7437550920726039876}
+  - component: {fileID: 5770213643924306870}
   m_Layer: 5
   m_Name: Shotgun_Duke
   m_TagString: Untagged
@@ -238,15 +241,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponParams: {fileID: 11400000, guid: a6a04e4c67b293b4faa1d573c485e06c, type: 2}
+  weaponBobAnim: {fileID: 5770213643924306870}
   defaultState: {fileID: 7437550920699478288}
   attackState: {fileID: 7437550921225815252}
+  reloadState: {fileID: 0}
   weaponShell: {fileID: 971844429}
   attackParticle: {fileID: 88749485564433142, guid: db81707ef4bc3d94ba5aae26fe47a13d,
     type: 3}
-  reloadState: {fileID: 0}
   weaponState: 0
   isMelee: 0
   totalRounds: 0
+--- !u!95 &5770213643924306870
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7437550920726039874}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22e4fb97c5a12794d99ca77a9f151654, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7437550921225815252
 GameObject:
   m_ObjectHideFlags: 0
@@ -395,3 +418,5 @@ MonoBehaviour:
   - {fileID: 4683342360810348692, guid: 713ab52b1c5c9bb459cb66b73456f8e3, type: 3}
   - {fileID: -7467571220956082161, guid: 713ab52b1c5c9bb459cb66b73456f8e3, type: 3}
   destroyThis: 0
+  currentFrame: 0
+  startingFrame: -1

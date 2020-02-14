@@ -8,6 +8,7 @@ public class WeaponController : MonoBehaviour
 {
     [Header("Weapon Information")]
     public Weapon weaponParams;
+    public Animator weaponBobAnim;
     public GameObject defaultState;
     public GameObject attackState;
     [ConditionalHide("isMelee", true, true)]
@@ -22,7 +23,7 @@ public class WeaponController : MonoBehaviour
     public bool isMelee;
     [HideInInspector]
     public int totalRounds;
-
+    private FirstPersonController fpsController;
     private int currentLoadedRounds;
   
 
@@ -53,6 +54,7 @@ public class WeaponController : MonoBehaviour
 
     private void Start()
     {
+        fpsController = InteractionController.instance.gameObject.GetComponent<FirstPersonController>();
         if (weaponParams)
         {
             totalRounds = weaponParams.totalAmmoOnInitialPickup;
@@ -62,6 +64,12 @@ public class WeaponController : MonoBehaviour
         {
             Debug.LogError("ERROR | Weapon Parameters Not Found For " + gameObject.name);
         }
+    }
+
+    private void Update()
+    {
+        float currentMoveSpeed = (fpsController.m_currentSpeed / fpsController.runSpeed) * 2;
+        weaponBobAnim.SetFloat("Speed", currentMoveSpeed);
     }
 
     public void OnAttack()

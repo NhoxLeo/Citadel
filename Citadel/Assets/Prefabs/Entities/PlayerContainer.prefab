@@ -537,7 +537,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 7107501760951101294}
+  - {fileID: 1853199039928813334}
   m_Father: {fileID: 2095911298}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3602,6 +3602,7 @@ MonoBehaviour:
   smoothHeadBobSpeed: 5
   experimental: 0
   smoothInputMagnitudeSpeed: 5
+  m_currentSpeed: 0
   m_isGrounded: 1
   m_inputVectorMagnitude: 0
   m_smoothInputVectorMagnitude: 0
@@ -3649,7 +3650,7 @@ MonoBehaviour:
   currentInteractingObject: {fileID: 0}
   currentWeapon: {fileID: 0}
   weaponStorge:
-  - {fileID: 7107501760951101289}
+  - {fileID: 1853199039928813329}
   bulletHoles: []
   switchingWeapons: 0
   wasHolding: 0
@@ -4571,7 +4572,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
---- !u!1001 &2882282971064258126
+--- !u!1001 &6695415119616683574
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -4690,15 +4691,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d92dd8f611b0e1b40bcbf291950ce5d0, type: 3}
---- !u!1 &7107501760951101289 stripped
+--- !u!1 &1853199039928813329 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4998157924372408615, guid: d92dd8f611b0e1b40bcbf291950ce5d0,
     type: 3}
-  m_PrefabInstance: {fileID: 2882282971064258126}
+  m_PrefabInstance: {fileID: 6695415119616683574}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &7107501760951101294 stripped
+--- !u!224 &1853199039928813334 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4998157924372408608, guid: d92dd8f611b0e1b40bcbf291950ce5d0,
     type: 3}
-  m_PrefabInstance: {fileID: 2882282971064258126}
+  m_PrefabInstance: {fileID: 6695415119616683574}
   m_PrefabAsset: {fileID: 0}

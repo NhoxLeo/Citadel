@@ -9,7 +9,7 @@ namespace VHS
     {
         #region Variables    
         [Space, Header("Data")]
-        [SerializeField] private InteractionInputData interactionInputData = null;
+        [SerializeField] public InteractionInputData interactionInputData = null;
         [HideInInspector]
         [SerializeField] public InteractionData interactionData = null;
 
