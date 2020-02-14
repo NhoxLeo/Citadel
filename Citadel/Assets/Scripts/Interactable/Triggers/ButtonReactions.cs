@@ -196,6 +196,8 @@ namespace VHS
             instantiatedObjects = new List<GameObject>();
             activatedAnimationConditions = new List<AnimationCondition>();
             indexOfRelocationList = relocationPoints.relocationList.Count - 1;
+            if (relocationPoints.relocationTransform == null)
+                relocationPoints.relocationTransform = transform;
             ResetValues();
         }
 
@@ -885,7 +887,7 @@ namespace VHS
             else
             {
                 toLerp[0] = false;
-                transform.position = relocationPoints.relocationList[listIndex].relocationLocation;
+                relocationPoints.relocationTransform.position = relocationPoints.relocationList[listIndex].relocationLocation;
             }
 
             if (relocationPoints.relocationList[listIndex].lerpRotation)
@@ -895,7 +897,7 @@ namespace VHS
             else
             {
                 toLerp[1] = false;
-                transform.rotation = GetGameObjectQuaterion(relocationPoints.relocationList[listIndex].relocationRotation);
+                relocationPoints.relocationTransform.rotation = GetGameObjectQuaterion(relocationPoints.relocationList[listIndex].relocationRotation);
             }
 
             if (relocationPoints.relocationList[listIndex].lerpScale)
@@ -905,7 +907,7 @@ namespace VHS
             else
             {
                 toLerp[2] = false;
-                transform.localScale = transform.localScale;
+                relocationPoints.relocationTransform.localScale = relocationPoints.relocationTransform.localScale;
             }
 
             if (lerpVectorCoroutine != null)
@@ -938,23 +940,23 @@ namespace VHS
                 t += Time.deltaTime / duration;
                 if (allConditions[0] == true) //Looking for position
                 {
-                    transform.position = Vector3.Lerp(transform.position, relocationGameObject.relocationLocation, t);
+                    relocationPoints.relocationTransform.position = Vector3.Lerp(relocationPoints.relocationTransform.position, relocationGameObject.relocationLocation, t);
                 }
 
                 if (allConditions[1] == true) //Looking for rotation
                 {
-                    transform.rotation = Quaternion.Lerp(transform.rotation, rotationToMatch, t);
+                    relocationPoints.relocationTransform.rotation = Quaternion.Lerp(relocationPoints.relocationTransform.rotation, rotationToMatch, t);
                 }
 
                 if (allConditions[2] == true) //Looking for scale
                 {
-                    transform.localScale = Vector3.Lerp(transform.localScale, relocationGameObject.relocationScale, t);
+                    relocationPoints.relocationTransform.localScale = Vector3.Lerp(relocationPoints.relocationTransform.localScale, relocationGameObject.relocationScale, t);
                 }
 
                 //Check if conditions met
                 if (allConditions[0] == true)
                 {
-                    if (transform.position == relocationGameObject.relocationLocation)
+                    if (relocationPoints.relocationTransform.position == relocationGameObject.relocationLocation)
                     {
                         allConditions[0] = false;
                     }
@@ -962,16 +964,16 @@ namespace VHS
 
                 if (allConditions[1] == true)
                 {
-                    if (transform.rotation == rotationToMatch)
+                    if (relocationPoints.relocationTransform.rotation == rotationToMatch)
                     {
-                        transform.rotation = GetGameObjectQuaterion(relocationGameObject.relocationRotation);
+                        relocationPoints.relocationTransform.rotation = GetGameObjectQuaterion(relocationGameObject.relocationRotation);
                         allConditions[1] = false;
                     }
                 }
 
                 if (allConditions[2] == true)
                 {
-                    if (transform.localScale == relocationGameObject.relocationScale)
+                    if (relocationPoints.relocationTransform.localScale == relocationGameObject.relocationScale)
                     {
                         allConditions[2] = false;
                     }
@@ -1145,6 +1147,8 @@ namespace VHS
         [System.Serializable]
         public class RelocationList
         {
+            [Tooltip("The gameObject to relocate. (\"None\" will relocate this object.)")]
+            public Transform relocationTransform;
             public List<RelocationGameObject> relocationList;
         }
 
