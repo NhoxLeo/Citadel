@@ -51,7 +51,8 @@ public class ZoneTrigger : MonoBehaviour
                     {
                         OnActivate.Invoke();
                     }
-                    numberOfUses--;
+                    if (!isInfinite)
+                        numberOfUses--;
                 }
             }
         }
