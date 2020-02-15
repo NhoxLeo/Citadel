@@ -53,8 +53,8 @@ namespace VHS
 
         #region Gravity
         [Space, Header("Gravity Settings")]
-        [SerializeField] private float gravityMultiplier = 2.5f;
-        [SerializeField] private float stickToGroundForce = 5f;
+        [SerializeField] public float gravityMultiplier = 2.5f;
+        [SerializeField] public float stickToGroundForce = 5f;
 
         [SerializeField] private LayerMask groundLayer = ~0;
         [Slider(0f, 1f)] [SerializeField] private float rayLength = 0.1f;

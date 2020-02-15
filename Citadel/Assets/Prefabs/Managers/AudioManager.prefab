@@ -48,6 +48,17 @@ MonoBehaviour:
   musicVolumeScale: 0.5
   sfxVolumeScale: 0.5
   audioManager: {fileID: 4744649828739495775}
+  currentLevelManager: {fileID: 0}
+  levels:
+  - {fileID: 11400000, guid: 1dc8450ed47f9184193de7ecb405aa25, type: 2}
+  - {fileID: 11400000, guid: 669af1347561fda43835fc409259a44b, type: 2}
+  - {fileID: 11400000, guid: adce295bf2cf55245a639f5856e87d55, type: 2}
+  isPaused: 0
+  wasLevelBeaten: 0
+  firstTimeSettings: 1
+  totalTimeSpent: 0
+  totalEnemiesKilled: 0
+  totalDamageTaken: 0
 --- !u!114 &4744649828739495775
 MonoBehaviour:
   m_ObjectHideFlags: 0

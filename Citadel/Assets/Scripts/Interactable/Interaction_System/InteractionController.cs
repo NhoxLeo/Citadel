@@ -351,6 +351,7 @@ namespace VHS
             if (!hasPlayerDied)
             {
                 playerHealth -= damage;
+                GameVars.instance.totalDamageTaken += damage;
                 if (playerDamageAudio)
                 {
                     GameVars.instance.audioManager.PlaySFX(playerDamageAudio, 1, transform.position);

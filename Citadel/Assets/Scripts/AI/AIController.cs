@@ -204,6 +204,7 @@ public class AIController : MonoBehaviour
         else if (newState == AIState.Dead)
         {
             currentState = deadState;
+            GameVars.instance.totalEnemiesKilled += 1;
             aliveBody.SetActive(false);
             deadBody.SetActive(true);
         }
