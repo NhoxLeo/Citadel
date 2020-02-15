@@ -8,6 +8,7 @@ public class GameVars : MonoBehaviour
 {
     public float musicVolumeScale = 0.5f, sfxVolumeScale = 0.5f;
     public AudioManager audioManager;
+    public SaveDataManager saveManager;
     public LevelManager currentLevelManager;
     public List<LevelManager> levels;
 
@@ -132,6 +133,11 @@ public class GameVars : MonoBehaviour
                 ResetLevelData();
             }
             currentLevelManager = levels[GetMatchingSceneIndexByName(SceneManager.GetActiveScene().name)];
+        }
+
+        if(SceneManager.GetActiveScene().name == "Main Menu")
+        {
+            saveManager.ReadSaveData();
         }
     }
 

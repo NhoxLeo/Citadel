@@ -9,5 +9,6 @@ public class LevelManager : ScriptableObject
     [Header("Level Settings")]
     public string levelName;
     public string unitySceneName;
+    public int levelUnlockIndex;
     public Sprite levelPreview;
 }

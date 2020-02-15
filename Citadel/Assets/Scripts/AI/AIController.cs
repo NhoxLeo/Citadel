@@ -117,6 +117,7 @@ public class AIController : MonoBehaviour
                             if (lastKnownPlayerLocation != transform.position)
                             {
                                 transform.rotation = Quaternion.LookRotation(lastKnownPlayerLocation - transform.position, Vector3.up);
+                                transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                             }
                             else
                             {
@@ -307,30 +308,42 @@ public class AIController : MonoBehaviour
                     while (hasArrived == false)
                     {
                         transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
-                        navMeshAgent.SetDestination(player.transform.position);
-                        if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
+                        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+                        if (CalculateNewPath(player.transform.position) == true)
                         {
-                            //Debug.Log("Arrived Local");
+                            navMeshAgent.SetDestination(player.transform.position);
+                            if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
+                            {
+                                //Debug.Log("Arrived Local");
+                                navMeshAgent.SetDestination(transform.position);
+                                lastKnownPlayerLocation = transform.position;
+                                navMeshAgent.velocity = Vector3.zero;
+                                hasArrived = true;
+                                UpdateSprite(idleState);
+
+                                EnemyAttack();
+                                yield return new WaitForSeconds(enemyParams.attackStateLength);
+                                UpdateSprite(idleState);
+                                if (enemyParams.reloadSound)
+                                {
+                                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                                }
+                                yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
+                            }
+                            if (!hasArrived)
+                            {
+                                UpdateSprite(walkState);
+                            }
+                        }
+                        else
+                        {
                             navMeshAgent.SetDestination(transform.position);
                             lastKnownPlayerLocation = transform.position;
                             navMeshAgent.velocity = Vector3.zero;
                             hasArrived = true;
                             UpdateSprite(idleState);
-
-                            EnemyAttack();
-                            yield return new WaitForSeconds(enemyParams.attackStateLength);
-                            UpdateSprite(idleState);
-                            if (enemyParams.reloadSound)
-                            {
-                                GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
-                            }
-                            yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
                         }
-                        if (!hasArrived)
-                        {
-                            UpdateSprite(walkState);
-                        }
-                        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                         yield return null;
                     }
 
@@ -356,7 +369,10 @@ public class AIController : MonoBehaviour
                     //Walk Closer Then Shoot
                     attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
                     yield return new WaitForSeconds(1 * enemyParams.agressiveness);
-                    StopCoroutine(attackingCoroutine);
+                    if (attackingCoroutine != null)
+                    {
+                        StopCoroutine(attackingCoroutine);
+                    }
                     navMeshAgent.SetDestination(transform.position);
                     navMeshAgent.velocity = Vector3.zero;
                     attackingCoroutine = null;
@@ -459,6 +475,7 @@ public class AIController : MonoBehaviour
                         lastKnownPlayerLocation = navMeshHit.position;
                     }
                     transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                     playerSpotted = true;
                 }
             }
@@ -479,6 +496,7 @@ public class AIController : MonoBehaviour
                                 lastKnownPlayerLocation = navMeshHit.position;
                             }
                             transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                            transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                             playerSpotted = true;
                         }
                     }
@@ -545,6 +563,7 @@ public class AIController : MonoBehaviour
 
                 playerSpottedTimer = enemyParams.playerRememberTime;
                 transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
             }
 
@@ -675,45 +694,79 @@ public class AIController : MonoBehaviour
     public IEnumerator GoToPosition(Vector3 newPosition, string methodToStart = "", bool doInvoke = false, Coroutine myCoroutine = null)
     {
         bool hasArrived = false;
-        transform.rotation = Quaternion.LookRotation(newPosition - transform.position, Vector3.up);
-        navMeshAgent.SetDestination(newPosition);
-
-        while (hasArrived == false)
+        if (newPosition != transform.position)
         {
-            if (Vector3.Distance(transform.position, newPosition) < 3)
-            {
-                //Debug.Log("Arrived");
-                UpdateSprite(idleState);
-                navMeshAgent.SetDestination(transform.position);
-                lastKnownPlayerLocation = transform.position;
-                navMeshAgent.velocity = Vector3.zero;
-
-                if (methodToStart != "")
-                {
-                    if (doInvoke)
-                    {
-                        Invoke(methodToStart, 0);
-                    }
-                    else
-                    {
-                        StartCoroutine(methodToStart);
-                    }
-                }
-
-                if (myCoroutine != null)
-                {
-                    StopCoroutine(myCoroutine);
-                }
-
-                movingCoroutine = null;
-                hasArrived = true;
-            }
-            if (!hasArrived)
-            {
-                UpdateSprite(walkState);
-            }
+            transform.rotation = Quaternion.LookRotation(newPosition - transform.position, Vector3.up);
             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
-            yield return null;
+        }
+
+        if (CalculateNewPath(newPosition))
+        {
+            navMeshAgent.SetDestination(newPosition);
+            while (hasArrived == false)
+            {
+                if (Vector3.Distance(transform.position, newPosition) < 3)
+                {
+                    //Debug.Log("Arrived");
+                    UpdateSprite(idleState);
+                    navMeshAgent.SetDestination(transform.position);
+                    lastKnownPlayerLocation = transform.position;
+                    navMeshAgent.velocity = Vector3.zero;
+
+                    if (methodToStart != "")
+                    {
+                        if (doInvoke)
+                        {
+                            Invoke(methodToStart, 0);
+                        }
+                        else
+                        {
+                            StartCoroutine(methodToStart);
+                        }
+                    }
+
+                    if (myCoroutine != null)
+                    {
+                        StopCoroutine(myCoroutine);
+                    }
+
+                    movingCoroutine = null;
+                    hasArrived = true;
+                }
+                if (!hasArrived)
+                {
+                    UpdateSprite(walkState);
+                }
+                yield return null;
+            }
+        }
+        else
+        {
+            //Debug.Log("Arrived");
+            UpdateSprite(idleState);
+            navMeshAgent.SetDestination(transform.position);
+            lastKnownPlayerLocation = transform.position;
+            navMeshAgent.velocity = Vector3.zero;
+
+            if (methodToStart != "")
+            {
+                if (doInvoke)
+                {
+                    Invoke(methodToStart, 0);
+                }
+                else
+                {
+                    StartCoroutine(methodToStart);
+                }
+            }
+
+            if (myCoroutine != null)
+            {
+                StopCoroutine(myCoroutine);
+            }
+
+            movingCoroutine = null;
+            hasArrived = true;
         }
     }
 
@@ -754,9 +807,29 @@ public class AIController : MonoBehaviour
     {
         if (currentState != newSpriteState)
         {
+            GameObject currentActiveSprite = currentState.GetComponent<StateSpriteRotation>().currentActiveSprite;
             currentState.SetActive(false);
             currentState = newSpriteState;
             currentState.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// Attempts to find a valid path to position
+    /// </summary>
+    /// <returns></returns>
+    bool CalculateNewPath(Vector3 targetPosition)
+    {
+        NavMeshPath navMeshPath = new NavMeshPath();
+        navMeshAgent.CalculatePath(targetPosition, navMeshPath);
+
+        if (navMeshPath.status != NavMeshPathStatus.PathComplete)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
     #endregion

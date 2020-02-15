@@ -1929,6 +1929,8 @@ MonoBehaviour:
   spriteBackRight: {fileID: 4289423915758436265}
   spriteRight: {fileID: 4289423915976819152}
   spriteForwardRight: {fileID: 4289423916237795884}
+  directionState: 0
+  currentActiveSprite: {fileID: 0}
 --- !u!1 &4289423916115400866
 GameObject:
   m_ObjectHideFlags: 0
@@ -2687,6 +2689,8 @@ MonoBehaviour:
   spriteBackRight: {fileID: 4289423916824889188}
   spriteRight: {fileID: 4289423915859143015}
   spriteForwardRight: {fileID: 4289423916252992290}
+  directionState: 0
+  currentActiveSprite: {fileID: 0}
 --- !u!1 &4289423916464277127
 GameObject:
   m_ObjectHideFlags: 0
@@ -2751,6 +2755,8 @@ MonoBehaviour:
   spriteBackRight: {fileID: 4289423915145423142}
   spriteRight: {fileID: 4289423915725052288}
   spriteForwardRight: {fileID: 4289423915685056498}
+  directionState: 0
+  currentActiveSprite: {fileID: 0}
 --- !u!1 &4289423916542770376
 GameObject:
   m_ObjectHideFlags: 0
@@ -2889,6 +2895,8 @@ MonoBehaviour:
   spriteBackRight: {fileID: 4289423915303924347}
   spriteRight: {fileID: 4289423915749365905}
   spriteForwardRight: {fileID: 4289423916683092044}
+  directionState: 0
+  currentActiveSprite: {fileID: 0}
 --- !u!1 &4289423916603122894
 GameObject:
   m_ObjectHideFlags: 0

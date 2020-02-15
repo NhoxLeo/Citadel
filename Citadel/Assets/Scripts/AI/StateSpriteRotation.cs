@@ -13,8 +13,11 @@ public class StateSpriteRotation : MonoBehaviour
     public GameObject spriteBackRight;
     public GameObject spriteRight;
     public GameObject spriteForwardRight;
+    public DirectionState directionState;
 
-    private GameObject currentActiveSprite;
+    [HideInInspector]
+    public GameObject currentActiveSprite;
+    public enum DirectionState { Forward, ForwardLeft, Left, BackLeft, Back, BackRight, Right, ForwardRight}
     private bool switchingSprites;
     private GameObject rotationReference;
 
@@ -24,6 +27,7 @@ public class StateSpriteRotation : MonoBehaviour
         rotationReference = InteractionController.instance.gameObject;
         //currentActiveSprite = spriteForward;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -60,34 +64,42 @@ public class StateSpriteRotation : MonoBehaviour
         if (angle > -22.5 && angle <= 22.5)
         {
             newSprite = spriteForward;
+            directionState = DirectionState.Forward;
         }
         else if (angle > 22.5 && angle <= 67.5)
         {
             newSprite = spriteForwardLeft;
+            directionState = DirectionState.ForwardLeft;
         }
         else if (angle > 67.5 && angle <= 112.5)
         {
             newSprite = spriteLeft;
+            directionState = DirectionState.Left;
         }
         else if (angle > 112.5 && angle <= 157.5)
         {
             newSprite = spriteBackLeft;
+            directionState = DirectionState.BackLeft;
         }
         else if ((angle > 157.5 && angle <= 180) || (angle >= -180 && angle <= -157.5))
         {
             newSprite = spriteBack;
+            directionState = DirectionState.Back;
         }
         else if (angle > -157.5 && angle <= -112.5)
         {
             newSprite = spriteBackRight;
+            directionState = DirectionState.BackRight;
         }
         else if (angle > -112.5 && angle <= -67.5)
         {
             newSprite = spriteRight;
+            directionState = DirectionState.Right;
         }
         else if (angle > -67.5 && angle <= -22.5)
         {
             newSprite = spriteForwardRight;
+            directionState = DirectionState.ForwardRight;
         }
 
         if (currentActiveSprite != null)

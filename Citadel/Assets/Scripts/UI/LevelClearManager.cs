@@ -54,6 +54,9 @@ public class LevelClearManager : MonoBehaviour
                 {
                     if ((GameVars.instance.GetMatchingSceneIndexByName(GameVars.instance.currentLevelManager.unitySceneName) + 1) < GameVars.instance.levels.Count)
                     {
+                        GameVars.instance.saveManager.levelsUnlockStatus[GameVars.instance.levels[GameVars.instance.GetMatchingSceneIndexByName(GameVars.instance.currentLevelManager.unitySceneName) + 1].levelUnlockIndex] = true;
+                        GameVars.instance.saveManager.UpdateSaveData();
+
                         fadeToBlack.FadeToLevel(GameVars.instance.levels[GameVars.instance.GetMatchingSceneIndexByName(GameVars.instance.currentLevelManager.unitySceneName) + 1].unitySceneName);
                     }
                     else

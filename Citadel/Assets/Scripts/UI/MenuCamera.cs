@@ -49,13 +49,6 @@ public class MenuCamera : MonoBehaviour
                 transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, p);
             }
         }
-        else
-        {
-            if ((transform.parent == cameraPositions[3]) && startingLevelLoad == true)
-            {
-                LoadScene("Level 1");
-            }
-        }
     }
 
    
@@ -85,10 +78,5 @@ public class MenuCamera : MonoBehaviour
     {        
         transform.SetParent(cameraPositions[index]);
         timer = 0;
-
-        if(index == 3)
-        {
-            startingLevelLoad = true;
-        }
     }
 }
