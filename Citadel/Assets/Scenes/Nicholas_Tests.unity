@@ -1532,6 +1532,7 @@ MonoBehaviour:
   showRelocationPoints: 1
   relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 0.6627451}
   relocationPoints:
+    relocationTransform: {fileID: 0}
     relocationList:
     - relocationLocation: {x: -21.35, y: 0.99999994, z: -35.1}
       relocationRotation: {x: -0, y: 270, z: 270}
@@ -3714,6 +3715,7 @@ MonoBehaviour:
   showRelocationPoints: 1
   relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 0.6627451}
   relocationPoints:
+    relocationTransform: {fileID: 0}
     relocationList:
     - relocationLocation: {x: -21.35, y: 0.99999994, z: -35.1}
       relocationRotation: {x: -0, y: 270, z: 270}
@@ -5068,6 +5070,7 @@ MonoBehaviour:
   showRelocationPoints: 1
   relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
   relocationPoints:
+    relocationTransform: {fileID: 0}
     relocationList: []
   isLimited: 0
 --- !u!4 &1111133564 stripped
@@ -5806,31 +5809,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1250400852}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1262310999 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7107501760951101289, guid: 51167e04776c1e94ba6bd24ea1487c77,
-    type: 3}
-  m_PrefabInstance: {fileID: 2882282970467319065}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1262311001
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1262310999}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 22e4fb97c5a12794d99ca77a9f151654, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1291307453 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6594702296702319087, guid: 5d3b962838799ec4eae8a466bf0f5192,
@@ -8325,6 +8303,7 @@ MonoBehaviour:
   showRelocationPoints: 1
   relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 0.6627451}
   relocationPoints:
+    relocationTransform: {fileID: 0}
     relocationList:
     - relocationLocation: {x: -21.35, y: 0.99999994, z: -35.1}
       relocationRotation: {x: -0, y: 270, z: 270}
@@ -10668,7 +10647,12 @@ PrefabInstance:
         type: 3}
       propertyPath: weaponBobAnim
       value: 
-      objectReference: {fileID: 1262311001}
+      objectReference: {fileID: 0}
+    - target: {fileID: 1344409390522671017, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: bulletLayers.m_Bits
+      value: 4609
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51167e04776c1e94ba6bd24ea1487c77, type: 3}
 --- !u!1001 &3526103643449350123

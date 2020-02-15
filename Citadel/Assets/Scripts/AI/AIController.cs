@@ -595,11 +595,11 @@ public class AIController : MonoBehaviour
                     Quaternion rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
                     forwardVector = rot * (player.transform.position - transform.position);
 
-                    rayCast = Physics.Raycast(transform.position, forwardVector, out hitInfo, enemyParams.attackRange, InteractionController.instance.bulletLayers);
+                    rayCast = Physics.Raycast(transform.position, forwardVector, out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
                 }
                 else
                 {
-                    rayCast = Physics.SphereCast(transform.position, enemyParams.attackRadius, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, InteractionController.instance.punchLayers);
+                    rayCast = Physics.SphereCast(transform.position, enemyParams.attackRadius, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
                 }
 
                 if (rayCast)

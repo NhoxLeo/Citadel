@@ -50,6 +50,7 @@ public class Enemy : ScriptableObject
     public float attackForce = 100;
     public int totalRoundsPerShot = 1;
     public float spreadMaxDivation = 0;
+    public LayerMask damageMask;
 
     [Header("State Settings")]
     [ConditionalHide("isWander", true)]

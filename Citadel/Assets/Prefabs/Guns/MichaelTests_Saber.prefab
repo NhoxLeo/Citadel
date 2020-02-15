@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2205499893662354583}
   - component: {fileID: 2205499893662354582}
+  - component: {fileID: -6112979458283700689}
   m_Layer: 5
   m_Name: MichaelTests_Saber
   m_TagString: Untagged
@@ -51,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponParams: {fileID: 11400000, guid: 883080635b471d3458fec4e3420fa4c8, type: 2}
+  weaponBobAnim: {fileID: -6112979458283700689}
   defaultState: {fileID: 2205499893731377346}
   attackState: {fileID: 2205499894295299334}
   reloadState: {fileID: 0}
@@ -60,6 +62,25 @@ MonoBehaviour:
   weaponState: 0
   isMelee: 1
   totalRounds: 0
+--- !u!95 &-6112979458283700689
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2205499893662354576}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22e4fb97c5a12794d99ca77a9f151654, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2205499893731377346
 GameObject:
   m_ObjectHideFlags: 0

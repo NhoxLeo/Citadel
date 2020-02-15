@@ -69,6 +69,11 @@ public class WeaponController : MonoBehaviour
     private void Update()
     {
         float currentMoveSpeed = (fpsController.m_currentSpeed / fpsController.runSpeed) * 2;
+
+        if(!fpsController.m_isGrounded)
+        {
+            currentMoveSpeed /= 3;
+        }
         weaponBobAnim.SetFloat("Speed", currentMoveSpeed);
     }
 

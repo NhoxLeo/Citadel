@@ -448,6 +448,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8040925249835058413}
   - component: {fileID: 8040925249835058412}
+  - component: {fileID: 9180681609899583433}
   m_Layer: 5
   m_Name: MichaelTests_LaserPistol
   m_TagString: Untagged
@@ -491,6 +492,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponParams: {fileID: 11400000, guid: 60abb4d14ab6057458bda18e7c9e1e04, type: 2}
+  weaponBobAnim: {fileID: 9180681609899583433}
   defaultState: {fileID: 8040925249770752184}
   attackState: {fileID: 8040925249260834172}
   reloadState: {fileID: 8040925248227524397}
@@ -500,3 +502,22 @@ MonoBehaviour:
   weaponState: 0
   isMelee: 0
   totalRounds: 0
+--- !u!95 &9180681609899583433
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8040925249835058410}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 22e4fb97c5a12794d99ca77a9f151654, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

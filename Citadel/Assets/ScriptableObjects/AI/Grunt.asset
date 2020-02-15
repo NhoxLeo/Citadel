@@ -36,6 +36,9 @@ MonoBehaviour:
   attackForce: 2000
   totalRoundsPerShot: 2
   spreadMaxDivation: 8
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 6913
   minWanderStateLength: 3
   maxWanderStateLength: 8
   minIdleStateTime: 2
