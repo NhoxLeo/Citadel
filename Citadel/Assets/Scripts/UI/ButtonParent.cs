@@ -32,7 +32,14 @@ public class ButtonParent : MonoBehaviour
             objectToScale = gameObject;
         }
 
-        startingScale = gameObject.transform.localScale;
+        if(gameObject.transform.localScale == Vector3.zero)
+        {
+            startingScale = Vector3.one;
+        }
+        else
+        {
+            startingScale = gameObject.transform.localScale;
+        }
     }
 
     // Update is called once per frame

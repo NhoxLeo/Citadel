@@ -22,6 +22,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.visible = false;
         Settings.SetActive(false);
         PauseMenuParent.SetActive(false);
+        PauseMenuParent.transform.GetChild(1).GetChild(0).localScale = Vector3.one;
     }
 
     // Update is called once per frame
