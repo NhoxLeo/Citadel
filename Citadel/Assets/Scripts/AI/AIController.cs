@@ -61,6 +61,19 @@ public class AIController : MonoBehaviour
     #endregion
 
     #region Unity Event Methods
+    private void Awake()
+    {
+        if (!NavMesh.SamplePosition(transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
+        {
+            gameObject.SetActive(false);
+            Debug.LogError("[ERROR] - No Navmesh Found For AI " + gameObject.name);
+        }
+        else
+        {
+            transform.position = navMeshHit.position;
+        }
+    }
+
     /// <summary>
     /// Start is called before the first frame update
     /// </summary>
