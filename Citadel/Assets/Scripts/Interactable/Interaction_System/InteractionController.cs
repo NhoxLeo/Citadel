@@ -36,6 +36,7 @@ namespace VHS
         public LayerMask bulletLayers;
         public LayerMask punchLayers;
         public GameObject backupAudioManager;
+        public HUDController hudController;
 
         [Space, Header("Storage")]
         public GameObject currentInteractingObject;
@@ -62,6 +63,8 @@ namespace VHS
         private float m_holdTimer = 0f;
 
         private Coroutine regenCoroutine;
+        private bool waitingToUpdateUI;
+        private WeaponController newWeapon;
 
         #endregion
 
@@ -223,6 +226,38 @@ namespace VHS
                     StartCoroutine(PlayerDie());
                 }
             }
+
+            if(switchWeaponLock)
+            {
+                waitingToUpdateUI = true;
+            }
+            else
+            {
+                if(waitingToUpdateUI)
+                {
+                    newWeapon = weaponStorge[currentWeaponIndex].GetComponent<WeaponController>();
+                    hudController.DoUiFade(HUDController.FadeState.IN);
+                    waitingToUpdateUI = false;
+                }
+                else
+                {
+                    if(newWeapon.weaponParams.weaponType == Weapon.WeaponType.Melee)
+                    {
+                        hudController.UpdateWeaponInfo("N/A", "   ");
+                    }
+                    else
+                    {
+                        if (!newWeapon.weaponParams.doesNeedReload)
+                        {
+                            hudController.UpdateWeaponInfo((newWeapon.totalRounds / newWeapon.weaponParams.totalRoundsPerShot).ToString(),"   ");
+                        }
+                        else
+                        {
+                            hudController.UpdateWeaponInfo(newWeapon.totalRounds.ToString(), newWeapon.currentLoadedRounds.ToString());
+                        }
+                    }
+                }
+            }
         }
         #endregion
 
@@ -324,6 +359,11 @@ namespace VHS
                         currentWeapon = weaponStorge[currentWeaponIndex];
                         currentWeapon.SetActive(true);
                     }
+
+                    if (newWeapon == null)
+                    {
+                        newWeapon = currentWeapon.GetComponent<WeaponController>();
+                    }
                 }
             }
         }
@@ -350,6 +390,7 @@ namespace VHS
         {
             if (!hasPlayerDied)
             {
+                hudController.DoUiFade(HUDController.FadeState.IN);
                 playerHealth -= damage;
                 GameVars.instance.totalDamageTaken += damage;
                 if (playerDamageAudio)
@@ -428,6 +469,7 @@ namespace VHS
 
         public void AddWeapon(GameObject newWeapon)
         {
+            hudController.DoUiFade(HUDController.FadeState.IN);
             GameObject foundWeapon = SearchForWeapon(newWeapon);
             if (!foundWeapon)
             {

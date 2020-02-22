@@ -23,9 +23,9 @@ public class WeaponController : MonoBehaviour
     public bool isMelee;
     [HideInInspector]
     public int totalRounds;
+    [HideInInspector]
+    public int currentLoadedRounds;
     private FirstPersonController fpsController;
-    private int currentLoadedRounds;
-  
 
     /// <summary>
     /// Conditional Hide Inspector Tools
@@ -81,6 +81,7 @@ public class WeaponController : MonoBehaviour
     {
         if(weaponState == WeaponState.Default)
         {
+            InteractionController.instance.hudController.DoUiFade(HUDController.FadeState.IN);
             if (weaponParams.weaponType != Weapon.WeaponType.Melee)
             {
                 if (currentLoadedRounds > 0 && weaponParams.doesNeedReload)
@@ -112,6 +113,7 @@ public class WeaponController : MonoBehaviour
 
     public void OnReload()
     {
+        InteractionController.instance.hudController.DoUiFade(HUDController.FadeState.IN);
         if (weaponState == WeaponState.Default)
         {
             if (weaponParams.weaponType == Weapon.WeaponType.Ranged)
