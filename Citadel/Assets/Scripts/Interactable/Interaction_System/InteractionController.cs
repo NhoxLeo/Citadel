@@ -186,7 +186,7 @@ namespace VHS
                 {
                     ChangeWeapon(-1);
                 }
-                else if (Input.GetKeyDown(KeyCode.Q) && !switchingWeapons)
+                else if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_QUICKCYCLE)) && !switchingWeapons)
                 {
                     ChangeWeapon(1);
                 }

@@ -125,6 +125,7 @@ public class GameVars : MonoBehaviour
 
     private void OnLevelWasLoaded(int level)
     {
+        isPaused = false;
         firstTimeSettings = true;
         if (!wasLevelBeaten)
         {

@@ -7,13 +7,14 @@ public class PauseMenu : MonoBehaviour
     public GameObject PauseMenuParent;
     public GameObject Main;
     public GameObject Settings;
+    public GameObject Controls;
 
     public GameObject FadeToBlack;
     public MenuState menuState = MenuState.Disabled;
 
     private AudioSource[] audioSources;
 
-    public enum MenuState { Disabled, Main, ToMenu, Settings}
+    public enum MenuState { Disabled, Main, ToMenu, Settings, Controls}
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class PauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         Settings.SetActive(false);
+        Controls.SetActive(false);
         PauseMenuParent.SetActive(false);
         PauseMenuParent.transform.GetChild(1).GetChild(0).localScale = Vector3.one;
     }
@@ -28,7 +30,7 @@ public class PauseMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && menuState != MenuState.Controls)
         {
             if (Cursor.lockState == CursorLockMode.Locked)
             {
@@ -66,6 +68,8 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
+        UpdatePrefData();
+
         UpdateState(MenuState.Disabled);
         Time.timeScale = 1;
     }
@@ -97,6 +101,11 @@ public class PauseMenu : MonoBehaviour
         UpdateState(MenuState.Main);
     }
 
+    public void ToControls()
+    {
+        UpdateState(MenuState.Controls);
+    }
+
     public void ToSettings()
     {
         UpdateState(MenuState.Settings);
@@ -119,15 +128,24 @@ public class PauseMenu : MonoBehaviour
             menuState = newState;
             if (newState == MenuState.Main)
             {
+                Controls.SetActive(false);
                 Settings.SetActive(false);
 
                 PauseMenuParent.SetActive(true);
                 Main.SetActive(true);
+
             }
             else if (newState == MenuState.Settings)
             {
                 Main.SetActive(false);
                 Settings.SetActive(true);
+                Controls.SetActive(false);
+            }
+            else if (newState == MenuState.Controls)
+            {
+                Main.SetActive(false);
+                Settings.SetActive(false);
+                Controls.SetActive(true);
             }
             else if (newState == MenuState.ToMenu)
             {
@@ -143,4 +161,9 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
+    public void UpdatePrefData()
+    {
+        GameVars.instance.saveManager.UpdatePrefData();
+    }
+
 }

@@ -188,5 +188,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e7a64f455afa5e4fa8e1e4e797af0f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  savePath: 
-  levelsUnlockStatus: 
+  savePath: SaveData.txt
+  prefPath: PrefData.txt
+  levelsUnlockStatus: 000000000000
+  INPUT_FORWARD: W
+  INPUT_LEFT: A
+  INPUT_BACKWARDS: S
+  INPUT_RIGHT: D
+  INPUT_CROUCH: C
+  INPUT_SPRINT: LeftShift
+  INPUT_JUMP: Space
+  INPUT_USE: E
+  INPUT_RELOAD: R
+  INPUT_SHOOT: Mouse0
+  INPUT_QUICKCYCLE: Q
+  hasReadData: 0

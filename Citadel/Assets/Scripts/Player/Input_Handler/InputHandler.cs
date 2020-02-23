@@ -39,8 +39,8 @@ namespace VHS
         {
             if (InteractionController.instance.hasPlayerDied == false && !GameVars.instance.isPaused)
             {
-                interactionInputData.InteractedClicked = Input.GetKeyDown(KeyCode.E);
-                interactionInputData.InteractedReleased = Input.GetKeyUp(KeyCode.E);
+                interactionInputData.InteractedClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_USE));
+                interactionInputData.InteractedReleased = Input.GetKeyUp((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_USE));
             }
             else
             {
@@ -57,15 +57,15 @@ namespace VHS
 
                 if (InteractionController.instance.hasPlayerDied == false)
                 {
-                    cameraInputData.ZoomClicked = Input.GetMouseButtonDown(0);
+                    cameraInputData.ZoomClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SHOOT));
                 }
-                cameraInputData.ZoomReleased = Input.GetMouseButtonUp(0);
+                cameraInputData.ZoomReleased = Input.GetKeyUp((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SHOOT));
 
                 if (InteractionController.instance.hasPlayerDied == false)
                 {
-                    cameraInputData.ReloadClicked = Input.GetKeyDown(KeyCode.R);
+                    cameraInputData.ReloadClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_RELOAD));
                 }
-                cameraInputData.ReloadReleased = Input.GetKeyUp(KeyCode.R);
+                cameraInputData.ReloadReleased = Input.GetKeyUp((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_RELOAD));
             }
             else
             {
@@ -93,11 +93,35 @@ namespace VHS
                 {
                     previousInputs = previousInputs.Remove(0, 1);
                 }
-                movementInputData.InputVectorX = Input.GetAxisRaw("Horizontal");
-                movementInputData.InputVectorY = Input.GetAxisRaw("Vertical");
 
-                movementInputData.RunClicked = Input.GetKey(KeyCode.LeftShift);
-                movementInputData.RunReleased = Input.GetKeyUp(KeyCode.LeftShift);
+                if(Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_FORWARD)))
+                {
+                    movementInputData.InputVectorY = 1;
+                }
+                else if (Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_BACKWARDS)))
+                {
+                    movementInputData.InputVectorY = -1;
+                }
+                else
+                {
+                    movementInputData.InputVectorY = 0;
+                }
+
+                if (Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_RIGHT)))
+                {
+                    movementInputData.InputVectorX = 1;
+                }
+                else if (Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_LEFT)))
+                {
+                    movementInputData.InputVectorX = -1;
+                }
+                else
+                {
+                    movementInputData.InputVectorX = 0;
+                }
+
+                movementInputData.RunClicked = Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SPRINT));
+                movementInputData.RunReleased = Input.GetKeyUp((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SPRINT));
 
                 if (movementInputData.RunClicked && fpsController.m_isGrounded && !movementInputData.IsCrouching)
                     movementInputData.IsRunning = true;
@@ -105,8 +129,8 @@ namespace VHS
                 if (movementInputData.RunReleased || movementInputData.IsCrouching)
                     movementInputData.IsRunning = false;
 
-                movementInputData.JumpClicked = Input.GetKeyDown(KeyCode.Space);
-                movementInputData.CrouchClicked = Input.GetKeyDown(KeyCode.C);
+                movementInputData.JumpClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_JUMP));
+                movementInputData.CrouchClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_CROUCH));
             }
             else
             {

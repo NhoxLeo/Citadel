@@ -23,7 +23,7 @@ namespace VHS
         {
             if(picked && joint)
             {
-                if (Input.GetKey(KeyCode.E))
+                if (Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_USE)))
                 {
                     DrawGrabbing();
                     OnPickUp();

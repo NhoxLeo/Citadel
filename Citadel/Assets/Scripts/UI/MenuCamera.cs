@@ -79,4 +79,9 @@ public class MenuCamera : MonoBehaviour
         transform.SetParent(cameraPositions[index]);
         timer = 0;
     }
+
+    public void UpdatePrefData()
+    {
+        GameVars.instance.saveManager.UpdatePrefData();
+    }
 }
