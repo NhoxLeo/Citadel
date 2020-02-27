@@ -61,6 +61,23 @@ namespace VHS
         [Slider(0.01f, 1f)] [SerializeField] private float raySphereRadius = 0.1f;
         #endregion
 
+        #region Gravity
+        [Space, Header("Sound Settings")]
+        [SerializeField] private AudioSource movementAudioSource;
+        [SerializeField] private AudioClip stepSound_Default;
+        [SerializeField] private AudioClip stepSound_Water;
+        [SerializeField] private AudioClip dropSound_Default;
+        [SerializeField] private AudioClip dropSound_Water;
+
+        [SerializeField] private float stepSoundDelay = 1f;
+        [SerializeField] private float minFallTime = 1f;
+        private float walkingTimer;
+        private bool canPlayWalkingSound;
+        private Coroutine walkingSoundCoroutine;
+        private GameObject groundedObject;
+        private bool isLerpingFadeOut, isLerpingFadeIn;
+        #endregion
+
         #region Wall Settings
         [Space, Header("Check Wall Settings")]
         [SerializeField] private LayerMask obstacleLayers = ~0;
@@ -185,6 +202,88 @@ namespace VHS
                 ApplyGravity();
                 ApplyMovement();
 
+                if (m_currentSpeed >= walkSpeed && m_isGrounded)
+                {
+                    walkingTimer += Time.deltaTime;
+                    if (walkingTimer >= stepSoundDelay)
+                    {
+                        canPlayWalkingSound = true;
+                    }
+                }
+                else
+                {
+                    walkingTimer = 0;
+                    canPlayWalkingSound = false;
+                }
+
+                if (canPlayWalkingSound && !GameVars.instance.isPaused && !InteractionController.instance.hasPlayerDied)
+                {
+                    if (groundedObject.tag == "Untagged")
+                    {
+                        if(movementAudioSource.clip != stepSound_Default)
+                        {
+                            movementAudioSource.clip = stepSound_Default;
+                        }
+                    }
+                    else if (groundedObject.tag == "WaterGround")
+                    {
+                        if (movementAudioSource.clip != stepSound_Water)
+                        {
+                            movementAudioSource.clip = stepSound_Water;
+                        }
+                    }
+
+                    if (!movementAudioSource.isPlaying)
+                    {
+                        if (isLerpingFadeOut)
+                        {
+                            StopCoroutine(walkingSoundCoroutine);
+                            walkingSoundCoroutine = null;
+                            isLerpingFadeOut = false;
+                        }
+
+                        movementAudioSource.volume = 0.5f;
+                        movementAudioSource.Play();
+                    }
+                    else
+                    {
+                        if (isLerpingFadeOut)
+                        {
+                            if (canPlayWalkingSound)
+                            {
+                                StopCoroutine(walkingSoundCoroutine);
+                                isLerpingFadeOut = false;
+                                movementAudioSource.volume = 0.5f;
+                                movementAudioSource.Play();
+                            }
+                        }
+                        else
+                        {
+                            movementAudioSource.volume = 0.5f;
+                        }
+                    }
+
+                    if(m_currentSpeed >= runSpeed)
+                    {
+                        movementAudioSource.pitch = 1.5f;
+                    }
+                    else
+                    {
+                        movementAudioSource.pitch = 0.8f;
+                    }
+                }
+                else
+                {
+                    if(movementAudioSource.isPlaying)
+                    {
+                        if (!isLerpingFadeOut)
+                        {
+                            walkingSoundCoroutine = StartCoroutine(FadeOutAudioTrack(movementAudioSource, 1));
+                        }
+                        //movementAudioSource.Stop();
+                    }
+                }
+
                 m_previouslyGrounded = m_isGrounded;
             }
         }
@@ -228,6 +327,49 @@ namespace VHS
             m_headBob.CurrentStateHeight = m_initCamHeight;
 
             m_walkRunSpeedDifference = runSpeed - walkSpeed;
+        }
+
+        public IEnumerator FadeInAudioTrack(AudioSource audioSource, float totalVolume, float lerpDuration)
+        {
+            float t = 0;
+
+            while (audioSource.volume != totalVolume)
+            {
+                t += Time.deltaTime / lerpDuration;
+                audioSource.volume = Mathf.Lerp(audioSource.volume, totalVolume, t);
+                yield return null;
+            }
+            isLerpingFadeIn = false;
+        }
+
+        public IEnumerator FadeOutAudioTrack(AudioSource audioSource, float lerpDuration)
+        {
+            isLerpingFadeOut = true;
+            float defaultVolume = audioSource.volume;
+            float t = 0;
+            float currentVolume = audioSource.volume;
+
+            while (currentVolume != 0)
+            {
+                if (audioSource != null)
+                {
+                    t += Time.deltaTime / lerpDuration;
+                    audioSource.volume = Mathf.Lerp(audioSource.volume, 0, t);
+                    audioSource.pitch = Mathf.Lerp(audioSource.pitch, 0.8f, t);
+                    currentVolume = audioSource.volume;
+                }
+                else
+                {
+                    currentVolume = 0;
+                }
+                yield return null;
+            }
+
+            if (audioSource)
+            {
+                audioSource.Stop();
+            }
+            isLerpingFadeOut = false;
         }
         #endregion
 
@@ -295,6 +437,11 @@ namespace VHS
             else
             {
                 m_isGrounded = _hitGround ? true : false;
+            }
+
+            if(m_isGrounded)
+            {
+                groundedObject = m_hitInfo.transform.gameObject;
             }
         }
 
@@ -626,6 +773,18 @@ namespace VHS
         {
             if (m_characterController.isGrounded) // if we would use our own m_isGrounded it would not work that good, this one is more precise
             {
+                if(m_inAirTimer >= minFallTime)
+                {
+                    if(groundedObject.tag == "Untagged")
+                    {
+                        GameVars.instance.audioManager.PlaySFX(dropSound_Default, 0.2f, transform.position);
+                    }
+                    else if (groundedObject.tag == "WaterGround")
+                    {
+                        GameVars.instance.audioManager.PlaySFX(dropSound_Water, 0.2f, transform.position);
+                    }
+                }
+
                 m_inAirTimer = 0f;
                 m_finalMoveVector.y = -stickToGroundForce;
 
