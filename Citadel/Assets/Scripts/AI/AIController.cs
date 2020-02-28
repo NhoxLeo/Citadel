@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VHS;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class AIController : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class AIController : MonoBehaviour
     public GameObject dieState;
     public GameObject deadState;
     public GameObject attackParticle;
+
+    [Header("AI Death Events")]
+    [Space(10)]
+    public List<UnityEvent> deathEvents;
 
     [Header("Debug")]
     [Space(10)]
@@ -593,6 +598,12 @@ public class AIController : MonoBehaviour
                 this.launchVector = launchVector;
                 isDead = true;
                 SwitchState(AIState.Dying);
+
+                // Executing the death events
+                foreach (UnityEvent evt in deathEvents)
+                {
+                    evt.Invoke();
+                }
             }
 
             currentAIHealth -= damageToTake;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Breakable : MonoBehaviour
 {
@@ -22,10 +23,14 @@ public class Breakable : MonoBehaviour
     public AudioClip hitSound; //Sound played on hit but not break
     public GameObject breakEffect; //Particle spawned on break
 
-    [Header("Brakable Drops")]
+    [Header("Breakable Drops")]
     [Space(10)]
     public GameObject[] objectGibs; //Array of object gibs spawned when object is broken
     public List<GameObject> objectContents; //What the object contains and will spawn after desctruction
+
+    [Header("Breakable Events")]
+    [Space(10)]
+    public List<UnityEvent> breakEvents;
 
     // Private & Stored variables
     [HideInInspector]
@@ -142,6 +147,12 @@ public class Breakable : MonoBehaviour
             else
             {
                 SingleRandomSpawn();
+            }
+
+            // Perform all break events
+            foreach (UnityEvent evt in breakEvents)
+            {
+                evt.Invoke();
             }
 
             //Delete Self
