@@ -643,7 +643,7 @@ public class AIController : MonoBehaviour
                 }
                 else
                 {
-                    rayCast = Physics.SphereCast(transform.position, enemyParams.attackRadius, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
+                    rayCast = Physics.SphereCast(transform.position, 0.5f, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
                 }
 
                 if (rayCast)
