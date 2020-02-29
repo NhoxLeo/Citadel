@@ -25,10 +25,6 @@ public class AIController : MonoBehaviour
     public GameObject deadState;
     public GameObject attackParticle;
 
-    [Header("AI Death Events")]
-    [Space(10)]
-    public List<UnityEvent> deathEvents;
-
     [Header("Debug")]
     [Space(10)]
     public AIState aiState = AIState.Idle;
@@ -312,6 +308,7 @@ public class AIController : MonoBehaviour
                 bool hasArrived = false;
                 if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
                 {
+                    yield return new WaitForSeconds(Random.Range(0.2f, 1f));
                     EnemyAttack();
                     yield return new WaitForSeconds(enemyParams.attackStateLength);
                     UpdateSprite(idleState);
@@ -528,6 +525,31 @@ public class AIController : MonoBehaviour
         }
     }
 
+    public void UpdateNearbyAI()
+    {
+        RaycastHit[] hitInfo;
+
+        hitInfo = Physics.SphereCastAll(transform.position, enemyParams.viewRange, (player.transform.position - transform.position), enemyParams.attackRange);
+
+        for (int i = 0; i < hitInfo.Length; i++)
+        {
+            if (hitInfo[i].transform.gameObject.layer == 12)
+            {
+                if (hitInfo[i].transform.parent)
+                {
+                    AIController controller = hitInfo[i].transform.parent.gameObject.GetComponent<AIController>();
+                    if (controller)
+                    {
+                        controller.playerSpottedTimer = controller.enemyParams.playerRememberTime;
+                        controller.transform.rotation = Quaternion.LookRotation(player.transform.position - controller.transform.position, Vector3.up);
+                        controller.transform.rotation = Quaternion.Euler(0, controller.transform.rotation.eulerAngles.y, 0);
+                    }
+                }
+            }
+        }
+
+    }
+
     /// <summary>
     /// If the AI doesn't see the player, this timer will tick down
     /// </summary>
@@ -571,7 +593,10 @@ public class AIController : MonoBehaviour
             if (damageCoroutine == null)
             {
                 navMeshAgent.SetDestination(transform.position);
-                navMeshAgent.velocity = Vector3.zero;
+                navMeshAgent.ResetPath();
+
+                launchVector = new Vector3(launchVector.x, 0, launchVector.z);
+                navMeshAgent.velocity = launchVector/2500;
 
                 //StopAllCoroutines();
                 //attackingCoroutine = null;
@@ -583,6 +608,7 @@ public class AIController : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                 transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
+                UpdateNearbyAI();
             }
 
             if (currentAIHealth > damageToTake)
@@ -598,12 +624,6 @@ public class AIController : MonoBehaviour
                 this.launchVector = launchVector;
                 isDead = true;
                 SwitchState(AIState.Dying);
-
-                // Executing the death events
-                foreach (UnityEvent evt in deathEvents)
-                {
-                    evt.Invoke();
-                }
             }
 
             currentAIHealth -= damageToTake;

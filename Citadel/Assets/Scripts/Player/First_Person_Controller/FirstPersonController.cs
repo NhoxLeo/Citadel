@@ -66,8 +66,11 @@ namespace VHS
         [SerializeField] private AudioSource movementAudioSource;
         [SerializeField] private AudioClip stepSound_Default;
         [SerializeField] private AudioClip stepSound_Water;
+        [SerializeField] private AudioClip stepSound_Sand;
+
         [SerializeField] private AudioClip dropSound_Default;
         [SerializeField] private AudioClip dropSound_Water;
+        [SerializeField] private AudioClip dropSound_Sand;
 
         [SerializeField] private float stepSoundDelay = 1f;
         [SerializeField] private float minFallTime = 1f;
@@ -230,6 +233,13 @@ namespace VHS
                         if (movementAudioSource.clip != stepSound_Water)
                         {
                             movementAudioSource.clip = stepSound_Water;
+                        }
+                    }
+                    else if (groundedObject.tag == "SandGround")
+                    {
+                        if (movementAudioSource.clip != stepSound_Sand)
+                        {
+                            movementAudioSource.clip = stepSound_Sand;
                         }
                     }
 
@@ -782,6 +792,10 @@ namespace VHS
                     else if (groundedObject.tag == "WaterGround")
                     {
                         GameVars.instance.audioManager.PlaySFX(dropSound_Water, 0.2f, transform.position);
+                    }
+                    else if (groundedObject.tag == "SandGround")
+                    {
+                        GameVars.instance.audioManager.PlaySFX(dropSound_Sand, 0.2f, transform.position);
                     }
                 }
 
