@@ -78,10 +78,6 @@ namespace VHS
         [ConditionalHide("useAudio", true)]
         public ContentMode audioMode = ContentMode.IndexIncrement;
 
-        [Tooltip("The delay between each sound effect being played if playAudioAtOnce is false")]
-        [ConditionalHide("useAudio", true)]
-        public float audioDelay;
-
         [Tooltip("List of available sound effects (Default will play all sound effects")]
         [ConditionalHide("useAudio", true)]
         [Space(5)]
@@ -451,7 +447,7 @@ namespace VHS
                             if (audioMode == ContentMode.RandomChoice)
                             {
                                 int chosenAudioIndex = Random.Range(0, audio.audioList.Count);
-                                SingleAudioPlay(audio.audioList[chosenAudioIndex]);
+                                StartCoroutine(SingleAudioPlay(audio.audioList[chosenAudioIndex]));
                                 audioReady = true;
                             }
                             else
@@ -626,7 +622,7 @@ namespace VHS
             if (indexOfAudioList >= 0 && audioMode != ContentMode.AllAtOnce)
             {
                 audioReady = false;
-                SingleAudioPlay(audio.audioList[indexOfAudioList]);
+                StartCoroutine(SingleAudioPlay(audio.audioList[indexOfAudioList]));
                 indexOfAudioList--;
 
                 if (indexOfAudioList > -1)
@@ -748,8 +744,9 @@ namespace VHS
         /// Plays a single audio clip from a given reaction audio with its included parameters
         /// </summary>
         /// <param name="reactionAudio"></param>
-        private void SingleAudioPlay(ReactionAudio reactionAudio)
+        private IEnumerator SingleAudioPlay(ReactionAudio reactionAudio)
         {
+            yield return new WaitForSeconds(reactionAudio.audioDelay);
             if (reactionAudio.audioClip)
             {
                 GameVars.instance.audioManager.PlaySFX(reactionAudio.audioClip, reactionAudio.volume, transform.position);
@@ -1064,6 +1061,8 @@ namespace VHS
             #region Audio Source Settings
             [Tooltip("The audioclip to be played")]
             public AudioClip audioClip;
+            [Tooltip("The delay before this sound effect will be played")]
+            public float audioDelay;
             [Tooltip("The volume this audio will be played at (Default 1.0f)")]
             [Range(0.0f, 1.0f)]
             public float volume = 1.0f;

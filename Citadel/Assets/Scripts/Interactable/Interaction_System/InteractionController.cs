@@ -77,7 +77,7 @@ namespace VHS
             {
                 instance = this;
             }
-            m_cam = FindObjectOfType<Camera>();
+            m_cam = Camera.main;
             
             if(weaponStorge == null)
             {

@@ -4,18 +4,32 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public ProjectileType projectileType = ProjectileType.Instant;
     public GameObject damagePrefab;
     public LayerMask collisionLayers;
     public float maxExistanceTime = 3;
     public float damage = 100;
     public float sizeOfDamage = 1;
+    public bool lockRotation;
 
     [HideInInspector]
     public float hitForce;
+    public enum ProjectileType { Instant, Timed}
+
+    private Quaternion targetRotation;
 
     private void OnEnable()
     {
+        targetRotation = transform.rotation;
         StartCoroutine(ProjectileAlive());
+    }
+
+    private void Update()
+    {
+        if(lockRotation)
+        {
+            transform.rotation = targetRotation;
+        }
     }
 
     public IEnumerator ProjectileAlive()
@@ -26,20 +40,23 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision col)
     {
-        if (collisionLayers == (collisionLayers | (1 << col.gameObject.layer)))
+        if (projectileType == ProjectileType.Instant)
         {
-            Rigidbody colRigid = col.gameObject.GetComponent<Rigidbody>();
-            if(colRigid)
+            if (collisionLayers == (collisionLayers | (1 << col.gameObject.layer)))
             {
-                colRigid.AddForce(transform.forward * GetComponent<Rigidbody>().velocity.magnitude);
-            }
+                Rigidbody colRigid = col.gameObject.GetComponent<Rigidbody>();
+                if (colRigid)
+                {
+                    colRigid.AddForce(transform.forward * GetComponent<Rigidbody>().velocity.magnitude);
+                }
 
-            Breakable hitBreakable = col.gameObject.GetComponent<Breakable>();
-            if (hitBreakable)
-            {
-                hitBreakable.Impact(col.contacts[0].normal, damage);
+                Breakable hitBreakable = col.gameObject.GetComponent<Breakable>();
+                if (hitBreakable)
+                {
+                    hitBreakable.Impact(col.contacts[0].normal, damage);
+                }
+                ActivateProjectile(col.contacts[0].normal);
             }
-            ActivateProjectile(col.contacts[0].normal);
         }
     }
 

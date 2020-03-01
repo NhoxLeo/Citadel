@@ -41,6 +41,8 @@ public class Weapon : ScriptableObject
     public int totalRoundsPerShot = 1;
     [ConditionalHide("isMultiShot", true)]
     public float spreadMaxDivation = 0;
+    [ConditionalHide("isProjectile", true)]
+    public float instantiationDistance = 0;
 
     [Header("Animation Settings")]
     public float attackStateLength = 0.2f;
@@ -48,6 +50,7 @@ public class Weapon : ScriptableObject
     public float reloadStateLength = 2;
     [ConditionalHide("isMelee", true, true)]
     public float shellEjectionDelay = 0;
+    public float attackHitDelay = 0;
 
     [HideInInspector]
     public bool isMelee, isProjectile, isRanged;

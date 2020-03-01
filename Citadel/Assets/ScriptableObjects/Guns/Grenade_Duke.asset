@@ -10,32 +10,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ee8ff7cdb18d43b42b1664d0647658a3, type: 3}
-  m_Name: RocketLauncher_Duke
+  m_Name: Grenade_Duke
   m_EditorClassIdentifier: 
-  weaponName: Rocket Launcher
+  weaponName: Grenade
   weaponType: 2
-  attackSound: {fileID: 8300000, guid: a841657305fc7974ca3eab73c88c1b9b, type: 3}
+  attackSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
   reloadSound: {fileID: 0}
   missSound: {fileID: 0}
   equipSound: {fileID: 8300000, guid: a918213bd33157e4394e776fdc234026, type: 3}
-  projectilePrefab: {fileID: 4615672490422470520, guid: 810ab6532d6a94c45936d4e553f9a14c,
+  projectilePrefab: {fileID: 8161607144955722702, guid: d69bb833d44a47646b02d6b47d5d1807,
     type: 3}
   attackDamage: 100
   attackRange: 30
   attackRadius: 2
-  attackForce: 4000
+  attackForce: 4500
   doesNeedReload: 0
   reloadOnShot: 1
   roundsPerClip: 8
   totalAmmoOnInitialPickup: 8
-  totalAmmoOnAmmoPickup: 8
+  totalAmmoOnAmmoPickup: 5
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
-  instantiationDistance: 1
-  attackStateLength: 0.5
+  instantiationDistance: 0.5
+  attackStateLength: 0.7
   reloadStateLength: 1.2
   shellEjectionDelay: 0.2
-  attackHitDelay: 0.2
+  attackHitDelay: 0.18
   isMelee: 0
   isProjectile: 1
   isRanged: 0

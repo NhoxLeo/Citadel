@@ -193,7 +193,7 @@ public class WeaponController : MonoBehaviour
         {
             Instantiate(attackParticle, transform.position, Quaternion.identity);
         }
-        Damage();
+        StartCoroutine(Damage());
         yield return new WaitForSeconds(weaponParams.attackStateLength);
         if (weaponParams.reloadOnShot)
         {
@@ -213,8 +213,10 @@ public class WeaponController : MonoBehaviour
         newShell.SetActive(true);
     }
 
-    public void Damage()
+    public IEnumerator Damage()
     {
+        yield return new WaitForSeconds(weaponParams.attackHitDelay);
+
         RaycastHit hitInfo = new RaycastHit();
         bool rayCast = false;
 
@@ -297,7 +299,7 @@ public class WeaponController : MonoBehaviour
     public IEnumerator FireProjectile()
     {
         yield return new WaitForSeconds(weaponParams.shellEjectionDelay);
-        GameObject projectile = Instantiate(weaponParams.projectilePrefab, transform.position, Camera.main.transform.rotation);
+        GameObject projectile = Instantiate(weaponParams.projectilePrefab, transform.position + (transform.forward * weaponParams.instantiationDistance), Camera.main.transform.rotation);
         projectile.GetComponent<Projectile>().damage = weaponParams.attackDamage;
         projectile.GetComponent<Projectile>().hitForce = weaponParams.attackForce;
         projectile.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * weaponParams.attackForce);
