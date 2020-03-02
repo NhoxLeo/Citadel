@@ -107,7 +107,7 @@ NavMeshSettings:
     serializedVersion: 2
     agentTypeID: 0
     agentRadius: 0.65
-    agentHeight: 2
+    agentHeight: 1.8
     agentSlope: 45
     agentClimb: 0.7
     ledgeDropHeight: 0
@@ -11016,10 +11016,10 @@ MonoBehaviour:
       debugColor: {r: 0, g: 0, b: 1, a: 0.5254902}
       NetworkedItem: 0
   audioMode: 0
-  audioDelay: 0
   audio:
     audioList:
     - audioClip: {fileID: 8300000, guid: a42c6f85173a03f44a6301bd94fa1c02, type: 3}
+      audioDelay: 0
       volume: 0.494
       priority: 128
       pitch: 1
@@ -34127,10 +34127,10 @@ MonoBehaviour:
   particles:
     instantiationList: []
   audioMode: 0
-  audioDelay: 0
   audio:
     audioList:
     - audioClip: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
+      audioDelay: 0
       volume: 0.494
       priority: 128
       pitch: 1
@@ -51810,6 +51810,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.0143216
       objectReference: {fileID: 0}
+    - target: {fileID: 6323838355630787738, guid: 930d8028d62c6df4f9fef745d893b31d,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6323838355630787737, guid: 930d8028d62c6df4f9fef745d893b31d,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -51854,11 +51859,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -26.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 6323838355630787738, guid: 930d8028d62c6df4f9fef745d893b31d,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 930d8028d62c6df4f9fef745d893b31d, type: 3}

@@ -478,7 +478,7 @@ namespace VHS
 
             if (movementInputData.IsCrouching)
             {
-                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, (m_initHeight*(crouchPercent*2)));
+                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, (m_initHeight*(crouchPercent*1.6f)));
             }
             else
             {

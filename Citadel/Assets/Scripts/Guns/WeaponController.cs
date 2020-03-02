@@ -189,7 +189,7 @@ public class WeaponController : MonoBehaviour
         {
             totalRounds -= weaponParams.totalRoundsPerShot;
         }
-        if(attackParticle)
+        if(weaponParams.attackHitDelay == 0 && attackParticle)
         {
             Instantiate(attackParticle, transform.position, Quaternion.identity);
         }
@@ -216,6 +216,11 @@ public class WeaponController : MonoBehaviour
     public IEnumerator Damage()
     {
         yield return new WaitForSeconds(weaponParams.attackHitDelay);
+
+        if (weaponParams.attackHitDelay > 0 && attackParticle)
+        {
+            Instantiate(attackParticle, transform.position, Quaternion.identity);
+        }
 
         RaycastHit hitInfo = new RaycastHit();
         bool rayCast = false;

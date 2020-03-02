@@ -58,6 +58,7 @@ namespace VHS
                 if (InteractionController.instance.hasPlayerDied == false)
                 {
                     cameraInputData.ZoomClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SHOOT));
+                    cameraInputData.ZoomHeld = Input.GetKey((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SHOOT));
                 }
                 cameraInputData.ZoomReleased = Input.GetKeyUp((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_SHOOT));
 
