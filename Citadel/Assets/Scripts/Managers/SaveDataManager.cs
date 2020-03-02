@@ -22,6 +22,7 @@ public class SaveDataManager : MonoBehaviour
     public string INPUT_RELOAD = "R";
     public string INPUT_SHOOT = "Mouse0";
     public string INPUT_QUICKCYCLE = "Q";
+    public string INPUT_MAP = "M";
 
     public bool hasReadData = false;
 
@@ -132,6 +133,8 @@ public class SaveDataManager : MonoBehaviour
                 INPUT_SHOOT = inp_ln; //Shoot
                 inp_ln = reader.ReadLine(); //Read In Pref Data
                 INPUT_QUICKCYCLE = inp_ln; //Quick Cycle
+                inp_ln = reader.ReadLine(); //Read In Pref Data
+                INPUT_MAP = inp_ln; //MAP
 
                 inp_ln = reader.ReadLine(); //Read In Pref Data
                 if(SlidersUI.instance)                
@@ -202,6 +205,8 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(INPUT_RELOAD); //Reload
                 writer.WriteLine(INPUT_SHOOT); //Shoot
                 writer.WriteLine(INPUT_QUICKCYCLE); //Quick Cycle
+                writer.WriteLine(INPUT_MAP); //Map
+
                 writer.WriteLine(GameVars.instance.sfxVolumeScale); //SFX Volume
                 writer.WriteLine(GameVars.instance.musicVolumeScale); //Music Volume
                 writer.Close();
@@ -256,6 +261,8 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(INPUT_RELOAD); //Reload
                 writer.WriteLine(INPUT_SHOOT); //Shoot
                 writer.WriteLine(INPUT_QUICKCYCLE); //Quick Cycle
+                writer.WriteLine(INPUT_MAP); //Map
+
                 writer.WriteLine(GameVars.instance.sfxVolumeScale); //SFX Volume
                 writer.WriteLine(GameVars.instance.musicVolumeScale); //Music Volume
                 writer.Close();

@@ -13,6 +13,7 @@ TagManager:
   - DamageSound
   - WaterGround
   - SandGround
+  - LevelMap
   layers:
   - Default
   - TransparentFX
@@ -28,9 +29,9 @@ TagManager:
   - Interactable
   - Enemy
   - EnemyBounds
-  - 
-  - 
-  - 
+  - MapWalls
+  - MapPost
+  - FogOfWar
   - 
   - 
   - 

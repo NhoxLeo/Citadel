@@ -10,8 +10,10 @@ namespace VHS
 
             bool m_isRunning;
             bool m_isCrouching;
+            bool m_isMapOpen;
 
             bool m_crouchClicked;
+            bool m_mapClicked;
             bool m_jumpClicked;
 
             bool m_runClicked;
@@ -66,10 +68,23 @@ namespace VHS
                 get => m_runReleased;
                 set => m_runReleased = value;
             }
+
+        public bool IsMapOpen
+        {
+            get => m_isMapOpen;
+            set => m_isMapOpen = value;
+        }
+
+        public bool MapClicked
+        {
+            get => m_mapClicked;
+            set => m_mapClicked = value;
+        }
+
         #endregion
 
         #region Custom Methods
-            public void ResetInput()
+        public void ResetInput()
             {
                 m_inputVector = Vector2.zero;
                 

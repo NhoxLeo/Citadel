@@ -132,6 +132,9 @@ namespace VHS
 
                 movementInputData.JumpClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_JUMP));
                 movementInputData.CrouchClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_CROUCH));
+
+                movementInputData.MapClicked = Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_MAP));
+
             }
             else
             {

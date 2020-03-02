@@ -16,6 +16,8 @@ public class ControlsUI : MonoBehaviour
     public ButtonParent reloadButton;
     public ButtonParent shootButton;
     public ButtonParent quickCycleButton;
+    public ButtonParent mapButton;
+
 
     //[HideInInspector]
     public string newInput;
@@ -46,8 +48,9 @@ public class ControlsUI : MonoBehaviour
         uiElements.Add(reloadButton);
         uiElements.Add(shootButton);
         uiElements.Add(quickCycleButton);
+        uiElements.Add(mapButton);
 
-        for(int i = 0; i < uiElements.Count; i++)
+        for (int i = 0; i < uiElements.Count; i++)
         {
             uiElements[i].GetComponent<Button>().onClick.AddListener(UpdateInput);
         }
@@ -107,6 +110,7 @@ public class ControlsUI : MonoBehaviour
         reloadButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_RELOAD.ToUpper();
         shootButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_SHOOT.ToUpper();
         quickCycleButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_QUICKCYCLE.ToUpper();
+        mapButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_MAP.ToUpper();
     }
 
     public void GotInput()
@@ -158,6 +162,10 @@ public class ControlsUI : MonoBehaviour
                 else if (currentInput == shootButton)
                 {
                     GameVars.instance.saveManager.INPUT_SHOOT = newInput;
+                }
+                else if (currentInput == mapButton)
+                {
+                    GameVars.instance.saveManager.INPUT_MAP = newInput;
                 }
             }
 

@@ -258,7 +258,7 @@ public class WeaponController : MonoBehaviour
                         hitBreakable.Impact(-hitInfo.normal * weaponParams.attackForce, weaponParams.attackDamage);
                     }
 
-                    if (hitInfo.transform.gameObject.layer == 0 && weaponParams.weaponType == Weapon.WeaponType.Ranged)
+                    if ((hitInfo.transform.gameObject.layer == 0 || hitInfo.transform.gameObject.layer == 14) && weaponParams.weaponType == Weapon.WeaponType.Ranged)
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
                         bulletHole.transform.parent = hitInfo.transform;
