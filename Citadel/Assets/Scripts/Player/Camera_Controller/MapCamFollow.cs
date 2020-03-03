@@ -9,6 +9,7 @@ public class MapCamFollow : MonoBehaviour
     public Camera FogOfWarCam;
     public Camera MapRendererCam;
     public GameObject player;
+    public Shader unlitShader;
 
     private float startingY;
     private bool isSetUp;
@@ -18,6 +19,7 @@ public class MapCamFollow : MonoBehaviour
     void Start()
     {
         startingY = transform.position.y;
+        MapRendererCam.SetReplacementShader(unlitShader, "");
         StartCoroutine(Setup());
     }
 
@@ -48,15 +50,15 @@ public class MapCamFollow : MonoBehaviour
             firstTimeMoved = true;
             MapRendererCam.enabled = false;
             FogOfWarCam.clearFlags = CameraClearFlags.Color;
-            StartCoroutine(WaitToClear());
+            StartCoroutine(WaitToClear(FogOfWarCam));
         }
     }
 
-    private IEnumerator WaitToClear()
+    private IEnumerator WaitToClear(Camera renderCam)
     {
-        yield return new WaitUntil(() => FogOfWarCam.clearFlags == CameraClearFlags.Color);
-        yield return new WaitForSeconds(0.2f);
-        FogOfWarCam.clearFlags = CameraClearFlags.Depth;
+        yield return new WaitUntil(() => renderCam.clearFlags == CameraClearFlags.Color);
+        yield return new WaitForSeconds(0.1f);
+        renderCam.clearFlags = CameraClearFlags.Depth;
     }
 }
 

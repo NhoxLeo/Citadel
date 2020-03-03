@@ -54,9 +54,12 @@ Material:
     - _StencilWriteMask: 255
     - _Strength: 0.2
     - _UseUIAlphaClip: 0
+    - _slope: 0.507
+    - _thresh: 0.67
     m_Colors:
     - _ChromaKeyColor: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _MaskCol: {r: 0, g: 0, b: 0, a: 1}
     - _Specular: {r: 0, g: 0, b: 0, a: 0}
     - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _keyingColor: {r: 0, g: 0, b: 0, a: 1}

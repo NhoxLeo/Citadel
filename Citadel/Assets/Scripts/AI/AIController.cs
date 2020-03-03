@@ -382,8 +382,11 @@ public class AIController : MonoBehaviour
                 if (Vector3.Distance(transform.position, player.transform.position) > 6)
                 {
                     //Walk Closer Then Shoot
-                    attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
-                    yield return new WaitForSeconds(1 * enemyParams.agressiveness);
+                    if (enemyParams.agressiveness > 0)
+                    {
+                        attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
+                        yield return new WaitForSeconds(1 * enemyParams.agressiveness);
+                    }
                     if (attackingCoroutine != null)
                     {
                         StopCoroutine(attackingCoroutine);
@@ -409,11 +412,14 @@ public class AIController : MonoBehaviour
                     movingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, movingCoroutine));
                     if (enemyParams.agressiveness < 1)
                     {
-                        yield return new WaitForSeconds(10 * enemyParams.agressiveness);
-                        StopCoroutine(movingCoroutine);
-                        navMeshAgent.SetDestination(transform.position);
-                        navMeshAgent.velocity = Vector3.zero;
-                        movingCoroutine = null;
+                        if (enemyParams.agressiveness > 0)
+                        {
+                            yield return new WaitForSeconds(10 * enemyParams.agressiveness);
+                            StopCoroutine(movingCoroutine);
+                            navMeshAgent.SetDestination(transform.position);
+                            navMeshAgent.velocity = Vector3.zero;
+                            movingCoroutine = null;
+                        }
                     }
                 }
             }

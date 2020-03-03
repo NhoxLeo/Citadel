@@ -1,41 +1,44 @@
 ﻿Shader "Custom/ChromaKey" {
 
     Properties{
-      _MainTex("Base (RGB)", 2D) = "white" {}
-      _AlphaValue("Alpha Value", Range(0.0,1.0)) = 1.0
-      _Color("Color", Color) = (1,1,1,1)
-
+         _MainTex("Base(RGB)", 2D) = "white" {}
+         _thresh("Threshold", Range(0, 16)) = 0.8
+         _slope("Slope", Range(0, 1)) = 0.2
+         _keyingColor("Key Colour", Color) = (1,1,1,1)
     }
 
         SubShader{
-          Tags { "Queue" = "Transparent" "RenderType" = "Transparent" }
-          LOD 200
+            Tags {"Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent"}
+            LOD 100
 
-          CGPROGRAM
-          #pragma surface surf Lambert alpha
-          sampler2D _MainTex;
-          float _AlphaValue;
-          float4 _Color;
+            Lighting Off
+            ZWrite Off
+            AlphaTest Off
+            Blend SrcAlpha OneMinusSrcAlpha
 
-          struct Input {
-           float2 uv_MainTex;
-          };
-          void surf(Input IN, inout SurfaceOutput o) {
-           half4 c = tex2D(_MainTex, IN.uv_MainTex);
-           o.Emission = c.rgb;
+            Pass {
+                CGPROGRAM
+                    #pragma vertex vert_img
+                    #pragma fragment frag
+                    #pragma fragmentoption ARB_precision_hint_fastest
 
-           // Green screen level - leaves minor green glow
-           // Note how the green value operator check is greater than and rest is less than
-           if (c.g >= _Color.g && c.r <= _Color.r && c.b <= _Color.b)
-                 {
-                  o.Alpha = 0.0;
-                 }
-                 else
-                 {
-                  o.Alpha = c.a;
-                 }
-          }
-          ENDCG
-      }
-          FallBack "Diffuse"
+                    sampler2D _MainTex;
+                    float3 _keyingColor;
+                    float _thresh; // 0.8
+                    float _slope; // 0.2
+
+                    #include "UnityCG.cginc"
+
+                    float4 frag(v2f_img i) : COLOR {
+                        float3 input_color = tex2D(_MainTex, i.uv).rgb;
+                        float d = abs(length(abs(_keyingColor.rgb - input_color.rgb)));
+                        float edge0 = _thresh * (1.0 - _slope);
+                        float alpha = smoothstep(edge0, _thresh, d);
+                        return float4(input_color, alpha);
+                    }
+                ENDCG
+            }
+    }
+
+        FallBack "Unlit"
 }
