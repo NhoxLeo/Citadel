@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4615371472851152418
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4975437581620842459}
+  - component: {fileID: 4519653384494449541}
+  m_Layer: 0
+  m_Name: MoveSoundsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4975437581620842459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4615371472851152418}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4519653384494449541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4615371472851152418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 645380a4e23318b49be0a4b05dd8c177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveAudioLists:
+  - surfaceTag: Untagged
+    moveAudioList:
+    - audioPlayType: 1
+      audioClips:
+      - {fileID: 8300000, guid: 3b09d59f4499d45428baa7a21e954296, type: 3}
+    - audioPlayType: 1
+      audioClips:
+      - {fileID: 8300000, guid: 1b6279b5e0c40314183d27d2a7575183, type: 3}
+  - surfaceTag: WaterGround
+    moveAudioList:
+    - audioPlayType: 1
+      audioClips:
+      - {fileID: 8300000, guid: c4dee1b9367baf94fa328613e2941549, type: 3}
+    - audioPlayType: 1
+      audioClips:
+      - {fileID: 8300000, guid: f4558d26d9f4aa54fb22fc8bba60d904, type: 3}
+  - surfaceTag: SandGround
+    moveAudioList:
+    - audioPlayType: 1
+      audioClips:
+      - {fileID: 8300000, guid: 5669364fcbf80bc40bc0bb7719660b97, type: 3}
+    - audioPlayType: 1
+      audioClips:
+      - {fileID: 8300000, guid: 1b6279b5e0c40314183d27d2a7575183, type: 3}

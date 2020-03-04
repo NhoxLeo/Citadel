@@ -108,11 +108,22 @@ namespace VHS
                 {
                     if (InteractionController.instance.switchingWeapons == false)
                     {
-                        if (camInputData.ZoomClicked)
+                        if (InteractionController.instance.currentWeapon)
                         {
-                            if (InteractionController.instance.currentWeapon)
+                            WeaponController currentWeapon = InteractionController.instance.currentWeapon.GetComponent<WeaponController>();
+                            if(currentWeapon.weaponParams.isRapidFire)
                             {
-                                InteractionController.instance.currentWeapon.GetComponent<WeaponController>().OnAttack();
+                                if (camInputData.ZoomHeld)
+                                {
+                                    currentWeapon.OnAttack();
+                                }
+                            }
+                            else
+                            {
+                                if (camInputData.ZoomClicked)
+                                {
+                                    currentWeapon.OnAttack();
+                                }
                             }
                         }
 

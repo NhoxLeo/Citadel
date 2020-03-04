@@ -1,0 +1,677 @@
+fileFormatVersion: 2
+guid: 9511982e200a2aa47bf0661e65af304c
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6302968338305474058
+    second: LaserGunIdleSheet_0
+  - first:
+      213: 3302942086535587130
+    second: LaserGunIdleSheet_1
+  - first:
+      213: 3785496325858140343
+    second: LaserGunIdleSheet_2
+  - first:
+      213: 4916452464525831583
+    second: LaserGunIdleSheet_3
+  - first:
+      213: 2976263616253633108
+    second: LaserGunIdleSheet_4
+  - first:
+      213: -2950555325867416242
+    second: LaserGunIdleSheet_5
+  - first:
+      213: 5150467377127456287
+    second: LaserGunIdleSheet_6
+  - first:
+      213: 2462390876385731965
+    second: LaserGunIdleSheet_7
+  - first:
+      213: -5858793281960349096
+    second: LaserGunIdleSheet_8
+  - first:
+      213: 3326222145548903642
+    second: LaserGunIdleSheet_9
+  - first:
+      213: 5392989313426752997
+    second: LaserGunIdleSheet_10
+  - first:
+      213: -4184767567636590738
+    second: LaserGunIdleSheet_11
+  - first:
+      213: 609155809388755681
+    second: LaserGunIdleSheet_12
+  - first:
+      213: -7232010562742391878
+    second: LaserGunIdleSheet_13
+  - first:
+      213: 7141323084235936681
+    second: LaserGunIdleSheet_14
+  - first:
+      213: -8373486024058456349
+    second: LaserGunIdleSheet_15
+  - first:
+      213: 9088009416969176176
+    second: LaserGunIdleSheet_16
+  - first:
+      213: 4773058598396494306
+    second: LaserGunIdleSheet_17
+  - first:
+      213: 2625927709844787470
+    second: LaserGunIdleSheet_18
+  - first:
+      213: 7958863250753302839
+    second: LaserGunIdleSheet_19
+  - first:
+      213: -1063143586093642318
+    second: LaserGunIdleSheet_20
+  - first:
+      213: 3656563673591318746
+    second: LaserGunIdleSheet_21
+  - first:
+      213: -3713772411418744619
+    second: LaserGunIdleSheet_22
+  - first:
+      213: 242873031834741999
+    second: LaserGunIdleSheet_23
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 300
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 8192
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3160
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f4da8003c2034394dbf5751d4f42cbcb
+      internalID: -6302968338305474058
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_1
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 3160
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1559af1f5d259a45853637113f91d4a
+      internalID: 3302942086535587130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_2
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 3160
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 24f46180fbae6484d89a1482dc13f0fe
+      internalID: 3785496325858140343
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_3
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 3160
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 992075433e6100a41bc97eaf2dcb4859
+      internalID: 4916452464525831583
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2528
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 902a0140ffd3c194a8649b0edaccf8c6
+      internalID: 2976263616253633108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_5
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 2528
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfd336c089a445f4cbe17d18ffa10d11
+      internalID: -2950555325867416242
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_6
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 2528
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e0587037a67456645b3052993209e5c8
+      internalID: 5150467377127456287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_7
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 2528
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0df0f71b36d2ac94d8ae04074c530433
+      internalID: 2462390876385731965
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1896
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ab3e3b9aa5dcae468dc9a2e156008f5
+      internalID: -5858793281960349096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_9
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 1896
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b847fe6b8389b0e42b24f22b92f2b9c6
+      internalID: 3326222145548903642
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_10
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1896
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfc6731e4015d6d4bb1e63036a22011f
+      internalID: 5392989313426752997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_11
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 1896
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9fe5c0ae1076e73488ea8d2b98881a1a
+      internalID: -4184767567636590738
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1264
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0441e69279388543ac47196c2f06509
+      internalID: 609155809388755681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_13
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 1264
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d897c580d4bdde4184df39d11d0621e
+      internalID: -7232010562742391878
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_14
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1264
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5875b38fafd9a354ea74440902284256
+      internalID: 7141323084235936681
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_15
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 1264
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1a9feaeeb6ca8c4ebe4d4e81c534dbe
+      internalID: -8373486024058456349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 632
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fc462dd300d214049a09078f0a48f2d6
+      internalID: 9088009416969176176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_17
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 632
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d503d812aa89d94b8d9db66ce5470a7
+      internalID: 4773058598396494306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_18
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 632
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b3b38d059d13c4f418254145d00b884a
+      internalID: 2625927709844787470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_19
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 632
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de1c3c52770dc654c8dfd85e5ab9101c
+      internalID: 7958863250753302839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ef7d99c99733de47ab0f4bfdc6fce09
+      internalID: -1063143586093642318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_21
+      rect:
+        serializedVersion: 2
+        x: 632
+        y: 0
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 645faffe3f06201488186e35eb01eb66
+      internalID: 3656563673591318746
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_22
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 0
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5e550e3e7c06ad44096ea18e0d5e0b9f
+      internalID: -3713772411418744619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LaserGunIdleSheet_23
+      rect:
+        serializedVersion: 2
+        x: 1896
+        y: 0
+        width: 632
+        height: 632
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6632ad773103aeb48a4f33c118a07cc7
+      internalID: 242873031834741999
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: ca31861c9ac44a345bd0eff8a8f81242
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

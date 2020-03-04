@@ -12,6 +12,14 @@ public class AIController : MonoBehaviour
     public Enemy enemyParams;
     public FieldOfView fieldOfView;
     public NavMeshAgent navMeshAgent;
+    public MoveSoundsManager moveSoundsManager;
+
+    [Header("AI Audio Settings")]
+    public AudioSource movementAudioSource;
+    public float minFallTime = 1f;
+    public float groundedRayLength = 0.2f;
+    public float walkingSpeed = 0.3f;
+    public float runningSpeed = 1f;
 
     [Header("AI States")]
     [Space(10)]
@@ -58,6 +66,14 @@ public class AIController : MonoBehaviour
     private Coroutine attackTimerCoroutine;
     private Coroutine wanderCoroutine;
     private GameObject damageSoundObject;
+    private float m_inAirTimer = 0f;
+
+    private float walkingTimer;
+    private bool canPlayWalkingSound;
+    private Coroutine walkingSoundCoroutine;
+    private GameObject groundedObject;
+    private bool isLerpingFadeOut, isLerpingFadeIn;
+    private bool m_isGrounded;
     #endregion
     #endregion
 
@@ -157,6 +173,100 @@ public class AIController : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            if (!isLerpingFadeOut && movementAudioSource.isPlaying)
+            {
+                walkingSoundCoroutine = StartCoroutine(FadeOutAudioTrack(movementAudioSource, 1));
+            }
+        }
+
+        CheckIfGrounded();
+
+        if (!m_isGrounded)
+        {
+            m_inAirTimer += Time.deltaTime;
+        }
+        else
+        {
+            if (m_inAirTimer >= 0.3f)
+            {
+                if (groundedObject)
+                {
+                    GameVars.instance.audioManager.PlaySFX(moveSoundsManager.GetImpactSound(moveSoundsManager.FindSurfaceAudio(groundedObject.tag)), 0.2f, transform.position, "Untagged", 0, 0.8f);
+                }
+            }
+            m_inAirTimer = 0f;
+        }
+
+        if (navMeshAgent.enabled)
+        {
+            if (navMeshAgent.velocity.magnitude >= walkingSpeed && m_isGrounded && !isDead)
+            {
+                walkingTimer += Time.deltaTime;
+                canPlayWalkingSound = true;
+            }
+            else
+            {
+                walkingTimer = 0;
+                canPlayWalkingSound = false;
+            }
+
+            if (canPlayWalkingSound && !GameVars.instance.isPaused && !InteractionController.instance.hasPlayerDied)
+            {
+                movementAudioSource.clip = moveSoundsManager.GetFootSepsSound(moveSoundsManager.FindSurfaceAudio(groundedObject.tag));
+
+                if (!movementAudioSource.isPlaying)
+                {
+                    if (isLerpingFadeOut)
+                    {
+                        StopCoroutine(walkingSoundCoroutine);
+                        walkingSoundCoroutine = null;
+                        isLerpingFadeOut = false;
+                    }
+
+                    movementAudioSource.volume = 0.5f;
+                    movementAudioSource.Play();
+                }
+                else
+                {
+                    if (isLerpingFadeOut)
+                    {
+                        if (canPlayWalkingSound)
+                        {
+                            StopCoroutine(walkingSoundCoroutine);
+                            isLerpingFadeOut = false;
+                            movementAudioSource.volume = 0.5f;
+                            movementAudioSource.Play();
+                        }
+                    }
+                    else
+                    {
+                        movementAudioSource.volume = 0.5f;
+                    }
+                }
+
+                if (navMeshAgent.velocity.magnitude >= runningSpeed)
+                {
+                    movementAudioSource.pitch = 1.5f;
+                }
+                else
+                {
+                    movementAudioSource.pitch = 0.8f;
+                }
+            }
+            else
+            {
+                if (movementAudioSource.isPlaying)
+                {
+                    if (!isLerpingFadeOut)
+                    {
+                        walkingSoundCoroutine = StartCoroutine(FadeOutAudioTrack(movementAudioSource, 1));
+                    }
+                    //movementAudioSource.Stop();
+                }
+            }
+        }
 
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
     }
@@ -167,8 +277,10 @@ public class AIController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawLine(transform.position, transform.position + forwardVector * 2);
+        Gizmos.DrawSphere(navMeshHit.position, 0.1f);
 
-        Gizmos.DrawSphere(navMeshHit.position, 0.2f);
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawLine(transform.position, transform.position + (Vector3.down * ((navMeshAgent.height / 2) + groundedRayLength)));
     }
     #endregion
 
@@ -382,8 +494,19 @@ public class AIController : MonoBehaviour
                 if (Vector3.Distance(transform.position, player.transform.position) > 6)
                 {
                     //Walk Closer Then Shoot
-                    attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
-                    yield return new WaitForSeconds(1 * enemyParams.agressiveness);
+                    if (enemyParams.agressiveness > 0)
+                    {
+                        attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
+                        yield return new WaitForSeconds(1 * enemyParams.agressiveness);
+                    }
+                    else
+                    {
+                        if(Random.Range(0, 25) == 0)
+                        {
+                            attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
+                            yield return new WaitForSeconds(1 * 1);
+                        }
+                    }
                     if (attackingCoroutine != null)
                     {
                         StopCoroutine(attackingCoroutine);
@@ -409,11 +532,14 @@ public class AIController : MonoBehaviour
                     movingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, movingCoroutine));
                     if (enemyParams.agressiveness < 1)
                     {
-                        yield return new WaitForSeconds(10 * enemyParams.agressiveness);
-                        StopCoroutine(movingCoroutine);
-                        navMeshAgent.SetDestination(transform.position);
-                        navMeshAgent.velocity = Vector3.zero;
-                        movingCoroutine = null;
+                        if (enemyParams.agressiveness > 0)
+                        {
+                            yield return new WaitForSeconds(10 * enemyParams.agressiveness);
+                            StopCoroutine(movingCoroutine);
+                            navMeshAgent.SetDestination(transform.position);
+                            navMeshAgent.velocity = Vector3.zero;
+                            movingCoroutine = null;
+                        }
                     }
                 }
             }
@@ -522,6 +648,64 @@ public class AIController : MonoBehaviour
         {
             playerSpotted = false;
             currentTarget = null;
+        }
+    }
+
+    public IEnumerator FadeInAudioTrack(AudioSource audioSource, float totalVolume, float lerpDuration)
+    {
+        float t = 0;
+
+        while (audioSource.volume != totalVolume)
+        {
+            t += Time.deltaTime / lerpDuration;
+            audioSource.volume = Mathf.Lerp(audioSource.volume, totalVolume, t);
+            yield return null;
+        }
+        isLerpingFadeIn = false;
+    }
+
+    public IEnumerator FadeOutAudioTrack(AudioSource audioSource, float lerpDuration)
+    {
+        isLerpingFadeOut = true;
+        float defaultVolume = audioSource.volume;
+        float t = 0;
+        float currentVolume = audioSource.volume;
+
+        while (currentVolume != 0)
+        {
+            if (audioSource != null)
+            {
+                t += Time.deltaTime / lerpDuration;
+                audioSource.volume = Mathf.Lerp(audioSource.volume, 0, t);
+                audioSource.pitch = Mathf.Lerp(audioSource.pitch, 0.8f, t);
+                currentVolume = audioSource.volume;
+            }
+            else
+            {
+                currentVolume = 0;
+            }
+            yield return null;
+        }
+
+        if (audioSource)
+        {
+            audioSource.Stop();
+        }
+        isLerpingFadeOut = false;
+    }
+
+    public void CheckIfGrounded()
+    {
+        Vector3 _origin = transform.position;
+        RaycastHit m_hitInfo;
+        bool _hitGround = Physics.SphereCast(_origin, 0.5f, Vector3.down, out m_hitInfo, ((navMeshAgent.height / 2) + groundedRayLength), InteractionController.instance.fpsController.groundLayer);
+        Debug.DrawRay(_origin, Vector3.down * ((navMeshAgent.height / 2) + groundedRayLength), Color.red);
+
+        m_isGrounded = _hitGround ? true : false;
+
+        if (m_isGrounded)
+        {
+            groundedObject = m_hitInfo.transform.gameObject;
         }
     }
 
@@ -679,7 +863,7 @@ public class AIController : MonoBehaviour
                         hitBreakable.Impact(-hitInfo.normal * enemyParams.attackForce, enemyParams.attackDamage);
                     }
 
-                    if (hitInfo.transform.gameObject.layer == 0 && enemyParams.enemyType == Enemy.EnemyType.Ranged)
+                    if ((hitInfo.transform.gameObject.layer == 0 || hitInfo.transform.gameObject.layer == 14) && enemyParams.enemyType == Enemy.EnemyType.Ranged)
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
                         bulletHole.transform.parent = hitInfo.transform;

@@ -13,7 +13,8 @@ namespace VHS
         [Space, Header("Data")]
         [SerializeField] public MovementInputData movementInputData = null;
         [SerializeField] private HeadBobData headBobData = null;
-
+        public GameObject mapParent;
+        public MoveSoundsManager moveSoundsManager;
         #endregion
 
         #region Locomotion
@@ -56,7 +57,7 @@ namespace VHS
         [SerializeField] public float gravityMultiplier = 2.5f;
         [SerializeField] public float stickToGroundForce = 5f;
 
-        [SerializeField] private LayerMask groundLayer = ~0;
+        [SerializeField] public LayerMask groundLayer = ~0;
         [Slider(0f, 1f)] [SerializeField] private float rayLength = 0.1f;
         [Slider(0.01f, 1f)] [SerializeField] private float raySphereRadius = 0.1f;
         #endregion
@@ -64,14 +65,6 @@ namespace VHS
         #region Gravity
         [Space, Header("Sound Settings")]
         [SerializeField] private AudioSource movementAudioSource;
-        [SerializeField] private AudioClip stepSound_Default;
-        [SerializeField] private AudioClip stepSound_Water;
-        [SerializeField] private AudioClip stepSound_Sand;
-
-        [SerializeField] private AudioClip dropSound_Default;
-        [SerializeField] private AudioClip dropSound_Water;
-        [SerializeField] private AudioClip dropSound_Sand;
-
         [SerializeField] private float stepSoundDelay = 1f;
         [SerializeField] private float minFallTime = 1f;
         private float walkingTimer;
@@ -111,6 +104,7 @@ namespace VHS
         private Transform m_yawTransform;
         private Transform m_camTransform;
         private HeadBob m_headBob;
+        private bool doesMapExist;
         private CameraController m_cameraController;
 
         private RaycastHit m_hitInfo;
@@ -169,6 +163,11 @@ namespace VHS
             Application.targetFrameRate = 60;
             GetComponents();
             InitVariables();
+
+            if(GameObject.FindGameObjectWithTag("LevelMap"))
+            {
+                doesMapExist = true;
+            }
         }
 
         protected virtual void Update()
@@ -197,6 +196,8 @@ namespace VHS
 
                 // Handle Player Movement, Gravity, Jump, Crouch etc.
                 HandleCrouch();
+                HandleMap();
+
                 HandleHeadBob();
                 HandleRunFOV();
                 HandleCameraSway();
@@ -204,6 +205,7 @@ namespace VHS
 
                 ApplyGravity();
                 ApplyMovement();
+
 
                 if (m_currentSpeed >= walkSpeed && m_isGrounded)
                 {
@@ -221,27 +223,7 @@ namespace VHS
 
                 if (canPlayWalkingSound && !GameVars.instance.isPaused && !InteractionController.instance.hasPlayerDied)
                 {
-                    if (groundedObject.tag == "Untagged")
-                    {
-                        if(movementAudioSource.clip != stepSound_Default)
-                        {
-                            movementAudioSource.clip = stepSound_Default;
-                        }
-                    }
-                    else if (groundedObject.tag == "WaterGround")
-                    {
-                        if (movementAudioSource.clip != stepSound_Water)
-                        {
-                            movementAudioSource.clip = stepSound_Water;
-                        }
-                    }
-                    else if (groundedObject.tag == "SandGround")
-                    {
-                        if (movementAudioSource.clip != stepSound_Sand)
-                        {
-                            movementAudioSource.clip = stepSound_Sand;
-                        }
-                    }
+                    movementAudioSource.clip = moveSoundsManager.GetFootSepsSound(moveSoundsManager.FindSurfaceAudio(groundedObject.tag));                   
 
                     if (!movementAudioSource.isPlaying)
                     {
@@ -478,7 +460,7 @@ namespace VHS
 
             if (movementInputData.IsCrouching)
             {
-                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, (m_initHeight*(crouchPercent*2)));
+                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, (m_initHeight*(crouchPercent*1.6f)));
             }
             else
             {
@@ -565,6 +547,29 @@ namespace VHS
                 m_finalMoveVector.y += _finalVector.y; //so this makes our player go in forward dir using slope normal but when jumping this is making it go higher so this is weird
         }
         #endregion
+
+        protected void HandleMap()
+        {
+            if (movementInputData.MapClicked)
+            {
+                if (doesMapExist)
+                {
+                    if (movementInputData.IsMapOpen)
+                    {
+                        movementInputData.IsMapOpen = false;
+                        InteractionController.instance.crossHair.gameObject.SetActive(true);
+                        mapParent.SetActive(false);
+                    }
+                    else
+                    {
+                        movementInputData.IsMapOpen = true;
+                        InteractionController.instance.crossHair.gameObject.SetActive(false);
+                        mapParent.SetActive(true);
+                    }
+                }
+            }
+                
+        }
 
         #region Crouching Methods
         protected virtual void HandleCrouch()
@@ -785,18 +790,7 @@ namespace VHS
             {
                 if(m_inAirTimer >= minFallTime)
                 {
-                    if(groundedObject.tag == "Untagged")
-                    {
-                        GameVars.instance.audioManager.PlaySFX(dropSound_Default, 0.2f, transform.position);
-                    }
-                    else if (groundedObject.tag == "WaterGround")
-                    {
-                        GameVars.instance.audioManager.PlaySFX(dropSound_Water, 0.2f, transform.position);
-                    }
-                    else if (groundedObject.tag == "SandGround")
-                    {
-                        GameVars.instance.audioManager.PlaySFX(dropSound_Sand, 0.2f, transform.position);
-                    }
+                    GameVars.instance.audioManager.PlaySFX(moveSoundsManager.GetImpactSound(moveSoundsManager.FindSurfaceAudio(groundedObject.tag)), 0.2f, transform.position);
                 }
 
                 m_inAirTimer = 0f;

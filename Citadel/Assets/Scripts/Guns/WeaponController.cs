@@ -189,11 +189,11 @@ public class WeaponController : MonoBehaviour
         {
             totalRounds -= weaponParams.totalRoundsPerShot;
         }
-        if(attackParticle)
+        if(weaponParams.attackHitDelay == 0 && attackParticle)
         {
             Instantiate(attackParticle, transform.position, Quaternion.identity);
         }
-        Damage();
+        StartCoroutine(Damage());
         yield return new WaitForSeconds(weaponParams.attackStateLength);
         if (weaponParams.reloadOnShot)
         {
@@ -213,8 +213,15 @@ public class WeaponController : MonoBehaviour
         newShell.SetActive(true);
     }
 
-    public void Damage()
+    public IEnumerator Damage()
     {
+        yield return new WaitForSeconds(weaponParams.attackHitDelay);
+
+        if (weaponParams.attackHitDelay > 0 && attackParticle)
+        {
+            Instantiate(attackParticle, transform.position, Quaternion.identity);
+        }
+
         RaycastHit hitInfo = new RaycastHit();
         bool rayCast = false;
 
@@ -251,7 +258,7 @@ public class WeaponController : MonoBehaviour
                         hitBreakable.Impact(-hitInfo.normal * weaponParams.attackForce, weaponParams.attackDamage);
                     }
 
-                    if (hitInfo.transform.gameObject.layer == 0 && weaponParams.weaponType == Weapon.WeaponType.Ranged)
+                    if ((hitInfo.transform.gameObject.layer == 0 || hitInfo.transform.gameObject.layer == 14) && weaponParams.weaponType == Weapon.WeaponType.Ranged)
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
                         bulletHole.transform.parent = hitInfo.transform;
@@ -297,7 +304,7 @@ public class WeaponController : MonoBehaviour
     public IEnumerator FireProjectile()
     {
         yield return new WaitForSeconds(weaponParams.shellEjectionDelay);
-        GameObject projectile = Instantiate(weaponParams.projectilePrefab, transform.position, Camera.main.transform.rotation);
+        GameObject projectile = Instantiate(weaponParams.projectilePrefab, transform.position + (transform.forward * weaponParams.instantiationDistance), Camera.main.transform.rotation);
         projectile.GetComponent<Projectile>().damage = weaponParams.attackDamage;
         projectile.GetComponent<Projectile>().hitForce = weaponParams.attackForce;
         projectile.GetComponent<Rigidbody>().AddForce(Camera.main.transform.forward * weaponParams.attackForce);

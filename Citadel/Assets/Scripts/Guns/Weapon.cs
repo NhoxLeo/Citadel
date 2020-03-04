@@ -32,6 +32,8 @@ public class Weapon : ScriptableObject
     public bool doesNeedReload = true;
     [ConditionalHide("isMelee", true, true)]
     public bool reloadOnShot = false;
+    [ConditionalHide("isMelee", true, true)]
+    public bool isRapidFire = false;
     [ConditionalHide("doesNeedReload", true)]
     public int roundsPerClip = 8;
     [ConditionalHide("isMelee", true, true)]
@@ -39,8 +41,9 @@ public class Weapon : ScriptableObject
     [ConditionalHide("isMelee", true, true)]
     public int totalAmmoOnAmmoPickup = 20;
     public int totalRoundsPerShot = 1;
-    [ConditionalHide("isMultiShot", true)]
     public float spreadMaxDivation = 0;
+    [ConditionalHide("isProjectile", true)]
+    public float instantiationDistance = 0;
 
     [Header("Animation Settings")]
     public float attackStateLength = 0.2f;
@@ -48,6 +51,7 @@ public class Weapon : ScriptableObject
     public float reloadStateLength = 2;
     [ConditionalHide("isMelee", true, true)]
     public float shellEjectionDelay = 0;
+    public float attackHitDelay = 0;
 
     [HideInInspector]
     public bool isMelee, isProjectile, isRanged;

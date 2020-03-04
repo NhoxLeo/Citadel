@@ -10,6 +10,7 @@ namespace VHS
         Vector2 m_inputVector;
         bool m_isZooming;
         bool m_zoomClicked;
+        bool m_zoomHeld;
         bool m_zoomReleased;
         bool m_reloadClicked;
         bool m_reloadReleased;
@@ -37,6 +38,12 @@ namespace VHS
         {
             get => m_zoomClicked;
             set => m_zoomClicked = value;
+        }
+
+        public bool ZoomHeld
+        {
+            get => m_zoomHeld;
+            set => m_zoomHeld = value;
         }
 
         public bool ZoomReleased

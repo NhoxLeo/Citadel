@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &241827689305843445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7432932394218721324}
+  - component: {fileID: 5678991392340515255}
+  m_Layer: 0
+  m_Name: Shadow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7432932394218721324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241827689305843445}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0.129, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1023297574777419133}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+--- !u!119 &5678991392340515255
+Projector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241827689305843445}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 3.2
+  m_FieldOfView: 40.75
+  m_AspectRatio: 1.62
+  m_Orthographic: 1
+  m_OrthographicSize: 0.28
+  m_Material: {fileID: 2100000, guid: e30ff3588e719f34bbf0c66f22d97487, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &4576948107179085685
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +81,7 @@ RectTransform:
   m_LocalScale: {x: 3.333333, y: 3.333333, z: 3.333333}
   m_Children:
   - {fileID: 6358221766830685658}
+  - {fileID: 7432932394218721324}
   m_Father: {fileID: 6442230269219365039}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -174,6 +225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e0f290df06d578428b356a07c851d54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileType: 0
   damagePrefab: {fileID: 6234126304987709654, guid: 9e7cf8f870c1b3846949517cc280e7b4,
     type: 3}
   collisionLayers:
@@ -182,6 +234,7 @@ MonoBehaviour:
   maxExistanceTime: 3
   damage: 100
   sizeOfDamage: 8
+  lockRotation: 0
   hitForce: 0
 --- !u!1 &7591675325461785589
 GameObject:

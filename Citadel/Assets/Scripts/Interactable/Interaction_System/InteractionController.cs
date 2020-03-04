@@ -12,6 +12,7 @@ namespace VHS
         [SerializeField] public InteractionInputData interactionInputData = null;
         [HideInInspector]
         [SerializeField] public InteractionData interactionData = null;
+        public FirstPersonController fpsController;
 
         [Space, Header("Ray Settings")]
         [SerializeField] private float rayDistance = 0f;
@@ -77,7 +78,7 @@ namespace VHS
             {
                 instance = this;
             }
-            m_cam = FindObjectOfType<Camera>();
+            m_cam = Camera.main;
             
             if(weaponStorge == null)
             {

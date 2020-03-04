@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2a7a2b30ffa1e468101b6aff3807ce, type: 3}
+  m_Name: Monster
+  m_EditorClassIdentifier: 
+  enemyName: Monster
+  enemyType: 0
+  enemyBehavior: 0
+  damageSound: {fileID: 8300000, guid: 37dd66a35ab74594f817510d1c499c14, type: 3}
+  deathSound: {fileID: 8300000, guid: 08a2060f7ad3c1a48b6e0843b27256b7, type: 3}
+  idleSound: {fileID: 0}
+  walkingSound: {fileID: 0}
+  health: 250
+  walkSpeed: 12
+  fov: 90
+  viewRange: 50
+  playerRememberTime: 10
+  agressiveness: 1
+  attackSound: {fileID: 8300000, guid: 96bf104ad77e84d45a496d04c40d3a8c, type: 3}
+  reloadSound: {fileID: 0}
+  missSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
+  equipSound: {fileID: 8300000, guid: d5a64618e6c0ff9448ae2cd8dd90e06e, type: 3}
+  projectilePrefab: {fileID: 0}
+  attackDamage: 20
+  attackRange: 3
+  attackRadius: 1
+  attackForce: 2500
+  totalRoundsPerShot: 1
+  spreadMaxDivation: 0
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 6913
+  minWanderStateLength: 3
+  maxWanderStateLength: 8
+  minIdleStateTime: 2
+  maxIdleStateTime: 5
+  wanderRadius: 10
+  attackStateLength: 0.2
+  attackDelayStateLength: 0.8
+  damageStateLength: 0.4
+  dyingStateLength: 0.5
+  isMelee: 1
+  isProjectile: 0
+  isWander: 1

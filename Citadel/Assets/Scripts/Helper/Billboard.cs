@@ -8,10 +8,14 @@ public class Billboard : MonoBehaviour
 
     Quaternion originalRotation;
 
+
+
     void OnEnable()
     {
         transform.parent.rotation = Quaternion.identity;
         originalRotation = transform.rotation;
+        Quaternion newRotation = Quaternion.Euler(Camera.main.transform.rotation.eulerAngles.x, Camera.main.transform.rotation.eulerAngles.y, Camera.main.transform.rotation.eulerAngles.z);
+        transform.rotation = newRotation * originalRotation;
     }
 
     void Update()
