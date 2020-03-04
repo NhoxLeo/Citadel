@@ -30,7 +30,7 @@ MonoBehaviour:
   missSound: {fileID: 0}
   equipSound: {fileID: 8300000, guid: 668262f257088e3428b997d620384a1a, type: 3}
   projectilePrefab: {fileID: 0}
-  attackDamage: 3
+  attackDamage: 2
   attackRange: 100
   attackRadius: 2
   attackForce: 2000
@@ -45,7 +45,7 @@ MonoBehaviour:
   maxIdleStateTime: 5
   wanderRadius: 10
   attackStateLength: 0.1
-  attackDelayStateLength: 0
+  attackDelayStateLength: 0.04
   damageStateLength: 0.4
   dyingStateLength: 0.5
   isMelee: 0

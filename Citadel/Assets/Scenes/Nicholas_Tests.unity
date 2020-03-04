@@ -10826,11 +10826,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyContainer_Monster
       objectReference: {fileID: 0}
-    - target: {fileID: 1382022823005713337, guid: a938b69a79c2eaa4b8052ddff6e5292a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1382022823005713342, guid: a938b69a79c2eaa4b8052ddff6e5292a,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11852,13 +11847,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 62a3c4dd88c8954449b388d4459b95bf,
+      objectReference: {fileID: 23800000, guid: 5eac8e0e68dea7f44b1f0f2390d2efd9,
         type: 2}
     - target: {fileID: 4217113817223185867, guid: 2e3399529322e164fad7c20ad991b152,
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 5eac8e0e68dea7f44b1f0f2390d2efd9,
+      objectReference: {fileID: 23800000, guid: 62a3c4dd88c8954449b388d4459b95bf,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e3399529322e164fad7c20ad991b152, type: 3}
@@ -12150,11 +12145,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemyContainer_Grunt
       objectReference: {fileID: 0}
-    - target: {fileID: 6619722770920356550, guid: ca742be1192528f4abdba47ebc6aaa7d,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6619722770920356545, guid: ca742be1192528f4abdba47ebc6aaa7d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12366,11 +12356,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EnemyContainer_Charger
-      objectReference: {fileID: 0}
-    - target: {fileID: 4289423916794960452, guid: 12e830becfe0c3d4da9566dd205d0c21,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4289423916794960451, guid: 12e830becfe0c3d4da9566dd205d0c21,
         type: 3}

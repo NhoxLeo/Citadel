@@ -12,6 +12,7 @@ namespace VHS
         [SerializeField] public InteractionInputData interactionInputData = null;
         [HideInInspector]
         [SerializeField] public InteractionData interactionData = null;
+        public FirstPersonController fpsController;
 
         [Space, Header("Ray Settings")]
         [SerializeField] private float rayDistance = 0f;
