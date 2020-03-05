@@ -20,7 +20,7 @@ MonoBehaviour:
   equipSound: {fileID: 8300000, guid: a918213bd33157e4394e776fdc234026, type: 3}
   projectilePrefab: {fileID: 1855747846208382108, guid: ba9dfd8a7c1506f45911d91044d7261d,
     type: 3}
-  attackDamage: 30
+  attackDamage: 50
   attackRange: 30
   attackRadius: 2
   attackForce: 300
@@ -28,8 +28,8 @@ MonoBehaviour:
   reloadOnShot: 1
   isRapidFire: 1
   roundsPerClip: 8
-  totalAmmoOnInitialPickup: 50
-  totalAmmoOnAmmoPickup: 25
+  totalAmmoOnInitialPickup: 20
+  totalAmmoOnAmmoPickup: 10
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
   instantiationDistance: 1

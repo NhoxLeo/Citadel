@@ -193,7 +193,7 @@ public class AIController : MonoBehaviour
             {
                 if (groundedObject)
                 {
-                    GameVars.instance.audioManager.PlaySFX(moveSoundsManager.GetImpactSound(moveSoundsManager.FindSurfaceAudio(groundedObject.tag)), 0.2f, transform.position, "Untagged", 0, 0.8f);
+                    GameVars.instance.audioManager.PlaySFX(moveSoundsManager.GetImpactSound(moveSoundsManager.FindSurfaceAudio(groundedObject.tag)), 0.2f, transform.position, "Untagged", 0, 1f);
                 }
             }
             m_inAirTimer = 0f;
@@ -501,7 +501,7 @@ public class AIController : MonoBehaviour
                     }
                     else
                     {
-                        if(Random.Range(0, 25) == 0)
+                        if(Random.Range(0, 20) == 0)
                         {
                             attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
                             yield return new WaitForSeconds(1 * 1);
