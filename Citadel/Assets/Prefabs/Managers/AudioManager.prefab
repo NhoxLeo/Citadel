@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4744649828739495775}
   - component: {fileID: 4033113471837633456}
   - component: {fileID: 7283264419329850759}
+  - component: {fileID: 7350527788775326304}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -50,6 +51,7 @@ MonoBehaviour:
   sfxVolumeScale: 0.5
   audioManager: {fileID: 4744649828739495775}
   saveManager: {fileID: 7283264419329850759}
+  difficultyManager: {fileID: 7350527788775326304}
   currentLevelManager: {fileID: 0}
   levels:
   - {fileID: 11400000, guid: 1dc8450ed47f9184193de7ecb405aa25, type: 2}
@@ -206,3 +208,19 @@ MonoBehaviour:
   INPUT_QUICKCYCLE: Q
   INPUT_MAP: M
   hasReadData: 0
+--- !u!114 &7350527788775326304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5534128214759634240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d72a313a35bb542870d283b6cb908b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 1
+  ammoPickUpPercent: 0.2
+  regenSpeedPercent: 0.3
+  enemyDamagePercent: 0.4

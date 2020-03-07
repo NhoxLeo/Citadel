@@ -50,6 +50,8 @@ public class Enemy : ScriptableObject
     public float attackForce = 100;
     public int totalRoundsPerShot = 1;
     public float spreadMaxDivation = 0;
+    [ConditionalHide("isProjectile", true)]
+    public float instantiationDistance = 0;
     public LayerMask damageMask;
 
     [Header("State Settings")]
@@ -70,7 +72,7 @@ public class Enemy : ScriptableObject
 
     [HideInInspector]
     public bool isMelee, isProjectile, isWander;
-    public enum EnemyType { Melee, Ranged, Projectile }
+    public enum EnemyType { Melee, Ranged, Projectile, Friendly }
     public enum EnemyBehavior { Wander, Stationary}
 
     /// <summary>

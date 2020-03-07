@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2a7a2b30ffa1e468101b6aff3807ce, type: 3}
+  m_Name: Soldier
+  m_EditorClassIdentifier: 
+  enemyName: Soldier
+  enemyType: 2
+  enemyBehavior: 0
+  damageSound: {fileID: 8300000, guid: 37dd66a35ab74594f817510d1c499c14, type: 3}
+  deathSound: {fileID: 8300000, guid: 08a2060f7ad3c1a48b6e0843b27256b7, type: 3}
+  idleSound: {fileID: 0}
+  walkingSound: {fileID: 0}
+  health: 200
+  walkSpeed: 10
+  fov: 90
+  viewRange: 50
+  playerRememberTime: 15
+  agressiveness: 0
+  attackSound: {fileID: 8300000, guid: a841657305fc7974ca3eab73c88c1b9b, type: 3}
+  reloadSound: {fileID: 0}
+  missSound: {fileID: 0}
+  equipSound: {fileID: 8300000, guid: a918213bd33157e4394e776fdc234026, type: 3}
+  projectilePrefab: {fileID: 4615672490422470520, guid: b69a243d463d2d746807609263e4808d,
+    type: 3}
+  attackDamage: 20
+  attackRange: 100
+  attackRadius: 2
+  attackForce: 100
+  totalRoundsPerShot: 1
+  spreadMaxDivation: 3
+  instantiationDistance: 1.3
+  damageMask:
+    serializedVersion: 2
+    m_Bits: 6913
+  minWanderStateLength: 3
+  maxWanderStateLength: 8
+  minIdleStateTime: 2
+  maxIdleStateTime: 5
+  wanderRadius: 10
+  attackStateLength: 1
+  attackDelayStateLength: 0.04
+  damageStateLength: 0.4
+  dyingStateLength: 0.5
+  isMelee: 0
+  isProjectile: 1
+  isWander: 1

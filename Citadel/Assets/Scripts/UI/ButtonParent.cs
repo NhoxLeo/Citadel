@@ -54,7 +54,7 @@ public class ButtonParent : MonoBehaviour
                     playedHover = true;
                     if(GameVars.instance.audioManager)
                     {
-                        GameVars.instance.audioManager.PlaySFX(hoverSound, 0.5f, transform.position);
+                        GameVars.instance.audioManager.PlaySFX(hoverSound, 0.5f, Camera.main.ScreenToWorldPoint(Vector3.zero, Camera.MonoOrStereoscopicEye.Mono));
                     }
                 }
                 newScaleReached = true;

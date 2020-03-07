@@ -74,6 +74,7 @@ public class AIController : MonoBehaviour
     private GameObject groundedObject;
     private bool isLerpingFadeOut, isLerpingFadeIn;
     private bool m_isGrounded;
+    private bool initialAttackDelay = false;
     #endregion
     #endregion
 
@@ -109,8 +110,11 @@ public class AIController : MonoBehaviour
     void Update()
     {
         if (!isDead)
-        {          
-            CheckForPlayer();
+        {
+            if (enemyParams.enemyType != Enemy.EnemyType.Friendly)
+            {
+                CheckForPlayer();
+            }
             if (!playerSpotted)
             {
                 if (currentTarget == player)
@@ -120,6 +124,7 @@ public class AIController : MonoBehaviour
 
                 if (!currentlyInState && playerSpottedTimer == 0)
                 {
+                    initialAttackDelay = false;
                     if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Stationary)
                     {
                         SwitchState(AIState.Idle);
@@ -162,19 +167,27 @@ public class AIController : MonoBehaviour
             }
             else
             {
-                if (!currentTarget)
+                if (enemyParams.enemyType != Enemy.EnemyType.Friendly)
                 {
-                    currentTarget = player;
-                    if (enemyParams.equipSound)
+                    if (!currentTarget)
                     {
-                        GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                        currentTarget = player;
+                        if (enemyParams.equipSound)
+                        {
+                            GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "Untagged", 0, 0.5f);
+                        }
+                        SwitchState(AIState.Attack);
                     }
-                    SwitchState(AIState.Attack);
                 }
             }
         }
         else
         {
+            if(canPlayWalkingSound)
+            {
+                canPlayWalkingSound = false;
+            }
+
             if (!isLerpingFadeOut && movementAudioSource.isPlaying)
             {
                 walkingSoundCoroutine = StartCoroutine(FadeOutAudioTrack(movementAudioSource, 1));
@@ -359,7 +372,10 @@ public class AIController : MonoBehaviour
         navMeshAgent.SetDestination(transform.position);
         navMeshAgent.velocity = Vector3.zero;
 
-        movingCoroutine = StartCoroutine(LookAround());
+        if (enemyParams.enemyType != Enemy.EnemyType.Friendly)
+        {
+            movingCoroutine = StartCoroutine(LookAround());
+        }
 
         float idleStateLength = Random.Range(enemyParams.minIdleStateTime, enemyParams.maxIdleStateTime);
         yield return new WaitForSeconds(idleStateLength);
@@ -406,6 +422,18 @@ public class AIController : MonoBehaviour
             currentlyInState = true;
             if (enemyParams.enemyType != Enemy.EnemyType.Melee) //Ranged & Projectile
             {
+                if (enemyParams.enemyType == Enemy.EnemyType.Ranged)
+                {
+                    if (!initialAttackDelay)
+                    {
+                        initialAttackDelay = true;
+                        yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+                    }
+                }
+                else
+                {
+                    yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+                }
                 EnemyAttack();
                 yield return new WaitForSeconds(enemyParams.attackStateLength);
                 UpdateSprite(idleState);
@@ -420,7 +448,11 @@ public class AIController : MonoBehaviour
                 bool hasArrived = false;
                 if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
                 {
-                    yield return new WaitForSeconds(Random.Range(0.2f, 1f));
+                    if (!initialAttackDelay)
+                    {
+                        initialAttackDelay = true;
+                        yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+                    }
                     EnemyAttack();
                     yield return new WaitForSeconds(enemyParams.attackStateLength);
                     UpdateSprite(idleState);
@@ -567,7 +599,22 @@ public class AIController : MonoBehaviour
         damageCoroutine = null;
         currentlyInState = false;
         yield return new WaitForSeconds(enemyParams.attackDelayStateLength / 2);
-        SwitchState(AIState.Attack);
+        if (enemyParams.enemyType != Enemy.EnemyType.Friendly)
+        {
+            SwitchState(AIState.Attack);
+        }
+        else
+        {
+            playerSpottedTimer = 0;
+            if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Stationary)
+            {
+                SwitchState(AIState.Idle);
+            }
+            else if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Wander)
+            {
+                SwitchState(AIState.Wander);
+            }
+        }
     }
 
     /// <summary>
@@ -639,6 +686,19 @@ public class AIController : MonoBehaviour
                             transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                             playerSpotted = true;
+                        }
+
+                        if(!playerSpotted)
+                        {
+                            if(collisionCheck.attentionPoint != Vector3.zero)
+                            {
+                                if (Vector3.Distance(collisionCheck.attentionPoint, transform.position) > 1)
+                                {
+                                    transform.rotation = Quaternion.LookRotation(collisionCheck.attentionPoint - transform.position, Vector3.up);
+                                    transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+                                }
+                                collisionCheck.attentionPoint = Vector3.zero;
+                            }
                         }
                     }
                 }
@@ -757,6 +817,8 @@ public class AIController : MonoBehaviour
         UpdateSprite(idleState);
         int lookIncrement = 8;
         float turnDelay = 0.5f;
+        int RandomTurningOffset = Random.Range(0, 360);
+        transform.Rotate(0, (RandomTurningOffset), 0);
         for (int i = 0; i < 360; i += (360 / lookIncrement))
         {
             transform.Rotate(0, (360 / lookIncrement), 0);
@@ -774,19 +836,24 @@ public class AIController : MonoBehaviour
     {
         if (currentAIHealth > 0)
         {
+            bool randomDamageState = false;
             if (damageCoroutine == null)
             {
                 navMeshAgent.SetDestination(transform.position);
                 navMeshAgent.ResetPath();
 
                 launchVector = new Vector3(launchVector.x, 0, launchVector.z);
-                navMeshAgent.velocity = launchVector/2500;
+                navMeshAgent.velocity = navMeshAgent.velocity + (launchVector/2500);
 
-                //StopAllCoroutines();
-                //attackingCoroutine = null;
-                //movingCoroutine = null;
-                //wanderCoroutine = null;
-                //attackTimerCoroutine = null;
+                if (Random.Range(0, 8) == 0)
+                {
+                    StopAllCoroutines();
+                    attackingCoroutine = null;
+                    movingCoroutine = null;
+                    wanderCoroutine = null;
+                    attackTimerCoroutine = null;
+                    randomDamageState = true;
+                }
 
                 playerSpottedTimer = enemyParams.playerRememberTime;
                 transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
@@ -801,7 +868,16 @@ public class AIController : MonoBehaviour
                 {
                     damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);
                 }
-                SwitchState(AIState.Damage);
+                if (randomDamageState)
+                {
+                    SwitchState(AIState.Damage);
+                }
+                else
+                {
+                    damageCoroutine = null;
+                    currentlyInState = false;
+                    SwitchState(AIState.Attack);
+                }
             }
             else if (currentAIHealth <= damageToTake)
             {
@@ -906,8 +982,13 @@ public class AIController : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                FireProjectile();
+            }
         }
     }
+
     #endregion
 
     #region Helper Methods
@@ -1025,6 +1106,17 @@ public class AIController : MonoBehaviour
     {
         var vector2 = Random.insideUnitCircle.normalized * radius;
         return new Vector3(vector2.x, 0, vector2.y);
+    }
+    public void FireProjectile()
+    {
+        Vector3 deviation3D = Random.insideUnitCircle * enemyParams.spreadMaxDivation;
+        Quaternion rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
+        forwardVector = rot * (player.transform.position - transform.position);
+
+        GameObject projectile = Instantiate(enemyParams.projectilePrefab, transform.position + (transform.forward * enemyParams.instantiationDistance) + new Vector3(0, 0.5f, 0), transform.rotation);
+        projectile.GetComponent<Projectile>().damage = enemyParams.attackDamage;
+        projectile.GetComponent<Projectile>().hitForce = enemyParams.attackForce;
+        projectile.GetComponent<Rigidbody>().AddForce(forwardVector * enemyParams.attackForce);
     }
 
     /// <summary>

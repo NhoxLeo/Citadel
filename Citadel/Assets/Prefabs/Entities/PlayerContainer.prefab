@@ -2114,11 +2114,14 @@ MonoBehaviour:
   playerHealth: 100
   playerRegenIncrement: 5
   playerRegenRatePerSec: 2
+  playerDamageSoundDelay: 0.3
   playerDamageAudio: {fileID: 8300000, guid: da83019f1a0b61a428c941157a9a45ef, type: 3}
   grabPoint: {fileID: 268212868}
   rayPoint: {x: 0, y: 0, z: 0}
   crossHair: {fileID: 771392514}
   bulletHolePrefab: {fileID: 1374204245455647726, guid: d7993092cf1f95541a974f648630fd16,
+    type: 3}
+  bloodSplatPrefab: {fileID: 5342202866684840343, guid: 17cc189fae60a7846a5ec907efcb440f,
     type: 3}
   weaponStorageParent: {fileID: 618959486}
   bulletLayers:
@@ -2135,6 +2138,7 @@ MonoBehaviour:
   weaponStorge:
   - {fileID: 1853199039928813329}
   bulletHoles: []
+  bloodSplats: []
   switchingWeapons: 0
   wasHolding: 0
   switchWeaponLock: 0

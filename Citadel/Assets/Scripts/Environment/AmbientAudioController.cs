@@ -30,7 +30,7 @@ public class AmbientAudioController : MonoBehaviour
         if (hasPlayed && !audioSource.isPlaying && !GameVars.instance.isPaused)
         {
             StartPlay();
-            Debug.Log("Play New Clip");
+            //Debug.Log("Play New Clip");
         }
     }
 
