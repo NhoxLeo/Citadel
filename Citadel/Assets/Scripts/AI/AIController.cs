@@ -67,7 +67,7 @@ public class AIController : MonoBehaviour
     private Coroutine wanderCoroutine;
     private GameObject damageSoundObject;
     private float m_inAirTimer = 0f;
-
+    private float idleLockTimer;
     private float walkingTimer;
     private bool canPlayWalkingSound;
     private Coroutine walkingSoundCoroutine;
@@ -156,12 +156,26 @@ public class AIController : MonoBehaviour
                             }
                             else
                             {
-                                if (movingCoroutine == null)
+                                if (movingCoroutine != null)
                                 {
-                                    movingCoroutine = StartCoroutine(LookAround());
+                                    StopCoroutine(movingCoroutine);
                                 }
+                                movingCoroutine = StartCoroutine(LookAround());
                             }
                         }
+                    }
+                }
+
+                if (aiState == AIState.Idle && (enemyParams.enemyBehavior != Enemy.EnemyBehavior.Stationary))
+                {
+                    idleLockTimer += Time.deltaTime;
+
+                    if(idleLockTimer >= enemyParams.maxIdleStateTime)
+                    {
+                        currentlyInState = false;
+                        playerSpottedTimer = 0;
+                        idleLockTimer = 0;
+                        SwitchState(AIState.Wander);
                     }
                 }
             }
@@ -179,6 +193,10 @@ public class AIController : MonoBehaviour
                         SwitchState(AIState.Attack);
                     }
                 }
+            }
+            if(navMeshAgent.velocity.magnitude < 0.5f)
+            {
+                UpdateSprite(idleState);
             }
         }
         else
@@ -1014,7 +1032,7 @@ public class AIController : MonoBehaviour
             navMeshAgent.SetDestination(newPosition);
             while (hasArrived == false)
             {
-                if (Vector3.Distance(transform.position, newPosition) < 3)
+                if (Vector3.Distance(transform.position, newPosition) < 2.5)
                 {
                     //Debug.Log("Arrived");
                     UpdateSprite(idleState);
