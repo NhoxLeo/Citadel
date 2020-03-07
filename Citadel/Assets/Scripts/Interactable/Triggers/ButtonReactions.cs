@@ -841,9 +841,21 @@ namespace VHS
                 }
                 return instantiatedObject;
             }
-            else
+            else if (chosenList == null)
             {
-                Debug.Log("[WARNING] Invalid List");
+                Debug.Log("[WARNING] Instantiation list property not defined");
+            }
+            else if (chosenList.instantiationList == null)
+            {
+                Debug.Log("[WARNING] Nothing set in Instantiation list");
+            }
+            else if (chosenList.instantiationList[listIndex] == null)
+            {
+                Debug.Log("[WARNING] Instantiation index of ( " + listIndex + " ) set to nothing");
+            }
+            else if (chosenList.instantiationList[listIndex].instantiatableGameObject == null)
+            {
+                Debug.Log("[WARNING] GameObject of Instantiation index ( " + listIndex + " ) not set");
             }
             return null;
         }
