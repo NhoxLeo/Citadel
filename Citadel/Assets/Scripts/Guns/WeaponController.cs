@@ -279,6 +279,12 @@ public class WeaponController : MonoBehaviour
                             if (controller)
                             {
                                 controller.TakeDamage(weaponParams.attackDamage, -hitInfo.normal * weaponParams.attackForce*10);
+
+                                if (!controller.isDead)
+                                {
+                                    GameObject bloodSplat = Instantiate(InteractionController.instance.bloodSplatPrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
+                                    InteractionController.instance.bloodSplats.Add(bloodSplat);
+                                }
                             }
                         }
                     }

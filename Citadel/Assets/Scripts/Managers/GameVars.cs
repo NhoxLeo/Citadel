@@ -9,6 +9,7 @@ public class GameVars : MonoBehaviour
     public float musicVolumeScale = 0.5f, sfxVolumeScale = 0.5f;
     public AudioManager audioManager;
     public SaveDataManager saveManager;
+    public DifficultyManager difficultyManager;
     public LevelManager currentLevelManager;
     public List<LevelManager> levels;
 
@@ -159,5 +160,10 @@ public class GameVars : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    public void ChangeDifficulty(DifficultyManager.Difficulty newDifficulty)
+    {
+        difficultyManager.difficulty = newDifficulty;
     }
 }

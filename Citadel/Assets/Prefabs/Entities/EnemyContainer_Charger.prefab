@@ -3198,7 +3198,7 @@ MonoBehaviour:
   navMeshAgent: {fileID: 8286066641057255533}
   moveSoundsManager: {fileID: 6837566307726433356}
   movementAudioSource: {fileID: 963528324}
-  minFallTime: 0.3
+  minFallTime: 0.7
   groundedRayLength: 0.18
   walkingSpeed: 0.3
   runningSpeed: 0.8
@@ -3317,7 +3317,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.8
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0

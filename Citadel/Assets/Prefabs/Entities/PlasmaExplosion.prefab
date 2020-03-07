@@ -66,7 +66,7 @@ MonoBehaviour:
   explosionForce: 2000
   damageMask:
     serializedVersion: 2
-    m_Bits: 4865
+    m_Bits: 21249
   haveBeenHit: []
   incomingVector: {x: 0, y: 0, z: 0}
   hasHitPlayer: 0
@@ -94,10 +94,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7248912161519272620}
     m_Modifications:
-    - target: {fileID: 100000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
-      propertyPath: m_Name
-      value: CFX_ElectricityBall
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -141,6 +137,10 @@ PrefabInstance:
     - target: {fileID: 400000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
+      propertyPath: m_Name
+      value: CFX_ElectricityBall
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 77ec3c4e07a36814fb3169ecef41b50a, type: 3}
       propertyPath: simulationSpeed

@@ -26,6 +26,7 @@ namespace VHS
         public float playerHealth = 100;
         public float playerRegenIncrement = 5;
         public float playerRegenRatePerSec = 1;
+        public float playerDamageSoundDelay = 0.3f;
         public AudioClip playerDamageAudio;
 
         [Space, Header("References")]
@@ -33,6 +34,7 @@ namespace VHS
         public Vector3 rayPoint;
         public Animator crossHair;
         public GameObject bulletHolePrefab;
+        public GameObject bloodSplatPrefab;
         public GameObject weaponStorageParent;
         public LayerMask bulletLayers;
         public LayerMask punchLayers;
@@ -46,6 +48,8 @@ namespace VHS
 
         [HideInInspector]
         public List<GameObject> bulletHoles;
+        [HideInInspector]
+        public List<GameObject> bloodSplats;
         [HideInInspector]
         public bool switchingWeapons = false, wasHolding, switchWeaponLock;
         [HideInInspector]
@@ -62,10 +66,12 @@ namespace VHS
 
         private bool m_interacting;
         private float m_holdTimer = 0f;
+        private bool canPlayDamageSound = true;
 
         private Coroutine regenCoroutine;
         private bool waitingToUpdateUI;
         private WeaponController newWeapon;
+        private float damageSoundTimer;
 
         #endregion
 
@@ -196,6 +202,11 @@ namespace VHS
                 {
                     bulletHoles.RemoveAt(0);
                 }
+
+                if (bloodSplats.Count > 50)
+                {
+                    bloodSplats.RemoveAt(0);
+                }
             }
 
             if(currentInteractingObject && !switchingWeapons)
@@ -257,6 +268,16 @@ namespace VHS
                             hudController.UpdateWeaponInfo(newWeapon.totalRounds.ToString(), newWeapon.currentLoadedRounds.ToString());
                         }
                     }
+                }
+            }
+
+            if(!canPlayDamageSound)
+            {
+                damageSoundTimer += Time.deltaTime;
+                if(damageSoundTimer >= playerDamageSoundDelay)
+                {
+                    canPlayDamageSound = true;
+                    damageSoundTimer = 0;
                 }
             }
         }
@@ -392,10 +413,12 @@ namespace VHS
             if (!hasPlayerDied)
             {
                 hudController.DoUiFade(HUDController.FadeState.IN);
+                damage = damage + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.enemyDamagePercent * damage) * GameVars.instance.difficultyManager.GetDifficultyScaler() * -1));
                 playerHealth -= damage;
                 GameVars.instance.totalDamageTaken += damage;
-                if (playerDamageAudio)
+                if (playerDamageAudio && canPlayDamageSound)
                 {
+                    canPlayDamageSound = false;
                     GameVars.instance.audioManager.PlaySFX(playerDamageAudio, 1, transform.position);
                 }
             }
@@ -406,7 +429,7 @@ namespace VHS
             if(playerHealth < maxHealth && !hasPlayerDied)
             {
                 yield return new WaitForSeconds(playerRegenRatePerSec);
-                playerHealth += playerRegenIncrement;
+                playerHealth += playerRegenIncrement + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.regenSpeedPercent * playerRegenIncrement) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
                 if(playerHealth >= maxHealth)
                 {
                     playerHealth = maxHealth;
@@ -486,7 +509,8 @@ namespace VHS
             }
             else
             {
-                foundWeapon.GetComponent<WeaponController>().totalRounds += foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnInitialPickup;
+                WeaponController foundWeaponController = foundWeapon.GetComponent<WeaponController>();
+                foundWeaponController.totalRounds += foundWeaponController.weaponParams.totalAmmoOnAmmoPickup + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.ammoPickUpPercent * foundWeaponController.weaponParams.totalAmmoOnAmmoPickup) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
                 //Debug.Log("Added " + foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnPickup + " Rounds To " + foundWeapon.GetComponent<WeaponController>().weaponParams.name);
             }
         }

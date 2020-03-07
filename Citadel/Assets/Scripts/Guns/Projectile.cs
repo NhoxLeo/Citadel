@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using VHS;
 public class Projectile : MonoBehaviour
 {
     public ProjectileType projectileType = ProjectileType.Instant;
@@ -11,6 +11,7 @@ public class Projectile : MonoBehaviour
     public float damage = 100;
     public float sizeOfDamage = 1;
     public bool lockRotation;
+    private bool hasHitPlayer = false;
 
     [HideInInspector]
     public float hitForce;
@@ -35,7 +36,7 @@ public class Projectile : MonoBehaviour
     public IEnumerator ProjectileAlive()
     {
         yield return new WaitForSeconds(maxExistanceTime);
-        ActivateProjectile();
+        ActivateProjectile(null);
     }
 
     private void OnCollisionEnter(Collision col)
@@ -55,19 +56,67 @@ public class Projectile : MonoBehaviour
                 {
                     hitBreakable.Impact(col.contacts[0].normal, damage);
                 }
-                ActivateProjectile(col.contacts[0].normal);
+                ActivateProjectile(col, col.contacts[0].normal);
             }
         }
     }
 
-    public void ActivateProjectile(Vector3 hitNormal = new Vector3())
+    public void ActivateProjectile(Collision col, Vector3 hitNormal = new Vector3())
     {
-        GameObject damageObject = Instantiate(damagePrefab, transform.position, Quaternion.identity);
-        damageObject.tag = "PlayerProjectile";
-        damageObject.GetComponent<ProjectileDamage>().incomingVector = -hitNormal;
-        damageObject.GetComponent<ProjectileDamage>().damage = damage;
-        //damageObject.GetComponent<ProjectileDamage>().damageMask = collisionLayers;
-        damageObject.transform.localScale = Vector3.one * sizeOfDamage;
+        if (damagePrefab)
+        {
+            GameObject damageObject = Instantiate(damagePrefab, transform.position, Quaternion.identity);
+            damageObject.tag = "PlayerProjectile";
+            damageObject.GetComponent<ProjectileDamage>().incomingVector = -hitNormal;
+            damageObject.GetComponent<ProjectileDamage>().damage = damage;
+            //damageObject.GetComponent<ProjectileDamage>().damageMask = collisionLayers;
+            damageObject.transform.localScale = Vector3.one * sizeOfDamage;
+        }
+        else
+        {
+            if (col != null)
+            {
+                Rigidbody colRigid = col.gameObject.GetComponent<Rigidbody>();
+                if (col.gameObject.layer == 12)
+                {
+                    if (col.transform.parent)
+                    {
+                        AIController controller = col.transform.parent.gameObject.GetComponent<AIController>();
+                        if (controller)
+                        {
+                            if (!controller.isDead)
+                            {
+                                controller.TakeDamage(damage, -hitNormal * 25);
+                            }
+                            else
+                            {
+                                col.transform.parent.GetComponent<Rigidbody>().AddForce(hitForce * -hitNormal);
+                            }
+                        }
+                    }
+                }
+                else if (col.gameObject.layer == 8 && !hasHitPlayer)
+                {
+                    if (!InteractionController.instance.hasPlayerDied)
+                    {
+                        hasHitPlayer = true;
+                        InteractionController.instance.TakeDamage(damage);
+                    }
+                }
+                else
+                {
+                    Breakable hitBreakable = col.gameObject.GetComponent<Breakable>();
+                    if (hitBreakable)
+                    {
+                        hitBreakable.Impact(-hitNormal * hitForce, damage);
+                    }
+                    if (colRigid)
+                    {
+                        colRigid.AddForce(hitForce * -hitNormal);
+                    }
+                }
+            }
+        }
         Destroy(gameObject);
     }
 }

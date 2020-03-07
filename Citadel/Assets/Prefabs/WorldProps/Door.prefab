@@ -171,6 +171,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6336263473029748869}
   - component: {fileID: 6336263473029748868}
+  - component: {fileID: 1638577448}
   m_Layer: 0
   m_Name: DoorPivot
   m_TagString: Untagged
@@ -213,6 +214,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!208 &1638577448
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336263473029748867}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.555, y: 0.02, z: 0.245}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.56, y: 0, z: 0.22}
+  m_TimeToStationary: 0.5
 --- !u!1 &7441262534280872271
 GameObject:
   m_ObjectHideFlags: 0

@@ -84,4 +84,18 @@ public class MenuCamera : MonoBehaviour
     {
         GameVars.instance.saveManager.UpdatePrefData();
     }
+
+    public void ChangeToEasy()
+    {
+        GameVars.instance.ChangeDifficulty(DifficultyManager.Difficulty.Easy);
+    }
+
+    public void ChangeToNormal()
+    {
+        GameVars.instance.ChangeDifficulty(DifficultyManager.Difficulty.Normal);
+    }
+    public void ChangeToHard()
+    {
+        GameVars.instance.ChangeDifficulty(DifficultyManager.Difficulty.Hard);
+    }
 }
