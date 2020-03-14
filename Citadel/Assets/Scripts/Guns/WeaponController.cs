@@ -26,6 +26,7 @@ public class WeaponController : MonoBehaviour
     [HideInInspector]
     public int currentLoadedRounds;
     private FirstPersonController fpsController;
+    private bool isSwapping;
 
     /// <summary>
     /// Conditional Hide Inspector Tools
@@ -100,6 +101,14 @@ public class WeaponController : MonoBehaviour
                     {
                         weaponState = WeaponState.Attacking;
                         StartCoroutine(Attack());
+                    }
+                }
+                else
+                {
+                    if (!isSwapping)
+                    {
+                        isSwapping = true;
+                        InteractionController.instance.ChangeWeapon(0);
                     }
                 }
             }
@@ -342,6 +351,7 @@ public class WeaponController : MonoBehaviour
 
     private void OnEnable()
     {
+        isSwapping = false;
         if(weaponParams.equipSound)
         {
             if (weaponParams.doesNeedReload)

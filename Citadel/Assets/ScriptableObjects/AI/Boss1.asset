@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b2a7a2b30ffa1e468101b6aff3807ce, type: 3}
-  m_Name: Monster
+  m_Name: Boss1
   m_EditorClassIdentifier: 
-  enemyName: Monster
+  enemyName: Boss1
   enemyType: 0
   enemyBehavior: 0
   damageSound: {fileID: 8300000, guid: 37dd66a35ab74594f817510d1c499c14, type: 3}
   deathSound: {fileID: 8300000, guid: 08a2060f7ad3c1a48b6e0843b27256b7, type: 3}
   idleSound: {fileID: 0}
   walkingSound: {fileID: 0}
-  health: 600
-  walkSpeed: 12
+  health: 3000
+  walkSpeed: 13
   fov: 90
   viewRange: 50
   playerRememberTime: 10
@@ -30,7 +30,7 @@ MonoBehaviour:
   missSound: {fileID: 8300000, guid: 655ef138ca025fe4ba2855f312c747a3, type: 3}
   equipSound: {fileID: 8300000, guid: d5a64618e6c0ff9448ae2cd8dd90e06e, type: 3}
   projectilePrefab: {fileID: 0}
-  attackDamage: 20
+  attackDamage: 25
   attackRange: 3
   attackRadius: 1
   attackPlayerRadius: 3.2

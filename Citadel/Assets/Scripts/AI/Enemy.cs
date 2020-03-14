@@ -47,6 +47,7 @@ public class Enemy : ScriptableObject
     public float attackRange = 100;
     [ConditionalHide("isMelee", true)]
     public float attackRadius = 2;
+    public float attackPlayerRadius = 2.5f;
     public float attackForce = 100;
     public int totalRoundsPerShot = 1;
     public float spreadMaxDivation = 0;

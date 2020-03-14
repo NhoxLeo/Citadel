@@ -401,7 +401,6 @@ namespace VHS
                 if (switchWeaponLock)
                 {
                     StartCoroutine(SwitchWeapons(shiftBy, toIndex, true));
-
                 }
                 else
                 {
@@ -461,27 +460,83 @@ namespace VHS
 
             if (toIndex == -1)
             {
+                bool foundWeaponWithAmmo = false;
+                bool allowMelee = false;
+                int startingIndex = currentWeaponIndex;
+
                 if (shiftBy > 0)
                 {
-                    if (currentWeaponIndex == weaponStorge.Count - 1)
+                    startingIndex++;
+                    do
                     {
-                        currentWeaponIndex = 0;
-                    }
-                    else
+                        if (startingIndex > weaponStorge.Count - 1)
+                        {
+                            startingIndex = 0;
+                        }
+
+                        WeaponController weaponToSwap = weaponStorge[startingIndex].GetComponent<WeaponController>();
+                        //Debug.Log(weaponToSwap.weaponParams.name + " | Total Rounds: " + weaponToSwap.totalRounds + " | Loaded Rounds: " + weaponToSwap.currentLoadedRounds);
+                        if ((weaponToSwap.totalRounds > 0 || weaponToSwap.currentLoadedRounds > 0 && weaponToSwap.weaponParams.doesNeedReload) || (weaponToSwap.weaponParams.weaponType == Weapon.WeaponType.Melee))
+                        {
+                            currentWeaponIndex = startingIndex;
+                            foundWeaponWithAmmo = true;
+                        }
+                        else
+                        {
+                            startingIndex++;
+                        }
+                    } while (foundWeaponWithAmmo == false);
+                }
+                else if(shiftBy < 0)
+                {
+                    startingIndex--;
+                    do
                     {
-                        currentWeaponIndex += shiftBy;
-                    }
+                        if (startingIndex < 0)
+                        {
+                            startingIndex = weaponStorge.Count - 1;
+                        }
+
+                        WeaponController weaponToSwap = weaponStorge[startingIndex].GetComponent<WeaponController>();
+                        //Debug.Log(weaponToSwap.weaponParams.name + " | Total Rounds: " + weaponToSwap.totalRounds + " | Loaded Rounds: " + weaponToSwap.currentLoadedRounds);
+                        if ((weaponToSwap.totalRounds > 0 || weaponToSwap.currentLoadedRounds > 0 && weaponToSwap.weaponParams.doesNeedReload) || (weaponToSwap.weaponParams.weaponType == Weapon.WeaponType.Melee))
+                        {
+                            currentWeaponIndex = startingIndex;
+                            foundWeaponWithAmmo = true;
+                        }
+                        else
+                        {
+                            startingIndex++;
+                        }
+                    } while (foundWeaponWithAmmo == false);
                 }
                 else
                 {
-                    if (currentWeaponIndex == 0)
+                    startingIndex++;
+                    do
                     {
-                        currentWeaponIndex = weaponStorge.Count - 1;
-                    }
-                    else
-                    {
-                        currentWeaponIndex += shiftBy;
-                    }
+                        if (startingIndex > weaponStorge.Count - 1)
+                        {
+                            startingIndex = 0;
+                        }
+
+                        if (startingIndex == currentWeaponIndex)
+                        {
+                            allowMelee = true;
+                        }
+
+                        WeaponController weaponToSwap = weaponStorge[startingIndex].GetComponent<WeaponController>();
+                        //Debug.Log(weaponToSwap.weaponParams.name + " | Total Rounds: " + weaponToSwap.totalRounds + " | Loaded Rounds: " + weaponToSwap.currentLoadedRounds);
+                        if (((weaponToSwap.totalRounds > 0 || weaponToSwap.currentLoadedRounds > 0 && weaponToSwap.weaponParams.doesNeedReload) && weaponToSwap.weaponParams.weaponType != Weapon.WeaponType.Melee) || (allowMelee == true && weaponToSwap.weaponParams.weaponType == Weapon.WeaponType.Melee))
+                        {
+                            currentWeaponIndex = startingIndex;
+                            foundWeaponWithAmmo = true;
+                        }
+                        else
+                        {
+                            startingIndex++;
+                        }
+                    } while (foundWeaponWithAmmo == false);
                 }
             }
             else

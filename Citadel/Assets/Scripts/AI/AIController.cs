@@ -156,11 +156,10 @@ public class AIController : MonoBehaviour
                             }
                             else
                             {
-                                if (movingCoroutine != null)
+                                if (movingCoroutine == null)
                                 {
-                                    StopCoroutine(movingCoroutine);
-                                }
-                                movingCoroutine = StartCoroutine(LookAround());
+                                    movingCoroutine = StartCoroutine(LookAround());
+                                }                             
                             }
                         }
                     }
@@ -194,7 +193,7 @@ public class AIController : MonoBehaviour
                     }
                 }
             }
-            if(navMeshAgent.velocity.magnitude < 0.5f)
+            if(navMeshAgent.velocity.magnitude < 0.5f && attackingCoroutine == null && damageCoroutine == null && movingCoroutine == null)
             {
                 UpdateSprite(idleState);
             }
@@ -452,6 +451,7 @@ public class AIController : MonoBehaviour
                 {
                     yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
                 }
+
                 EnemyAttack();
                 yield return new WaitForSeconds(enemyParams.attackStateLength);
                 UpdateSprite(idleState);
@@ -464,7 +464,7 @@ public class AIController : MonoBehaviour
             else //Melee
             {
                 bool hasArrived = false;
-                if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
+                if (Vector3.Distance(transform.position, player.transform.position) < enemyParams.attackPlayerRadius)
                 {
                     if (!initialAttackDelay)
                     {
@@ -489,8 +489,9 @@ public class AIController : MonoBehaviour
 
                         if (CalculateNewPath(player.transform.position) == true)
                         {
+                            //Debug.Log("Can Go To Player");
                             navMeshAgent.SetDestination(player.transform.position);
-                            if (Vector3.Distance(transform.position, player.transform.position) < 2.5)
+                            if (Vector3.Distance(transform.position, player.transform.position) < enemyParams.attackPlayerRadius)
                             {
                                 //Debug.Log("Arrived Local");
                                 navMeshAgent.SetDestination(transform.position);
@@ -515,11 +516,49 @@ public class AIController : MonoBehaviour
                         }
                         else
                         {
-                            navMeshAgent.SetDestination(transform.position);
-                            lastKnownPlayerLocation = transform.position;
-                            navMeshAgent.velocity = Vector3.zero;
-                            hasArrived = true;
-                            UpdateSprite(idleState);
+                            //Debug.Log("Can't Go To Player");
+                            if (transform.position != lastKnownPlayerLocation)
+                            {
+                                if (!CalculateNewPath(lastKnownPlayerLocation))
+                                {
+                                    //Debug.Log("Can't Go To Player | Can't Go To Last Pos");
+                                    navMeshAgent.SetDestination(transform.position);
+                                    lastKnownPlayerLocation = transform.position;
+                                    navMeshAgent.velocity = Vector3.zero;
+                                    hasArrived = true;
+                                    UpdateSprite(idleState);
+                                }
+                                else
+                                {
+                                    if (CalculateNewPath(lastKnownPlayerLocation) == true)
+                                    {
+                                        //Debug.Log("Can't Go To Player | Can Go To Last Pos");
+                                        navMeshAgent.SetDestination(lastKnownPlayerLocation);
+                                        if (Vector3.Distance(transform.position, lastKnownPlayerLocation) < enemyParams.attackPlayerRadius)
+                                        {
+                                            //Debug.Log("Arrived Local");
+                                            navMeshAgent.SetDestination(transform.position);
+                                            lastKnownPlayerLocation = transform.position;
+                                            navMeshAgent.velocity = Vector3.zero;
+                                            hasArrived = true;
+                                            UpdateSprite(idleState);
+                                        }
+                                        if (!hasArrived)
+                                        {
+                                            UpdateSprite(walkState);
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                //Debug.Log("Already There Or No Player");
+                                navMeshAgent.SetDestination(transform.position);
+                                lastKnownPlayerLocation = transform.position;
+                                navMeshAgent.velocity = Vector3.zero;
+                                UpdateSprite(idleState);
+                                hasArrived = true;
+                            }
                         }
                         yield return null;
                     }
@@ -541,7 +580,7 @@ public class AIController : MonoBehaviour
             }
             else if (enemyParams.enemyBehavior == Enemy.EnemyBehavior.Wander)
             {
-                if (Vector3.Distance(transform.position, player.transform.position) > 6)
+                if (Vector3.Distance(transform.position, player.transform.position) > 6 && lastKnownPlayerLocation != transform.position)
                 {
                     //Walk Closer Then Shoot
                     if (enemyParams.agressiveness > 0)
@@ -557,6 +596,7 @@ public class AIController : MonoBehaviour
                             yield return new WaitForSeconds(1 * 1);
                         }
                     }
+
                     if (attackingCoroutine != null)
                     {
                         StopCoroutine(attackingCoroutine);
@@ -619,6 +659,8 @@ public class AIController : MonoBehaviour
         yield return new WaitForSeconds(enemyParams.attackDelayStateLength / 2);
         if (enemyParams.enemyType != Enemy.EnemyType.Friendly)
         {
+            transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+            transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
             SwitchState(AIState.Attack);
         }
         else
@@ -677,14 +719,17 @@ public class AIController : MonoBehaviour
                 {
                     playerSpottedTimer = enemyParams.playerRememberTime;
                     if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
-                    {
-                        lastKnownPlayerLocation = navMeshHit.position;
+                    {                        
+                        if(CalculateNewPath(navMeshHit.position))
+                        {
+                            lastKnownPlayerLocation = navMeshHit.position;
+                        }
                     }
                     transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                     transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                     playerSpotted = true;
                 }
-            }
+            }          
 
             if (aiCollisionChecks != null)
             {
@@ -699,7 +744,10 @@ public class AIController : MonoBehaviour
                             playerSpottedTimer = enemyParams.playerRememberTime;
                             if (NavMesh.SamplePosition(player.transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
                             {
-                                lastKnownPlayerLocation = navMeshHit.position;
+                                if (CalculateNewPath(navMeshHit.position))
+                                {
+                                    lastKnownPlayerLocation = navMeshHit.position;
+                                }
                             }
                             transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                             transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
@@ -857,14 +905,17 @@ public class AIController : MonoBehaviour
             bool randomDamageState = false;
             if (damageCoroutine == null)
             {
-                navMeshAgent.SetDestination(transform.position);
-                navMeshAgent.ResetPath();
-
                 launchVector = new Vector3(launchVector.x, 0, launchVector.z);
-                navMeshAgent.velocity = navMeshAgent.velocity + (launchVector/2500);
-
-                if (Random.Range(0, 8) == 0)
+                if (movingCoroutine == null)
                 {
+                    navMeshAgent.velocity = navMeshAgent.velocity + (launchVector / 2500);
+                }
+
+                if (Random.Range(0, 12) == 0 || playerSpottedTimer == 0)
+                {
+                    navMeshAgent.SetDestination(transform.position);
+                    navMeshAgent.ResetPath();
+
                     StopAllCoroutines();
                     attackingCoroutine = null;
                     movingCoroutine = null;
@@ -886,15 +937,17 @@ public class AIController : MonoBehaviour
                 {
                     damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);
                 }
+
                 if (randomDamageState)
                 {
                     SwitchState(AIState.Damage);
                 }
                 else
                 {
-                    damageCoroutine = null;
-                    currentlyInState = false;
-                    SwitchState(AIState.Attack);
+                    if(damageCoroutine != null)
+                    {
+                        SwitchState(AIState.Attack);
+                    }
                 }
             }
             else if (currentAIHealth <= damageToTake)
@@ -1032,7 +1085,7 @@ public class AIController : MonoBehaviour
             navMeshAgent.SetDestination(newPosition);
             while (hasArrived == false)
             {
-                if (Vector3.Distance(transform.position, newPosition) < 2.5)
+                if (Vector3.Distance(transform.position, newPosition) < enemyParams.attackPlayerRadius)
                 {
                     //Debug.Log("Arrived");
                     UpdateSprite(idleState);
