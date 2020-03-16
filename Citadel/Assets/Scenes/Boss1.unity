@@ -7117,7 +7117,6 @@ GameObject:
   - component: {fileID: 725394883}
   - component: {fileID: 725394882}
   - component: {fileID: 725394881}
-  - component: {fileID: 725394880}
   m_Layer: 11
   m_Name: BossSpawnTrigger
   m_TagString: Untagged
@@ -7137,93 +7136,8 @@ Transform:
   m_LocalScale: {x: 20.8, y: 9.05, z: 9.05}
   m_Children: []
   m_Father: {fileID: 1606804726}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &725394880
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 725394878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3dbf67ffeae4a4db89497eac9c80b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  holdInteract: 0
-  holdDuration: 1
-  multipleUse: 1
-  isInteractable: 1
-  useParticle: 0
-  useAudio: 0
-  useRelocation: 0
-  useAnimation: 0
-  useInstantiation: 1
-  animator: {fileID: 0}
-  reactionLimitMode: 1
-  numberOfUses: 1
-  destroySelfAfterUse: 1
-  reactionState: 1
-  particleMode: 0
-  particleDelay: 0
-  showParticlePoints: 1
-  particles:
-    instantiationList:
-    - instantiatableGameObject: {fileID: 6234126304987709654, guid: 9e7cf8f870c1b3846949517cc280e7b4,
-        type: 3}
-      instantiationLocation: {x: 0, y: 1.94, z: 0}
-      instantiationRotation: {x: 0, y: 0, z: 0}
-      instantiationScale: {x: 2, y: 2, z: 2}
-      initialVelocity: {x: 0, y: 0, z: 0}
-      instantiatableMode: 0
-      instantiateInHand: 0
-      instantiationReferenceObject: {fileID: 0}
-      debugColor: {r: 0, g: 0, b: 1, a: 0.5254902}
-      NetworkedItem: 0
-  audioMode: 0
-  audio:
-    audioList:
-    - audioClip: {fileID: 8300000, guid: a42c6f85173a03f44a6301bd94fa1c02, type: 3}
-      audioDelay: 0
-      volume: 0.494
-      priority: 128
-      pitch: 1
-  animationMode: 0
-  animationLength: 1
-  animationDelay: 0
-  animationConditions:
-    animationConditionList:
-    - condition: Blocked
-      conditionState: 0
-      dontReturnToDefaultAfterAnimationLength: 1
-  instantiationMode: 0
-  instantiationDelay: 0
-  ObjectCountMax: 5
-  cachedID: 0
-  showInstantiationPoints: 1
-  instantiations:
-    instantiationList:
-    - instantiatableGameObject: {fileID: 1503747294842642347, guid: 1392a1828151beb46bd045b7ddfc7501,
-        type: 3}
-      instantiationLocation: {x: 0, y: 0, z: 0}
-      instantiationRotation: {x: 0, y: 0, z: 0}
-      instantiationScale: {x: 1, y: 1, z: 1}
-      initialVelocity: {x: 0, y: 0, z: 0}
-      instantiatableMode: 1
-      instantiateInHand: 0
-      instantiationReferenceObject: {fileID: 1928780774}
-      debugColor: {r: 0.010412939, g: 0.010412939, b: 0.735849, a: 0.94509804}
-      NetworkedItem: 0
-  relocationDelay: 0
-  isRelocationRandom: 0
-  restartRelocationPointsAfterFinish: 0
-  showRelocationPoints: 1
-  relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
-  relocationPoints:
-    relocationTransform: {fileID: 0}
-    relocationList: []
-  isLimited: 1
 --- !u!114 &725394881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7243,8 +7157,8 @@ MonoBehaviour:
   OnActivate:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 725394880}
-        m_MethodName: ActivateReaction
+      - m_Target: {fileID: 1653381242}
+        m_MethodName: OnTrigger
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10305,7 +10219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 423956, guid: 41a9c4a33d0f0c44aa37962ea4c507b5, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 423956, guid: 41a9c4a33d0f0c44aa37962ea4c507b5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -10349,69 +10263,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1223226502}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1223226505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223226504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3dbf67ffeae4a4db89497eac9c80b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  holdInteract: 0
-  holdDuration: 1
-  multipleUse: 1
-  isInteractable: 1
-  useParticle: 0
-  useAudio: 1
-  useRelocation: 0
-  useAnimation: 1
-  useInstantiation: 0
-  animator: {fileID: 1901286879}
-  reactionLimitMode: 1
-  numberOfUses: 1
-  destroySelfAfterUse: 0
-  reactionState: 1
-  particleMode: 0
-  particleDelay: 0
-  showParticlePoints: 1
-  particles:
-    instantiationList: []
-  audioMode: 0
-  audio:
-    audioList:
-    - audioClip: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
-      audioDelay: 0
-      volume: 0.494
-      priority: 128
-      pitch: 1
-  animationMode: 0
-  animationLength: 1
-  animationDelay: 0
-  animationConditions:
-    animationConditionList:
-    - condition: Open
-      conditionState: 0
-      dontReturnToDefaultAfterAnimationLength: 1
-  instantiationMode: 0
-  instantiationDelay: 0
-  ObjectCountMax: 5
-  cachedID: 0
-  showInstantiationPoints: 1
-  instantiations:
-    instantiationList: []
-  relocationDelay: 0
-  isRelocationRandom: 0
-  restartRelocationPointsAfterFinish: 0
-  showRelocationPoints: 1
-  relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
-  relocationPoints:
-    relocationTransform: {fileID: 0}
-    relocationList: []
-  isLimited: 1
 --- !u!65 &1223226506
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10438,6 +10289,42 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.11569704, y: 0.13791564, z: 0.11951256}
   m_Center: {x: 0.000018499792, y: 0.06895782, z: 0.0010137558}
+--- !u!114 &1223226508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1223226504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b4b0844e4cc4b94c9c39a27b9a22a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdInteract: 0
+  holdDuration: 1
+  multipleUse: 0
+  isInteractable: 1
+  triggerAllEventsAtOnce: 1
+  restartListOnComplete: 1
+  eventsStartDelay: 0
+  eventsBetweenDelay: 0
+  reactionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1653381242}
+        m_MethodName: KillAllManagedAI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1001 &1234497487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11000,7 +10887,7 @@ PrefabInstance:
     - target: {fileID: 6715251055398233831, guid: a7c004ae0f4884b4fa054689e69c1354,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6715251055398233831, guid: a7c004ae0f4884b4fa054689e69c1354,
         type: 3}
@@ -12692,6 +12579,7 @@ Transform:
   m_LocalPosition: {x: 20.283964, y: 26.693329, z: 34.204445}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 1653381243}
   - {fileID: 725394879}
   - {fileID: 1928780774}
   - {fileID: 1223226503}
@@ -13154,6 +13042,98 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650411141}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1653381241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1653381243}
+  - component: {fileID: 1653381242}
+  m_Layer: 0
+  m_Name: BossManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1653381242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653381241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e9402a38d4d0ee4f9bc0996e04f9b03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  managerType: 0
+  spawnAllEntitiesAtOnce: 0
+  allowSpawnPointReuseOnDeath: 1
+  spawnDelay: 0
+  OnInitialTrigger:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnSingleAISpawn:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnSingleAIDeath:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnAllAIDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1901286881}
+        m_MethodName: ActivateReaction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  aiSpawnPositions:
+  - {fileID: 1928780774}
+  aiEntities:
+  - aiController: {fileID: 7877585232524347938}
+    waitForSpawnTrigger: 1
+    spawnParticle: {fileID: 0}
+    spawnSound:
+      audioClip: {fileID: 0}
+      volume: 0
+      priority: 0
+      pitch: 0
+      doLoop: 0
+    spawnPointUsed: {fileID: 0}
+  hasAllAIDied: 0
+--- !u!4 &1653381243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1653381241}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 9.366035, y: -39.34333, z: 3.545555}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1606804726}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1655524630
 GameObject:
   m_ObjectHideFlags: 0
@@ -14917,6 +14897,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1901286880}
   - component: {fileID: 1901286879}
+  - component: {fileID: 1901286881}
   m_Layer: 14
   m_Name: FinalDoor
   m_TagString: Untagged
@@ -14958,6 +14939,69 @@ Transform:
   m_Father: {fileID: 435691511}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1901286881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1901286878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3dbf67ffeae4a4db89497eac9c80b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdInteract: 0
+  holdDuration: 1
+  multipleUse: 0
+  isInteractable: 0
+  useParticle: 0
+  useAudio: 1
+  useRelocation: 0
+  useAnimation: 1
+  useInstantiation: 0
+  animator: {fileID: 1901286879}
+  reactionLimitMode: 1
+  numberOfUses: 1
+  destroySelfAfterUse: 0
+  reactionState: 1
+  particleMode: 0
+  particleDelay: 0
+  showParticlePoints: 1
+  particles:
+    instantiationList: []
+  audioMode: 0
+  audio:
+    audioList:
+    - audioClip: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
+      audioDelay: 0
+      volume: 0.494
+      priority: 128
+      pitch: 1
+  animationMode: 0
+  animationLength: 1
+  animationDelay: 0
+  animationConditions:
+    animationConditionList:
+    - condition: Open
+      conditionState: 0
+      dontReturnToDefaultAfterAnimationLength: 1
+  instantiationMode: 0
+  instantiationDelay: 0
+  ObjectCountMax: 5
+  cachedID: 0
+  showInstantiationPoints: 1
+  instantiations:
+    instantiationList: []
+  relocationDelay: 0
+  isRelocationRandom: 0
+  restartRelocationPointsAfterFinish: 0
+  showRelocationPoints: 1
+  relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  relocationPoints:
+    relocationTransform: {fileID: 0}
+    relocationList: []
+  isLimited: 1
 --- !u!1 &1904434628
 GameObject:
   m_ObjectHideFlags: 0
@@ -15429,7 +15473,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1606804726}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1933045765
 GameObject:
@@ -17386,7 +17430,7 @@ PrefabInstance:
     - target: {fileID: 1503747294842642348, guid: 1392a1828151beb46bd045b7ddfc7501,
         type: 3}
       propertyPath: m_RootOrder
-      value: 16
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 1503747294842642348, guid: 1392a1828151beb46bd045b7ddfc7501,
         type: 3}
@@ -17411,3 +17455,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7877585232524347936}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7877585232524347938 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5693562558901604839, guid: 1392a1828151beb46bd045b7ddfc7501,
+    type: 3}
+  m_PrefabInstance: {fileID: 7877585232524347936}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a746b48fcbee79a45b3142f7aa53da6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
