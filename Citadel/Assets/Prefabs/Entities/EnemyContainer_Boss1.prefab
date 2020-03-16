@@ -471,7 +471,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503747294842642347}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 25.7, y: 1.1869841, z: 66.79986}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -495,7 +495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a746b48fcbee79a45b3142f7aa53da6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyParams: {fileID: 11400000, guid: a422d9807296d134c8aa018482e50818, type: 2}
+  enemyParams: {fileID: 11400000, guid: c0869ce854ab344428b4406ca05d0f77, type: 2}
   fieldOfView: {fileID: 5693562558901604833}
   navMeshAgent: {fileID: 6748503117760992642}
   moveSoundsManager: {fileID: 4047090620062678275}

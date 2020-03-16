@@ -903,11 +903,15 @@ public class AIController : MonoBehaviour
         if (currentAIHealth > 0)
         {
             bool randomDamageState = false;
+
             if (damageCoroutine == null)
             {
                 launchVector = new Vector3(launchVector.x, 0, launchVector.z);
-                if (movingCoroutine == null)
+                if ((movingCoroutine == null && attackingCoroutine == null) || InteractionController.instance.newWeapon.weaponParams.weaponType == Weapon.WeaponType.Melee)
                 {
+                    navMeshAgent.SetDestination(transform.position);
+                    navMeshAgent.ResetPath();
+
                     navMeshAgent.velocity = navMeshAgent.velocity + (launchVector / 2500);
                 }
 
@@ -933,6 +937,7 @@ public class AIController : MonoBehaviour
 
             if (currentAIHealth > damageToTake)
             {
+
                 if (enemyParams.damageSound && damageSoundObject == null)
                 {
                     damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);

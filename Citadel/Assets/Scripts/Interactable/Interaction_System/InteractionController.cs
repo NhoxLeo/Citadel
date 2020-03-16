@@ -60,6 +60,8 @@ namespace VHS
         public float maxHealth;
         [HideInInspector]
         public bool hasPlayerDied;
+        [HideInInspector]
+        public WeaponController newWeapon;
 
         #region Private
         private Camera m_cam;
@@ -70,7 +72,7 @@ namespace VHS
 
         private Coroutine regenCoroutine;
         private bool waitingToUpdateUI;
-        private WeaponController newWeapon;
+
         private float damageSoundTimer;
 
         #endregion
@@ -506,7 +508,7 @@ namespace VHS
                         }
                         else
                         {
-                            startingIndex++;
+                            startingIndex--;
                         }
                     } while (foundWeaponWithAmmo == false);
                 }
