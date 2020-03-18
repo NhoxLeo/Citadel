@@ -8,6 +8,7 @@ public class RT_Monitor : MonoBehaviour
 {
     public GameObject renderTarget;
     public Camera renderCamera;
+    public bool doRenderOnce = false;
     //public PostProcessLayer postProcessLayer;
 
     private RenderTexture renderTexture;
@@ -38,5 +39,11 @@ public class RT_Monitor : MonoBehaviour
 
         renderTexture.Create();
         renderCamera.enabled = true;
+
+        if(doRenderOnce)
+        {
+            yield return new WaitForSeconds(1f);
+            renderCamera.enabled = false;
+        }
     }
 }

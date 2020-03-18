@@ -19,7 +19,7 @@ MonoBehaviour:
   deathSound: {fileID: 8300000, guid: 08a2060f7ad3c1a48b6e0843b27256b7, type: 3}
   idleSound: {fileID: 0}
   walkingSound: {fileID: 0}
-  health: 300
+  health: 600
   walkSpeed: 12
   fov: 90
   viewRange: 50
@@ -33,9 +33,11 @@ MonoBehaviour:
   attackDamage: 20
   attackRange: 3
   attackRadius: 1
+  attackPlayerRadius: 3.2
   attackForce: 2500
   totalRoundsPerShot: 1
   spreadMaxDivation: 0
+  instantiationDistance: 0
   damageMask:
     serializedVersion: 2
     m_Bits: 6913

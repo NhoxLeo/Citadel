@@ -28,6 +28,11 @@ public class Enemy : ScriptableObject
     public float playerRememberTime = 10;
     [Range(0.0f, 1f)]
     public float agressiveness = 1;
+    [ConditionalHide("isApproachChance", true)]
+    public int approachChance = 20;
+    [ConditionalHide("isApproachChance", true)]
+    public bool spreadBasedOnDistance = true;
+
 
     [Header("Weapon References")]
     [Space(10)]
@@ -47,11 +52,14 @@ public class Enemy : ScriptableObject
     public float attackRange = 100;
     [ConditionalHide("isMelee", true)]
     public float attackRadius = 2;
+    public float attackPlayerRadius = 2.5f;
     public float attackForce = 100;
     public int totalRoundsPerShot = 1;
     public float spreadMaxDivation = 0;
     [ConditionalHide("isProjectile", true)]
     public float instantiationDistance = 0;
+    [ConditionalHide("isProjectile", true)]
+    public float instantiationHeight = 0;
     public LayerMask damageMask;
 
     [Header("State Settings")]
@@ -71,7 +79,7 @@ public class Enemy : ScriptableObject
     public float dyingStateLength = 2;
 
     [HideInInspector]
-    public bool isMelee, isProjectile, isWander;
+    public bool isMelee, isProjectile, isWander, isApproachChance;
     public enum EnemyType { Melee, Ranged, Projectile, Friendly }
     public enum EnemyBehavior { Wander, Stationary}
 
@@ -107,6 +115,15 @@ public class Enemy : ScriptableObject
         else if(enemyBehavior != EnemyBehavior.Wander && isWander)
         {
             isWander = false;
+        }
+
+        if(agressiveness == 0)
+        {
+            isApproachChance = true;
+        }
+        else
+        {
+            isApproachChance = false;
         }
     }
 }

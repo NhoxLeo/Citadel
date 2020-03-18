@@ -383,16 +383,6 @@ namespace VHS
                             }
 
                             reactionState = ReactionState.Finished;
-                            SpecialReactions specialReactions = GetComponent<SpecialReactions>();
-                            if (specialReactions)
-                            {
-                                specialReactions.reactionState = ReactionState.Finished;
-                                //specialReactions.combinationInteractionManager.UpdateHighlightedObjects(null);
-                                if (specialReactions.currentReactant)
-                                {
-                                    //specialReactions.combinationInteractionManager.UpdateHighlightedObjects(specialReactions.currentReactant);
-                                }
-                            }
                         }
                     }
                     #endregion
@@ -563,11 +553,6 @@ namespace VHS
                 if (reactionState != ReactionState.Finished && !destroySelfAfterUse)
                 {
                     reactionState = ReactionState.Ready;
-                    SpecialReactions specialReactions = GetComponent<SpecialReactions>();
-                    if (specialReactions)
-                    {
-                        specialReactions.reactionState = ReactionState.Ready;
-                    }
                 }
                 else if (willDestroy)
                 {
@@ -1004,26 +989,6 @@ namespace VHS
         private void SingleAnimationToggle(AnimationCondition animationCondition)
         {
             Animator animatorToUse = animator;
-            SpecialReactions specialReactions = null;
-            if (animationCondition.conditionState == AnimationCondition.ConditionState.Reactant)
-            {
-                specialReactions = GetComponent<SpecialReactions>();
-                if (specialReactions)
-                {
-                    if (specialReactions.currentReactant && specialReactions.currentReactant.GetComponent<Animator>())
-                    {
-                        animatorToUse = specialReactions.currentReactant.GetComponent<Animator>();
-                    }
-                    else
-                    {
-                        Debug.Log("[WARNING] Cannot activate animation on reactant without animator present on reactant");
-                    }
-                }
-                else
-                {
-                    Debug.Log("[WARNING] Cannot activate animation on reactant without Special Reactions script");
-                }
-            }
 
             if (animatorToUse != null)
             {
@@ -1034,12 +999,6 @@ namespace VHS
                 else
                 {
                     animatorToUse.SetBool(animationCondition.condition, true);
-                }
-
-                if (specialReactions != null)
-                {
-                    //specialReactions.combinationInteractionManager.UpdateHighlightedObjects(null);
-                    //specialReactions.combinationInteractionManager.UpdateHighlightedObjects(specialReactions.currentReactant);
                 }
             }
             else

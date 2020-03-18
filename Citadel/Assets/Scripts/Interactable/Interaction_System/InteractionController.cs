@@ -60,6 +60,8 @@ namespace VHS
         public float maxHealth;
         [HideInInspector]
         public bool hasPlayerDied;
+        [HideInInspector]
+        public WeaponController newWeapon;
 
         #region Private
         private Camera m_cam;
@@ -70,7 +72,7 @@ namespace VHS
 
         private Coroutine regenCoroutine;
         private bool waitingToUpdateUI;
-        private WeaponController newWeapon;
+
         private float damageSoundTimer;
 
         #endregion
@@ -289,13 +291,14 @@ namespace VHS
         {
             if (!hasPlayerDied)
             {
-                hasPlayerDied = true;               
+                hasPlayerDied = true;
                 playerDamageAnimator.SetBool("HasDied", true);
                 playerDeathAnimator.SetBool("Die", true);
 
                 switchingWeapons = true;
                 weaponStorageParent.GetComponent<Animator>().SetBool("Equip", false);
                 weaponStorageParent.GetComponent<Animator>().SetBool("Unequip", true);
+                ClearPlayerWeapons(false);
 
                 AudioSource[] audioSources = GameObject.FindObjectsOfType<AudioSource>();
                 for (int i = 0; i < audioSources.Length; i++)
@@ -363,28 +366,31 @@ namespace VHS
 
         void CheckForWeapon()
         {
-            if(weaponStorge != null && weaponStorge.Count > 0)
+            if (!hasPlayerDied)
             {
-                if (!switchingWeapons)
+                if (weaponStorge != null && weaponStorge.Count > 0)
                 {
-                    if (currentWeapon && weaponStorge[currentWeaponIndex])
+                    if (!switchingWeapons)
                     {
-                        if (currentWeapon != weaponStorge[currentWeaponIndex])
+                        if (currentWeapon && weaponStorge[currentWeaponIndex])
                         {
-                            currentWeapon.SetActive(false);
+                            if (currentWeapon != weaponStorge[currentWeaponIndex])
+                            {
+                                currentWeapon.SetActive(false);
+                                currentWeapon = weaponStorge[currentWeaponIndex];
+                                currentWeapon.SetActive(true);
+                            }
+                        }
+                        else
+                        {
                             currentWeapon = weaponStorge[currentWeaponIndex];
                             currentWeapon.SetActive(true);
                         }
-                    }
-                    else
-                    {
-                        currentWeapon = weaponStorge[currentWeaponIndex];
-                        currentWeapon.SetActive(true);
-                    }
 
-                    if (newWeapon == null)
-                    {
-                        newWeapon = currentWeapon.GetComponent<WeaponController>();
+                        if (newWeapon == null)
+                        {
+                            newWeapon = currentWeapon.GetComponent<WeaponController>();
+                        }
                     }
                 }
             }
@@ -397,7 +403,6 @@ namespace VHS
                 if (switchWeaponLock)
                 {
                     StartCoroutine(SwitchWeapons(shiftBy, toIndex, true));
-
                 }
                 else
                 {
@@ -457,27 +462,83 @@ namespace VHS
 
             if (toIndex == -1)
             {
+                bool foundWeaponWithAmmo = false;
+                bool allowMelee = false;
+                int startingIndex = currentWeaponIndex;
+
                 if (shiftBy > 0)
                 {
-                    if (currentWeaponIndex == weaponStorge.Count - 1)
+                    startingIndex++;
+                    do
                     {
-                        currentWeaponIndex = 0;
-                    }
-                    else
+                        if (startingIndex > weaponStorge.Count - 1)
+                        {
+                            startingIndex = 0;
+                        }
+
+                        WeaponController weaponToSwap = weaponStorge[startingIndex].GetComponent<WeaponController>();
+                        //Debug.Log(weaponToSwap.weaponParams.name + " | Total Rounds: " + weaponToSwap.totalRounds + " | Loaded Rounds: " + weaponToSwap.currentLoadedRounds);
+                        if ((weaponToSwap.totalRounds > 0 || weaponToSwap.currentLoadedRounds > 0 && weaponToSwap.weaponParams.doesNeedReload) || (weaponToSwap.weaponParams.weaponType == Weapon.WeaponType.Melee))
+                        {
+                            currentWeaponIndex = startingIndex;
+                            foundWeaponWithAmmo = true;
+                        }
+                        else
+                        {
+                            startingIndex++;
+                        }
+                    } while (foundWeaponWithAmmo == false);
+                }
+                else if(shiftBy < 0)
+                {
+                    startingIndex--;
+                    do
                     {
-                        currentWeaponIndex += shiftBy;
-                    }
+                        if (startingIndex < 0)
+                        {
+                            startingIndex = weaponStorge.Count - 1;
+                        }
+
+                        WeaponController weaponToSwap = weaponStorge[startingIndex].GetComponent<WeaponController>();
+                        //Debug.Log(weaponToSwap.weaponParams.name + " | Total Rounds: " + weaponToSwap.totalRounds + " | Loaded Rounds: " + weaponToSwap.currentLoadedRounds);
+                        if ((weaponToSwap.totalRounds > 0 || weaponToSwap.currentLoadedRounds > 0 && weaponToSwap.weaponParams.doesNeedReload) || (weaponToSwap.weaponParams.weaponType == Weapon.WeaponType.Melee))
+                        {
+                            currentWeaponIndex = startingIndex;
+                            foundWeaponWithAmmo = true;
+                        }
+                        else
+                        {
+                            startingIndex--;
+                        }
+                    } while (foundWeaponWithAmmo == false);
                 }
                 else
                 {
-                    if (currentWeaponIndex == 0)
+                    startingIndex++;
+                    do
                     {
-                        currentWeaponIndex = weaponStorge.Count - 1;
-                    }
-                    else
-                    {
-                        currentWeaponIndex += shiftBy;
-                    }
+                        if (startingIndex > weaponStorge.Count - 1)
+                        {
+                            startingIndex = 0;
+                        }
+
+                        if (startingIndex == currentWeaponIndex)
+                        {
+                            allowMelee = true;
+                        }
+
+                        WeaponController weaponToSwap = weaponStorge[startingIndex].GetComponent<WeaponController>();
+                        //Debug.Log(weaponToSwap.weaponParams.name + " | Total Rounds: " + weaponToSwap.totalRounds + " | Loaded Rounds: " + weaponToSwap.currentLoadedRounds);
+                        if (((weaponToSwap.totalRounds > 0 || weaponToSwap.currentLoadedRounds > 0 && weaponToSwap.weaponParams.doesNeedReload) && weaponToSwap.weaponParams.weaponType != Weapon.WeaponType.Melee) || (allowMelee == true && weaponToSwap.weaponParams.weaponType == Weapon.WeaponType.Melee))
+                        {
+                            currentWeaponIndex = startingIndex;
+                            foundWeaponWithAmmo = true;
+                        }
+                        else
+                        {
+                            startingIndex++;
+                        }
+                    } while (foundWeaponWithAmmo == false);
                 }
             }
             else
@@ -515,11 +576,14 @@ namespace VHS
             }
         }
 
-        public void ClearPlayerWeapons()
+        public void ClearPlayerWeapons(bool doChange = true)
         {
             if (weaponStorge.Count > 1)
             {
-                ChangeWeapon(0, 0);
+                if (doChange)
+                {
+                    ChangeWeapon(0, 0);
+                }
                 for (int i = weaponStorge.Count-1; i > 0; i--)
                 {
                     if (weaponStorge[i] != null)
