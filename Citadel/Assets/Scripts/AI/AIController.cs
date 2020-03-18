@@ -590,7 +590,7 @@ public class AIController : MonoBehaviour
                     }
                     else
                     {
-                        if(Random.Range(0, 20) == 0)
+                        if(Random.Range(0, enemyParams.approachChance) == 0)
                         {
                             attackingCoroutine = StartCoroutine(GoToPosition(lastKnownPlayerLocation, "", false, attackingCoroutine));
                             yield return new WaitForSeconds(1 * 1);
@@ -1186,10 +1186,19 @@ public class AIController : MonoBehaviour
     public void FireProjectile()
     {
         Vector3 deviation3D = Random.insideUnitCircle * enemyParams.spreadMaxDivation;
-        Quaternion rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
-        forwardVector = rot * (player.transform.position - transform.position);
+        Quaternion rot;
+        if (enemyParams.spreadBasedOnDistance)
+        {
+            rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
+        }
+        else
+        {
+            rot = Quaternion.LookRotation(Vector3.forward * (enemyParams.attackRange) + deviation3D);
+        }
+        Vector3 spawnPos = transform.position + (transform.forward * enemyParams.instantiationDistance) + new Vector3(0, enemyParams.instantiationHeight, 0);
+        forwardVector = rot * (player.transform.position - spawnPos);
 
-        GameObject projectile = Instantiate(enemyParams.projectilePrefab, transform.position + (transform.forward * enemyParams.instantiationDistance) + new Vector3(0, 0.5f, 0), transform.rotation);
+        GameObject projectile = Instantiate(enemyParams.projectilePrefab, spawnPos, transform.rotation);
         projectile.GetComponent<Projectile>().damage = enemyParams.attackDamage;
         projectile.GetComponent<Projectile>().hitForce = enemyParams.attackForce;
         projectile.GetComponent<Rigidbody>().AddForce(forwardVector * enemyParams.attackForce);
