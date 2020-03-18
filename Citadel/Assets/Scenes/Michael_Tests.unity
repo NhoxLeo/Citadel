@@ -1595,15 +1595,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 996624388856426436, guid: f6e30195d2bf9044db189f781245b23e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5084936256996195512, guid: f6e30195d2bf9044db189f781245b23e,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 996624388856426436, guid: f6e30195d2bf9044db189f781245b23e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1368726606321132828, guid: f6e30195d2bf9044db189f781245b23e,
         type: 3}
@@ -3055,15 +3055,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5084936256996195512, guid: f6e30195d2bf9044db189f781245b23e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 996624388856426436, guid: f6e30195d2bf9044db189f781245b23e,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5084936256996195512, guid: f6e30195d2bf9044db189f781245b23e,
+    - target: {fileID: 6476369619963113107, guid: f6e30195d2bf9044db189f781245b23e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1368726606321132828, guid: f6e30195d2bf9044db189f781245b23e,
         type: 3}
@@ -3074,11 +3079,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6476369619963113107, guid: f6e30195d2bf9044db189f781245b23e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6e30195d2bf9044db189f781245b23e, type: 3}
@@ -4188,7 +4188,7 @@ GameObject:
   - component: {fileID: 1096104810}
   - component: {fileID: 1096104812}
   - component: {fileID: 1096104811}
-  m_Layer: 18
+  m_Layer: 11
   m_Name: EnemyTeleport
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9086,7 +9086,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108852339}
   - component: {fileID: 2108852340}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: TeleportSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
