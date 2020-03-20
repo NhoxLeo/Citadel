@@ -30,6 +30,7 @@ public class AIController : MonoBehaviour
     public GameObject attackState;
     public GameObject damageState;
     public GameObject dieState;
+    public GameObject gibState;
     public GameObject deadState;
     public GameObject attackParticle;
 
@@ -75,6 +76,7 @@ public class AIController : MonoBehaviour
     private bool isLerpingFadeOut, isLerpingFadeIn;
     private bool m_isGrounded;
     private bool initialAttackDelay = false;
+    private bool wasGibbed;
     #endregion
     #endregion
 
@@ -360,6 +362,11 @@ public class AIController : MonoBehaviour
         }
         else if (newState == AIState.Dead)
         {
+            if(wasGibbed)
+            {
+                deadState.transform.GetChild(1).gameObject.SetActive(true);
+                deadState.transform.GetChild(0).gameObject.SetActive(false);
+            }
             currentState = deadState;
             GameVars.instance.totalEnemiesKilled += 1;
             aliveBody.SetActive(false);
@@ -684,7 +691,14 @@ public class AIController : MonoBehaviour
     public IEnumerator DieState()
     {
         currentlyInState = true;
-        UpdateSprite(dieState);
+        if (wasGibbed)
+        {
+            UpdateSprite(gibState);
+        }
+        else
+        {
+            UpdateSprite(dieState);
+        }
         Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
         rigidbody.mass = 100;
         rigidbody.angularDrag = 5;
@@ -959,6 +973,10 @@ public class AIController : MonoBehaviour
             {
                 this.launchVector = launchVector;
                 isDead = true;
+                if(currentAIHealth >= (enemyParams.health * 0.8) || (InteractionController.instance.newWeapon.weaponParams.weaponName == "Shotgun" && Vector3.Distance(transform.position, player.transform.position) < 5) || InteractionController.instance.newWeapon.weaponParams.weaponType == Weapon.WeaponType.Projectile)
+                {
+                    wasGibbed = true;
+                }
                 SwitchState(AIState.Dying);
             }
 
