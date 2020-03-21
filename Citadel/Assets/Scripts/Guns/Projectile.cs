@@ -59,6 +59,19 @@ public class Projectile : MonoBehaviour
                 ActivateProjectile(col, col.contacts[0].normal);
             }
         }
+
+        if (projectileType == ProjectileType.Timed)
+        {
+            if(col.gameObject.layer == 12) //Ai
+            {
+                Rigidbody colRigid = col.gameObject.GetComponent<Rigidbody>();
+                if (colRigid)
+                {
+                    colRigid.AddForce(transform.forward * GetComponent<Rigidbody>().velocity.magnitude);
+                }
+                ActivateProjectile(col, col.contacts[0].normal);
+            }
+        }
     }
 
     public void ActivateProjectile(Collision col, Vector3 hitNormal = new Vector3())
