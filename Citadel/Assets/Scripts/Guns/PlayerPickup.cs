@@ -6,6 +6,7 @@ using VHS;
 public class PlayerPickup : MonoBehaviour
 {
     public int currentPickUpIndex = 0;
+    public int pickupAmount = 0;
     public AudioClip pickUpSound;
     public List<Pickup> pickUps;
 
@@ -36,7 +37,7 @@ public class PlayerPickup : MonoBehaviour
     {
         if(pickUps[currentPickUpIndex].pickUpType == global::Pickup.PickUpType.Weapon)
         {
-            InteractionController.instance.AddWeapon(pickUps[currentPickUpIndex].pickUpPrefab);
+            InteractionController.instance.AddWeapon(pickUps[currentPickUpIndex].pickUpPrefab, pickupAmount);
         }
 
         GameVars.instance.audioManager.PlaySFX(pickUpSound, 0.5f, transform.position);

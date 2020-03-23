@@ -552,7 +552,7 @@ namespace VHS
             switchWeaponLock = false;
         }
 
-        public void AddWeapon(GameObject newWeapon)
+        public void AddWeapon(GameObject newWeapon, int ammoAmount)
         {
             hudController.DoUiFade(HUDController.FadeState.IN);
             GameObject foundWeapon = SearchForWeapon(newWeapon);
@@ -564,6 +564,10 @@ namespace VHS
                 weapon.transform.localPosition = Vector3.zero;
                 weapon.transform.localScale = Vector3.one;
                 weapon.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                if (ammoAmount != 0)
+                {
+                    weapon.GetComponent<WeaponController>().totalRounds = ammoAmount;
+                }
                 weaponStorge.Add(weapon);
                 ChangeWeapon(0,weaponStorge.Count - 1);
                 //Debug.Log("Added " + newWeapon.GetComponent<WeaponController>().weaponParams.name + " To The Inventory");
@@ -571,7 +575,14 @@ namespace VHS
             else
             {
                 WeaponController foundWeaponController = foundWeapon.GetComponent<WeaponController>();
-                foundWeaponController.totalRounds += foundWeaponController.weaponParams.totalAmmoOnAmmoPickup + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.ammoPickUpPercent * foundWeaponController.weaponParams.totalAmmoOnAmmoPickup) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
+                if (ammoAmount == 0)
+                {
+                    foundWeaponController.totalRounds += foundWeaponController.weaponParams.totalAmmoOnAmmoPickup + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.ammoPickUpPercent * foundWeaponController.weaponParams.totalAmmoOnAmmoPickup) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
+                }
+                else
+                {
+                    foundWeaponController.totalRounds += ammoAmount + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.ammoPickUpPercent * ammoAmount) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
+                }
                 //Debug.Log("Added " + foundWeapon.GetComponent<WeaponController>().weaponParams.totalAmmoOnPickup + " Rounds To " + foundWeapon.GetComponent<WeaponController>().weaponParams.name);
             }
         }

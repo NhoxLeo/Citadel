@@ -27,6 +27,7 @@ public class WeaponController : MonoBehaviour
     public int currentLoadedRounds;
     private FirstPersonController fpsController;
     private bool isSwapping;
+    private List<GameObject> shells;
 
     /// <summary>
     /// Conditional Hide Inspector Tools
@@ -56,6 +57,7 @@ public class WeaponController : MonoBehaviour
     private void Start()
     {
         fpsController = InteractionController.instance.gameObject.GetComponent<FirstPersonController>();
+        shells = new List<GameObject>();
         if (weaponParams)
         {
             totalRounds = weaponParams.totalAmmoOnInitialPickup;
@@ -219,6 +221,7 @@ public class WeaponController : MonoBehaviour
         GameObject newShell = Instantiate(weaponShell, weaponShell.transform.position, weaponShell.transform.rotation);
         newShell.transform.parent = weaponShell.transform.parent;
         newShell.transform.localScale = weaponShell.transform.localScale;
+        shells.Add(newShell);
         newShell.SetActive(true);
     }
 
@@ -337,7 +340,15 @@ public class WeaponController : MonoBehaviour
             attackState.SetActive(false);
         }
         StopAllCoroutines();
-
+        
+        if(shells != null && shells.Count > 0)
+        {
+            for(int i = 0; i< shells.Count; i++)
+            {
+                Destroy(shells[i]);
+            }
+            shells.Clear();
+        }
         /*
         GameObject[] allCurrentSounds = GameObject.FindGameObjectsWithTag("WeaponSound");
         for (int i = 0; i < allCurrentSounds.Length; i++)
