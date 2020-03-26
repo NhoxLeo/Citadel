@@ -15,6 +15,7 @@ namespace VHS
         [SerializeField] private HeadBobData headBobData = null;
         public GameObject mapParent;
         public MoveSoundsManager moveSoundsManager;
+        public InputHandler inputHandler;
         #endregion
 
         #region Locomotion
@@ -800,7 +801,14 @@ namespace VHS
             }
             else
             {
-                m_inAirTimer += Time.deltaTime;
+                if (inputHandler.canMove)
+                {
+                    m_inAirTimer += Time.deltaTime;
+                }
+                else
+                {
+                    m_inAirTimer = 0;
+                }
                 m_finalMoveVector += Physics.gravity * gravityMultiplier * Time.deltaTime;
 
                 if (m_finalMoveVector.y > 0)
