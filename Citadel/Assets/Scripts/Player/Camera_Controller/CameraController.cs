@@ -12,7 +12,7 @@ namespace VHS
 
         [Space, Header("Custom Classes")]
         [SerializeField] private CameraZoom cameraZoom = null;
-        [SerializeField] private CameraSwaying cameraSway = null;
+        [SerializeField] private CameraSwaying cameraSway = null;       
 
         #endregion
 
@@ -93,6 +93,19 @@ namespace VHS
         {
             transform.eulerAngles = new Vector3(0f, m_yaw, 0f);
             m_pitchTranform.localEulerAngles = new Vector3(m_pitch, 0f, 0f);
+        }
+
+        public void RotatePlayer(Vector3 rotationToSet)
+        {
+            InteractionController.instance.teleportAnimator.SetTrigger("Activate");
+            m_desiredYaw = rotationToSet.y;
+            m_yaw = rotationToSet.y;
+
+            m_desiredPitch = Mathf.Clamp(rotationToSet.x, lookAngleMinMax.x, lookAngleMinMax.y);
+            m_pitch = m_desiredPitch;
+
+            ApplyRotation();
+            StartCoroutine(InteractionController.instance.fpsController.inputHandler.HaultMove(0.2f));
         }
 
         public void HandleSway(Vector3 _inputVector, float _rawXInput)

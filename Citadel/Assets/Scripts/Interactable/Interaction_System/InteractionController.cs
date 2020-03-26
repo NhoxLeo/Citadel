@@ -40,6 +40,7 @@ namespace VHS
         public LayerMask punchLayers;
         public GameObject backupAudioManager;
         public HUDController hudController;
+        public Animator teleportAnimator;
 
         [Space, Header("Storage")]
         public GameObject currentInteractingObject;

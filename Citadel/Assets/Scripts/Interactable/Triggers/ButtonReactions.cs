@@ -193,7 +193,9 @@ namespace VHS
             activatedAnimationConditions = new List<AnimationCondition>();
             indexOfRelocationList = relocationPoints.relocationList.Count - 1;
             if (relocationPoints.relocationTransform == null)
+            {
                 relocationPoints.relocationTransform = transform;
+            }
             ResetValues();
         }
 
@@ -356,7 +358,13 @@ namespace VHS
         /// </summary>
         public void ActivateReaction()
         {
-            OnInteract();
+            if (reactionState == ReactionState.Ready)
+            {
+                if (numberOfUses > 0)
+                {
+                    OnInteract();
+                }
+            }
         }
 
         /// <summary>
