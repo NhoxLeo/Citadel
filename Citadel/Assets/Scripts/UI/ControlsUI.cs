@@ -17,7 +17,10 @@ public class ControlsUI : MonoBehaviour
     public ButtonParent shootButton;
     public ButtonParent quickCycleButton;
     public ButtonParent mapButton;
+    public Slider sensitivitySlider;
 
+    [HideInInspector]
+    public static ControlsUI instance; //Singleton
 
     //[HideInInspector]
     public string newInput;
@@ -30,6 +33,17 @@ public class ControlsUI : MonoBehaviour
     private Coroutine waitingForInputCoroutine;
 
     private KeyCode[] keyCodes;
+
+    /// <summary>
+    /// Define Singleton
+    /// </summary>
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     IEnumerator Start()
