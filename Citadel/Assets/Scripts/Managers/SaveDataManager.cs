@@ -23,6 +23,7 @@ public class SaveDataManager : MonoBehaviour
     public string INPUT_SHOOT = "Mouse0";
     public string INPUT_QUICKCYCLE = "Q";
     public string INPUT_MAP = "M";
+    public float SENSITIVITY = 120;
 
     public bool hasReadData = false;
 
@@ -149,7 +150,10 @@ public class SaveDataManager : MonoBehaviour
                     SlidersUI.instance.musicSlider.value = float.Parse(inp_ln);
                 }
                 GameVars.instance.musicVolumeScale = float.Parse(inp_ln); //Music Volume
-  
+
+                inp_ln = reader.ReadLine(); //Read In Pref Data
+                SENSITIVITY = float.Parse(inp_ln); //Sensitivty
+
                 reader.Close();
             }
             else
@@ -209,6 +213,9 @@ public class SaveDataManager : MonoBehaviour
 
                 writer.WriteLine(GameVars.instance.sfxVolumeScale); //SFX Volume
                 writer.WriteLine(GameVars.instance.musicVolumeScale); //Music Volume
+
+                writer.WriteLine(SENSITIVITY); //Sensitivty
+
                 writer.Close();
             }
         }
@@ -265,6 +272,9 @@ public class SaveDataManager : MonoBehaviour
 
                 writer.WriteLine(GameVars.instance.sfxVolumeScale); //SFX Volume
                 writer.WriteLine(GameVars.instance.musicVolumeScale); //Music Volume
+
+                writer.WriteLine(SENSITIVITY); //Sensitivty
+
                 writer.Close();
             }
             else

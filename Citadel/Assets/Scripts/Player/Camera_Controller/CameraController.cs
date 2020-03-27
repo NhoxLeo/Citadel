@@ -18,7 +18,7 @@ namespace VHS
 
         #region Settings
         [Space, Header("Look Settings")]
-        [SerializeField] private Vector2 sensitivity = Vector2.zero;
+        [SerializeField] public Vector2 sensitivity = Vector2.zero;
         [SerializeField] private Vector2 smoothAmount = Vector2.zero;
         [SerializeField] [MinMaxSlider(-90f, 90f)] private Vector2 lookAngleMinMax = Vector2.zero;
         #endregion
@@ -45,6 +45,11 @@ namespace VHS
             InitValues();
             InitComponents();
             ChangeCursorState();
+        }
+
+        public void UpdateSensitiviy()
+        {
+            sensitivity = new Vector2(GameVars.instance.saveManager.SENSITIVITY, GameVars.instance.saveManager.SENSITIVITY);
         }
 
         void LateUpdate()
