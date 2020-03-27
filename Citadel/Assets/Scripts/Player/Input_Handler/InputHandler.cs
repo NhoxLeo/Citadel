@@ -1,5 +1,7 @@
 using UnityEngine;
 using NaughtyAttributes;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace VHS
 {
@@ -16,6 +18,8 @@ namespace VHS
         public string previousInputs;
         [HideInInspector]
         public int maxPreviousFrames;
+        [HideInInspector]
+        public bool canMove = true;
         #endregion
 
         #region BuiltIn Methods
@@ -46,6 +50,13 @@ namespace VHS
             {
                 interactionInputData.InteractedReleased = true;
             }
+        }
+
+        public IEnumerator HaultMove(float delay)
+        {
+            canMove = false;
+            yield return new WaitForSeconds(delay);
+            canMove = true;
         }
 
         void GetCameraInput()
@@ -79,7 +90,7 @@ namespace VHS
 
         void GetMovementInputData()
         {
-            if (InteractionController.instance.hasPlayerDied == false && !GameVars.instance.isPaused)
+            if (InteractionController.instance.hasPlayerDied == false && !GameVars.instance.isPaused && canMove)
             {
                 if (Input.inputString == "")
                 {

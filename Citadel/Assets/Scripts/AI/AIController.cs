@@ -973,7 +973,7 @@ public class AIController : MonoBehaviour
             {
                 this.launchVector = launchVector;
                 isDead = true;
-                if(currentAIHealth >= (enemyParams.health * 0.8) || (InteractionController.instance.newWeapon.weaponParams.weaponName == "Shotgun" && Vector3.Distance(transform.position, player.transform.position) < 5) || InteractionController.instance.newWeapon.weaponParams.weaponType == Weapon.WeaponType.Projectile)
+                if(currentAIHealth >= (enemyParams.health * 0.8) || (InteractionController.instance.newWeapon.weaponParams.weaponName == "Shotgun" && Vector3.Distance(transform.position, player.transform.position) < 7) || InteractionController.instance.newWeapon.weaponParams.weaponType == Weapon.WeaponType.Projectile)
                 {
                     wasGibbed = true;
                 }

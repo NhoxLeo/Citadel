@@ -18,7 +18,7 @@ public class LevelButton : MonoBehaviour
 
     public void UnlockLevel()
     {
-        Debug.Log("Unlocking");
+        //Debug.Log("Unlocking");
         isUnlocked = true;
         levelImage.sprite = unlockedImage;
         levelName.text = unlockedName;

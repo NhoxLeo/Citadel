@@ -12,13 +12,13 @@ namespace VHS
 
         [Space, Header("Custom Classes")]
         [SerializeField] private CameraZoom cameraZoom = null;
-        [SerializeField] private CameraSwaying cameraSway = null;
+        [SerializeField] private CameraSwaying cameraSway = null;       
 
         #endregion
 
         #region Settings
         [Space, Header("Look Settings")]
-        [SerializeField] private Vector2 sensitivity = Vector2.zero;
+        [SerializeField] public Vector2 sensitivity = Vector2.zero;
         [SerializeField] private Vector2 smoothAmount = Vector2.zero;
         [SerializeField] [MinMaxSlider(-90f, 90f)] private Vector2 lookAngleMinMax = Vector2.zero;
         #endregion
@@ -45,6 +45,11 @@ namespace VHS
             InitValues();
             InitComponents();
             ChangeCursorState();
+        }
+
+        public void UpdateSensitiviy()
+        {
+            sensitivity = new Vector2(GameVars.instance.saveManager.SENSITIVITY, GameVars.instance.saveManager.SENSITIVITY);
         }
 
         void LateUpdate()
@@ -93,6 +98,19 @@ namespace VHS
         {
             transform.eulerAngles = new Vector3(0f, m_yaw, 0f);
             m_pitchTranform.localEulerAngles = new Vector3(m_pitch, 0f, 0f);
+        }
+
+        public void RotatePlayer(Vector3 rotationToSet)
+        {
+            InteractionController.instance.teleportAnimator.SetTrigger("Activate");
+            m_desiredYaw = rotationToSet.y;
+            m_yaw = rotationToSet.y;
+
+            m_desiredPitch = Mathf.Clamp(rotationToSet.x, lookAngleMinMax.x, lookAngleMinMax.y);
+            m_pitch = m_desiredPitch;
+
+            ApplyRotation();
+            StartCoroutine(InteractionController.instance.fpsController.inputHandler.HaultMove(0.2f));
         }
 
         public void HandleSway(Vector3 _inputVector, float _rawXInput)

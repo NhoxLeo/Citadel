@@ -3196,15 +3196,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 996624388856426436, guid: f6e30195d2bf9044db189f781245b23e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6476369619963113107, guid: f6e30195d2bf9044db189f781245b23e,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 996624388856426436, guid: f6e30195d2bf9044db189f781245b23e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6e30195d2bf9044db189f781245b23e, type: 3}
@@ -9835,6 +9835,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 23800000, guid: 72719edfd3fca8544b0f89771e431b21,
         type: 2}
+    - target: {fileID: 4217113817223185866, guid: 2e3399529322e164fad7c20ad991b152,
+        type: 3}
+      propertyPath: m_AgentTypeID
+      value: -334000983
+      objectReference: {fileID: 0}
     - target: {fileID: 4217113817223185867, guid: 2e3399529322e164fad7c20ad991b152,
         type: 3}
       propertyPath: m_Enabled
@@ -13110,6 +13115,7 @@ MonoBehaviour:
   - {fileID: 1928780774}
   aiEntities:
   - aiController: {fileID: 7877585232524347938}
+    spawnWithoutSpawnPoint: 0
     waitForSpawnTrigger: 1
     spawnParticle: {fileID: 0}
     spawnSound:

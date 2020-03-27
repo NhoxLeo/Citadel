@@ -16,7 +16,7 @@ public class GameVars : MonoBehaviour
     [HideInInspector]
     public bool isPaused;
     public bool wasLevelBeaten;
-    public bool firstTimeSettings = true;
+    public bool firstTimeSettingsSliders = true, firstTimeSettingsControls = true;
     public static GameVars instance; //Singleton
 
     //In level data
@@ -61,7 +61,7 @@ public class GameVars : MonoBehaviour
     {
         if(SlidersUI.instance)
         {
-            if (!firstTimeSettings)
+            if (!firstTimeSettingsSliders)
             {
                 if (musicVolumeScale != SlidersUI.instance.musicSlider.value)
                 {
@@ -84,7 +84,30 @@ public class GameVars : MonoBehaviour
                 {
                     SlidersUI.instance.sfxSlider.value = sfxVolumeScale;
                 }
-                firstTimeSettings = false;
+                firstTimeSettingsSliders = false;
+            }
+        }
+
+        if (ControlsUI.instance)
+        {
+            if (!firstTimeSettingsControls)
+            {
+                if (saveManager.SENSITIVITY != ControlsUI.instance.sensitivitySlider.value)
+                {
+                    saveManager.SENSITIVITY = ControlsUI.instance.sensitivitySlider.value;
+                }
+            }
+            else
+            {
+                if (ControlsUI.instance.sensitivitySlider.value != saveManager.SENSITIVITY)
+                {
+                    ControlsUI.instance.sensitivitySlider.value = saveManager.SENSITIVITY;
+                }
+                firstTimeSettingsControls = false;
+                if (InteractionController.instance != null)
+                {
+                    InteractionController.instance.transform.GetChild(0).GetComponent<CameraController>().UpdateSensitiviy();
+                }
             }
         }
 
@@ -127,7 +150,8 @@ public class GameVars : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         isPaused = false;
-        firstTimeSettings = true;
+        firstTimeSettingsSliders = true;
+        firstTimeSettingsControls = true;
         if (!wasLevelBeaten)
         {
             if (currentLevelManager)
