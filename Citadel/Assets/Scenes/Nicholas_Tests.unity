@@ -9099,16 +9099,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 7.760633
       objectReference: {fileID: 0}
-    - target: {fileID: 6594314358960241815, guid: 5d3b962838799ec4eae8a466bf0f5192,
-        type: 3}
-      propertyPath: m_Mass
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6594314358960241815, guid: 5d3b962838799ec4eae8a466bf0f5192,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6617983382253681469, guid: 5d3b962838799ec4eae8a466bf0f5192,
         type: 3}
       propertyPath: m_CastShadows
@@ -9118,6 +9108,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ReceiveShadows
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594314358960241815, guid: 5d3b962838799ec4eae8a466bf0f5192,
+        type: 3}
+      propertyPath: m_Mass
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6594314358960241815, guid: 5d3b962838799ec4eae8a466bf0f5192,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6594885848820756863, guid: 5d3b962838799ec4eae8a466bf0f5192,
         type: 3}
@@ -12639,6 +12639,11 @@ PrefabInstance:
     - target: {fileID: 8490396940983510231, guid: 51167e04776c1e94ba6bd24ea1487c77,
         type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949639627872958041, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5780402886367686792, guid: 51167e04776c1e94ba6bd24ea1487c77,

@@ -708,7 +708,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &3010250384955833367
 MonoBehaviour:
@@ -812,6 +812,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentPickUpIndex: 0
+  pickupAmount: 0
   pickUpSound: {fileID: 8300000, guid: bc60157cf93a66042bf4c8d11ce6d25f, type: 3}
   pickUps:
   - pickUpType: 0

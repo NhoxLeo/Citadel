@@ -410,15 +410,15 @@ namespace VHS
         protected virtual void CheckIfGrounded()
         {
             Vector3 _origin = transform.position + m_characterController.center;
-            Vector3 _bottom = transform.position;
+            Vector3 _bottom = transform.position + new Vector3(0,0.1f,0);
 
             bool _hitGround = Physics.SphereCast(_origin, raySphereRadius, Vector3.down, out m_hitInfo, m_finalRayLength, groundLayer);
             Debug.DrawRay(_origin, Vector3.down * (m_finalRayLength), Color.red);
 
-            float distanceCheck = 0.1f;
+            float distanceCheck = 0.2f;
             if (m_currentSpeed == runSpeed)
             {
-                distanceCheck = 0.2f;
+                distanceCheck = 0.3f;
             }
 
             RaycastHit rampCheck;
@@ -455,7 +455,10 @@ namespace VHS
 
             if(m_isGrounded)
             {
-                groundedObject = m_hitInfo.transform.gameObject;
+                if (m_hitInfo.transform != null)
+                {
+                    groundedObject = m_hitInfo.transform.gameObject;
+                }
             }
         }
 
