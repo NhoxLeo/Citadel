@@ -59,7 +59,7 @@ namespace VHS
         [SerializeField] public float stickToGroundForce = 5f;
 
         [SerializeField] public LayerMask groundLayer = ~0;
-        [Slider(0f, 1f)] [SerializeField] private float rayLength = 0.1f;
+        [Slider(0f, 1f)] [SerializeField] private float rayLength = 0.12f;
         [Slider(0.01f, 1f)] [SerializeField] private float raySphereRadius = 0.1f;
         #endregion
 
@@ -107,6 +107,9 @@ namespace VHS
         private HeadBob m_headBob;
         private bool doesMapExist;
         private CameraController m_cameraController;
+        private float jumpGrace = 0.5f;
+        private float jumpTimer = 0f;
+        private bool didJump = false;
 
         private RaycastHit m_hitInfo;
         private IEnumerator m_CrouchRoutine;
@@ -407,9 +410,27 @@ namespace VHS
         protected virtual void CheckIfGrounded()
         {
             Vector3 _origin = transform.position + m_characterController.center;
+            Vector3 _bottom = transform.position;
 
             bool _hitGround = Physics.SphereCast(_origin, raySphereRadius, Vector3.down, out m_hitInfo, m_finalRayLength, groundLayer);
             Debug.DrawRay(_origin, Vector3.down * (m_finalRayLength), Color.red);
+
+            float distanceCheck = 0.1f;
+            if (m_currentSpeed == runSpeed)
+            {
+                distanceCheck = 0.2f;
+            }
+
+            RaycastHit rampCheck;
+            if (Physics.Raycast(_bottom, new Vector3(0, -1, 0), out rampCheck, distanceCheck, groundLayer))
+            {
+                if (!didJump)
+                {
+                    m_characterController.Move(new Vector3(0, -rampCheck.distance, 0));
+                }
+                _hitGround = true;
+                m_isGrounded = true;
+            }
 
             if (InteractionController.instance.currentInteractingObject != null && m_hitInfo.collider != null)
             {
@@ -461,11 +482,11 @@ namespace VHS
 
             if (movementInputData.IsCrouching)
             {
-                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, (m_initHeight*(crouchPercent*1.6f)));
+                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, (m_initHeight*(crouchPercent*1.6f)), groundLayer);
             }
             else
             {
-                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, m_initHeight+0.01f);
+                _hitRoof = Physics.SphereCast(_origin, raySphereRadius, Vector3.up, out _roofInfo, m_initHeight+0.01f, groundLayer);
             }
 
             return _hitRoof;
@@ -749,6 +770,7 @@ namespace VHS
         }
         protected virtual void HandleJump()
         {
+            
             if ((movementInputData.JumpClicked || WasJumpMissed()) && !CheckIfRoof())
             {
                 //m_finalMoveVector.y += jumpSpeed /* m_currentSpeed */; // we are adding because ex. when we are going on slope we want to keep Y value not overwriting it
@@ -760,6 +782,9 @@ namespace VHS
                 {
                     m_finalMoveVector.y = jumpSpeed /* m_currentSpeed */; // turns out that when adding to Y it is too much and it doesn't feel correct because jumping on slope is much faster and higher;
                 }
+
+                jumpTimer = 0.0f;
+                didJump = true;
                 m_previouslyGrounded = true;
                 m_isGrounded = false;
             }
@@ -809,6 +834,7 @@ namespace VHS
                 {
                     m_inAirTimer = 0;
                 }
+
                 m_finalMoveVector += Physics.gravity * gravityMultiplier * Time.deltaTime;
 
                 if (m_finalMoveVector.y > 0)
@@ -817,6 +843,19 @@ namespace VHS
                     {
                         m_finalMoveVector.y = -(m_finalMoveVector.y / 4);
                     }
+                }
+            }
+
+            if (didJump)
+            {
+                if (jumpTimer >= jumpGrace)
+                {
+                    didJump = false;
+                    jumpTimer = 0.0f;
+                }
+                else
+                {
+                    jumpTimer += Time.deltaTime;
                 }
             }
         }
