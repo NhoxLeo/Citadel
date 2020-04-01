@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3932592539260273}
   - component: {fileID: 3932592539260275}
-  - component: {fileID: 3932592539260272}
+  - component: {fileID: 4380943548274232181}
   m_Layer: 11
   m_Name: ControlCenterButton
   m_TagString: Untagged
@@ -48,7 +48,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.6, y: 1.7162, z: 0.8}
   m_Center: {x: 0, y: 0.88, z: 0.3}
---- !u!114 &3932592539260272
+--- !u!114 &4380943548274232181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -57,75 +57,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 3932592539260046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3dbf67ffeae4a4db89497eac9c80b6, type: 3}
+  m_Script: {fileID: 11500000, guid: 3b4b0844e4cc4b94c9c39a27b9a22a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   holdInteract: 0
   holdDuration: 1
   multipleUse: 0
   isInteractable: 1
-  useParticle: 0
-  useAudio: 1
-  useRelocation: 0
-  useAnimation: 0
-  useInstantiation: 1
-  animator: {fileID: 0}
-  reactionLimitMode: 1
-  numberOfUses: 1
-  destroySelfAfterUse: 0
-  reactionState: 1
-  particleMode: 0
-  particleDelay: 0
-  showParticlePoints: 1
-  particles:
-    instantiationList: []
-  audioMode: 0
-  audio:
-    audioList:
-    - audioClip: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
-      audioDelay: 0
-      volume: 1
-      priority: 128
-      pitch: 1
-  animationMode: 0
-  animationLength: -1
-  animationDelay: 0
-  animationConditions:
-    animationConditionList: []
-  instantiationMode: 0
-  instantiationDelay: 0
-  ObjectCountMax: 5
-  cachedID: 0
-  showInstantiationPoints: 1
-  instantiations:
-    instantiationList:
-    - instantiatableGameObject: {fileID: 3932592999626421}
-      instantiationLocation: {x: 0, y: 0, z: 0}
-      instantiationRotation: {x: 0, y: 0, z: 0}
-      instantiationScale: {x: 0, y: 0, z: 0}
-      initialVelocity: {x: 0, y: 0, z: 0}
-      instantiatableMode: 0
-      instantiateInHand: 0
-      instantiationReferenceObject: {fileID: 9041853004988072543}
-      debugColor: {r: 0, g: 0, b: 0, a: 0}
-      NetworkedItem: 0
-  relocationDelay: 0
-  isRelocationRandom: 0
-  restartRelocationPointsAfterFinish: 0
-  showRelocationPoints: 1
-  relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
-  relocationPoints:
-    relocationTransform: {fileID: 3932592999626423}
-    relocationList:
-    - relocationLocation: {x: -0, y: -0.45, z: 0}
-      relocationRotation: {x: -0, y: -0, z: -0}
-      relocationScale: {x: 2, y: 2, z: 2}
-      referenceTransform: {fileID: 0}
-      lerpTime: 0
-      lerpLocation: 0
-      lerpRotation: 0
-      lerpScale: 0
-  isLimited: 1
+  triggerAllEventsAtOnce: 1
+  restartListOnComplete: 0
+  eventsStartDelay: 0
+  eventsBetweenDelay: 0
+  reactionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8420387418217930488}
+        m_MethodName: ActivateReaction
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &3932592999626421
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3932592999626423}
   - component: {fileID: 3932592999626420}
+  - component: {fileID: 8420387418217930488}
   m_Layer: 0
   m_Name: UsedLight
   m_TagString: Untagged
@@ -217,6 +176,74 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!114 &8420387418217930488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3932592999626421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3dbf67ffeae4a4db89497eac9c80b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdInteract: 0
+  holdDuration: 1
+  multipleUse: 0
+  isInteractable: 0
+  useParticle: 0
+  useAudio: 1
+  useRelocation: 1
+  useAnimation: 0
+  useInstantiation: 0
+  animator: {fileID: 0}
+  reactionLimitMode: 0
+  numberOfUses: 1
+  destroySelfAfterUse: 0
+  reactionState: 1
+  particleMode: 0
+  particleDelay: 0
+  showParticlePoints: 1
+  particles:
+    instantiationList: []
+  audioMode: 0
+  audio:
+    audioList:
+    - audioClip: {fileID: 8300000, guid: 902951d0e2f77a24f8fc126bab54c562, type: 3}
+      audioDelay: 0
+      volume: 1
+      priority: 128
+      pitch: 1
+  animationMode: 0
+  animationLength: -1
+  animationDelay: 0
+  animationConditions:
+    animationConditionList: []
+  instantiationMode: 0
+  instantiationDelay: 0
+  ObjectCountMax: 5
+  cachedID: 0
+  showInstantiationPoints: 1
+  instantiations:
+    instantiationList: []
+  relocationDelay: 0
+  isRelocationRandom: 0
+  restartRelocationPointsAfterFinish: 0
+  showRelocationPoints: 1
+  relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  relocationPoints:
+    relocationTransform: {fileID: 0}
+    relocationList:
+    - relocationLocation: {x: 0, y: 1.6, z: 0.55}
+      relocationRotation: {x: -0, y: 0, z: 0}
+      relocationScale: {x: 1, y: 1, z: 1}
+      referenceTransform: {fileID: 9041853004988072543}
+      lerpTime: 0
+      lerpLocation: 0
+      lerpRotation: 0
+      lerpScale: 0
+  isLimited: 0
 --- !u!1 &3019552241392082308
 GameObject:
   m_ObjectHideFlags: 0
