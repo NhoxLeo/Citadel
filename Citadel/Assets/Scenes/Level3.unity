@@ -69704,6 +69704,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1914044670}
+  - component: {fileID: 1914044672}
   - component: {fileID: 1914044671}
   m_Layer: 0
   m_Name: Enemy Manager
@@ -69740,7 +69741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managerType: 0
   spawnAllEntitiesAtOnce: 0
-  allowSpawnPointReuseOnDeath: 1
+  allowSpawnPointReuseOnDeath: 0
   spawnDelay: 1
   OnInitialTrigger:
     m_PersistentCalls:
@@ -69760,9 +69761,9 @@ MonoBehaviour:
   OnAllAIDeath:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 9100000, guid: 96451ccb398dac54e85a8d63d4b04c41, type: 2}
-        m_MethodName: 
-        m_Mode: 1
+      - m_Target: {fileID: 1914044672}
+        m_MethodName: set_enabled
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -69853,6 +69854,64 @@ MonoBehaviour:
       doLoop: 0
     spawnPointUsed: {fileID: 0}
   hasAllAIDied: 0
+--- !u!114 &1914044672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914044669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c3dbf67ffeae4a4db89497eac9c80b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdInteract: 0
+  holdDuration: 1
+  multipleUse: 0
+  isInteractable: 0
+  useParticle: 0
+  useAudio: 0
+  useRelocation: 0
+  useAnimation: 1
+  useInstantiation: 0
+  animator: {fileID: 118734632}
+  reactionLimitMode: 0
+  numberOfUses: 1
+  destroySelfAfterUse: 0
+  reactionState: 1
+  particleMode: 0
+  particleDelay: 0
+  showParticlePoints: 1
+  particles:
+    instantiationList: []
+  audioMode: 0
+  audio:
+    audioList: []
+  animationMode: 0
+  animationLength: 1
+  animationDelay: 0
+  animationConditions:
+    animationConditionList:
+    - condition: AllAIDead
+      conditionState: 0
+      dontReturnToDefaultAfterAnimationLength: 1
+  instantiationMode: 0
+  instantiationDelay: 0
+  ObjectCountMax: 5
+  cachedID: 0
+  showInstantiationPoints: 1
+  instantiations:
+    instantiationList: []
+  relocationDelay: 0
+  isRelocationRandom: 0
+  restartRelocationPointsAfterFinish: 0
+  showRelocationPoints: 1
+  relocationPointGizmoColor: {r: 1, g: 0, b: 0, a: 1}
+  relocationPoints:
+    relocationTransform: {fileID: 0}
+    relocationList: []
+  isLimited: 0
 --- !u!1001 &1915042549
 PrefabInstance:
   m_ObjectHideFlags: 0
