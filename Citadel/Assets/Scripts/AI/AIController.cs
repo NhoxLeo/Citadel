@@ -369,6 +369,7 @@ public class AIController : MonoBehaviour
             }
             currentState = deadState;
             GameVars.instance.totalEnemiesKilled += 1;
+            movementAudioSource.enabled = false;
             aliveBody.SetActive(false);
             deadBody.SetActive(true);
         }
