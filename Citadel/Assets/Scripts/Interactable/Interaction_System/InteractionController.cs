@@ -250,6 +250,15 @@ namespace VHS
             {
                 if(waitingToUpdateUI)
                 {
+                    if(currentWeaponIndex < 0)
+                    {
+                        currentWeaponIndex = weaponStorge.Count - 1;
+                    }
+                    if (currentWeaponIndex > weaponStorge.Count-1)
+                    {
+                        currentWeaponIndex = 0;
+                    }
+
                     newWeapon = weaponStorge[currentWeaponIndex].GetComponent<WeaponController>();
                     hudController.DoUiFade(HUDController.FadeState.IN);
                     waitingToUpdateUI = false;

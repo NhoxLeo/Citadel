@@ -58,13 +58,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 669af1347561fda43835fc409259a44b, type: 2}
   - {fileID: 11400000, guid: adce295bf2cf55245a639f5856e87d55, type: 2}
   - {fileID: 11400000, guid: 0acc91e4c9109094eb0d2920fe24e2f1, type: 2}
+  - {fileID: 11400000, guid: 9179d655eb6da504aaae4ec2ed611be9, type: 2}
   - {fileID: 11400000, guid: 0744208f6073762439800f65800083fd, type: 2}
   - {fileID: 11400000, guid: 122e90a135fcc35438108b74ab953365, type: 2}
   - {fileID: 11400000, guid: 380840a731a6618498756ea886638942, type: 2}
   - {fileID: 11400000, guid: 407562147150d1044a02617355d588b8, type: 2}
   isPaused: 0
   wasLevelBeaten: 0
-  firstTimeSettings: 1
+  firstTimeSettingsSliders: 1
+  firstTimeSettingsControls: 1
   totalTimeSpent: 0
   totalEnemiesKilled: 0
   totalDamageTaken: 0
@@ -209,6 +211,7 @@ MonoBehaviour:
   INPUT_SHOOT: Mouse0
   INPUT_QUICKCYCLE: Q
   INPUT_MAP: M
+  SENSITIVITY: 120
   hasReadData: 0
 --- !u!114 &7350527788775326304
 MonoBehaviour:

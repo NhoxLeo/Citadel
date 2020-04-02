@@ -284,6 +284,17 @@ public class AIGroupManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Destroys all ai GameObjects
+    /// </summary>
+    public void DestroyAllAI()
+    {
+        for (int i = aiEntities.Count-1; i > -1; i--)
+        {
+            Destroy(aiEntities[i].aiController.gameObject);
+        }
+    }
+
+    /// <summary>
     /// Spawn a single AI entity
     /// </summary>
     /// <param name="aiToSpawn"></param>

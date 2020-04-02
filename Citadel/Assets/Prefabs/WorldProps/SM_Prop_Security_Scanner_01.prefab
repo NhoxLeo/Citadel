@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 412778697114908953}
   - component: {fileID: 403350217530833291}
   - component: {fileID: 6868867564414860333}
+  - component: {fileID: 3354358323335351872}
+  - component: {fileID: 7959823222519963038}
   m_Layer: 0
   m_Name: SM_Prop_Security_Scanner_01
   m_TagString: Untagged
@@ -90,8 +92,34 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.0024652, y: 2.76438, z: 0.67815024}
-  m_Center: {x: -0.00000047683716, y: 1.38219, z: 0.00000090897095}
+  m_Size: {x: 0.4610207, y: 2.76438, z: 0.67815024}
+  m_Center: {x: -0.7707225, y: 1.38219, z: 0.0000009178492}
+--- !u!65 &3354358323335351872
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417032154550411775}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.46998218, y: 2.76438, z: 0.67815024}
+  m_Center: {x: 0.766241, y: 1.38219, z: 0.0000009178492}
+--- !u!65 &7959823222519963038
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417032154550411775}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 2.0024652, y: 0.380602, z: 0.67815024}
+  m_Center: {x: -0.0000004823791, y: 2.5740783, z: 0.0000009178492}
 --- !u!1 &2678137612387214256
 GameObject:
   m_ObjectHideFlags: 0
