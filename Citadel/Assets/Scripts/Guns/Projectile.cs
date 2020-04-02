@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     public ProjectileType projectileType = ProjectileType.Instant;
     public GameObject damagePrefab;
     public LayerMask collisionLayers;
+    public AudioClip destroySound;
     public float maxExistanceTime = 3;
     public float damage = 100;
     public float sizeOfDamage = 1;
@@ -89,6 +90,11 @@ public class Projectile : MonoBehaviour
         {
             if (col != null)
             {
+                if(destroySound)
+                {
+                    GameVars.instance.audioManager.PlaySFX(destroySound, 0.5f, transform.position, null, 0, 1);
+                }
+
                 Rigidbody colRigid = col.gameObject.GetComponent<Rigidbody>();
                 if (col.gameObject.layer == 12)
                 {

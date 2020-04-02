@@ -1215,7 +1215,7 @@ public class AIController : MonoBehaviour
             rot = Quaternion.LookRotation(Vector3.forward * (enemyParams.attackRange) + deviation3D);
         }
         Vector3 spawnPos = transform.position + (transform.forward * enemyParams.instantiationDistance) + new Vector3(0, enemyParams.instantiationHeight, 0);
-        forwardVector = rot * (player.transform.position - spawnPos);
+        forwardVector = (rot * ((player.transform.position + new Vector3(0,0.5f,0)) - spawnPos)).normalized;
 
         GameObject projectile = Instantiate(enemyParams.projectilePrefab, spawnPos, transform.rotation);
         projectile.GetComponent<Projectile>().damage = enemyParams.attackDamage;

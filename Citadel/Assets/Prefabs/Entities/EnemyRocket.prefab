@@ -62,6 +62,7 @@ GameObject:
   - component: {fileID: 7462359075985817193}
   - component: {fileID: 4895608214831542053}
   - component: {fileID: 2743192790964903250}
+  - component: {fileID: 113166558005475558}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -150,6 +151,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &113166558005475558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4576948107179085685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df70b910b52999f4299937b0e32e5182, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lockXRotation: 0
+  lockYRotation: 0
+  lockZRotation: 0
 --- !u!1 &4615672490422470520
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +246,7 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 21249
+  destroySound: {fileID: 8300000, guid: a42c6f85173a03f44a6301bd94fa1c02, type: 3}
   maxExistanceTime: 3
   damage: 20
   sizeOfDamage: 8
