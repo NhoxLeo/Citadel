@@ -2353,7 +2353,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &1382022822668316503
 MonoBehaviour:
@@ -4199,11 +4199,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1382022823005713342}
     m_Modifications:
-    - target: {fileID: 4615371472851152418, guid: f83f10b4ef78519489628547e90594c9,
-        type: 3}
-      propertyPath: m_Name
-      value: MoveSoundsManager
-      objectReference: {fileID: 0}
     - target: {fileID: 4975437581620842459, guid: f83f10b4ef78519489628547e90594c9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4258,6 +4253,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4615371472851152418, guid: f83f10b4ef78519489628547e90594c9,
+        type: 3}
+      propertyPath: m_Name
+      value: MoveSoundsManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f83f10b4ef78519489628547e90594c9, type: 3}
