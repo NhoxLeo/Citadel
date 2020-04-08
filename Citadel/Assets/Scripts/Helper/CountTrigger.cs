@@ -6,6 +6,10 @@ using UnityEngine.Events;
 public class CountTrigger: MonoBehaviour
 {
     // Public Properties
+    [Header("Settings")]
+    [Tooltip("Do CountEvent instances fire when the EXACT amount of increments have happened? (Default behavior is <= increments)")]
+    public bool exactCountFire = false;
+
     [Header("Debug")]
     public uint debugStartCount = 0;
 
@@ -14,9 +18,9 @@ public class CountTrigger: MonoBehaviour
     public List<CountEvent> countEvents;
 
     // Private Properties
-    public uint inputCount = 0;
+    private uint inputCount = 0;
 
-    // Start is called before the first frame update
+    // Start()
     void Start()
     {
         // Setting Debug Options
@@ -32,7 +36,9 @@ public class CountTrigger: MonoBehaviour
     {
         for (int num = 0; num < countEvents.Count; num++)
         {
-            if (countEvents[num].countNumber <= inputCount && !countEvents[num].eventsFired)
+            uint countNumber = countEvents[num].countNumber;
+            bool countCheck = exactCountFire ? (countNumber == inputCount) : (countNumber <= inputCount);
+            if (countCheck && !countEvents[num].eventsFired)
             {
                 StartCoroutine(CountEventCoroutine(num));
             }
@@ -63,11 +69,22 @@ public class CountTrigger: MonoBehaviour
             cEvent.resetEvents.Invoke();
         }
     }
+
+    // ManuallySetCounter()
+    public void ManuallySetCounter(int newCount)
+    {
+        inputCount = (uint)newCount;
+        FireCountEvents();
+    }
 }
 
 [System.Serializable]
 public class CountEvent
 {
+    [Header("Count Event Properties")]
+    [Space(10)]
+    [Tooltip("The name of this CountEvent instance. [No functional use, just for Unity editor convenience.]")]
+    public string name;
     [Tooltip("How many increments have to happen before the events are fired?")]
     public uint countNumber = 1;
     [Tooltip("The delay (in seconds) of when the fire events should be invoked.")]
