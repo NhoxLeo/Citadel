@@ -86,7 +86,20 @@ public class AIController : MonoBehaviour
         if (!NavMesh.SamplePosition(transform.position, out navMeshHit, 4f, NavMesh.AllAreas))
         {
             gameObject.SetActive(false);
-            Debug.LogError("[ERROR] - No Navmesh Found For AI " + gameObject.name);
+            string path = "";
+            if(transform.parent)
+            {
+                path += transform.parent.name;
+                if(transform.parent.parent)
+                {
+                    path += "\\"+ transform.parent.name;
+                }
+                if (transform.parent.parent.parent)
+                {
+                    path += "\\" + transform.parent.parent.name;
+                }
+            }
+            Debug.LogError("[ERROR] - No Navmesh Found For AI " + gameObject.name + " | Path: "+path);
         }
         else
         {

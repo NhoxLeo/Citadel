@@ -11,6 +11,7 @@ public class PlayerDamageTrigger : MonoBehaviour
     public float damageAmount = 10;
     [Tooltip("How long it takes for the trigger to reset before it can damage the player again.")]
     public float resetTime = 2f;
+    public bool doesDamageEnemies = false;
 
     // Private Properties
     private bool hasBeenTriggered = false;
@@ -24,6 +25,15 @@ public class PlayerDamageTrigger : MonoBehaviour
             hasBeenTriggered = true;
             InteractionController.instance.TakeDamage(damageAmount);
             StartCoroutine(ResetTrigger());
+        }
+        else if(doesDamageEnemies && other.gameObject.layer == 12)
+        {
+            AIController controller = other.gameObject.GetComponent<AIController>();
+
+            if(controller)
+            {
+                controller.TakeDamage(damageAmount);
+            }
         }
     }
 
