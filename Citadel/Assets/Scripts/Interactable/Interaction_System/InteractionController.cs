@@ -116,89 +116,63 @@ namespace VHS
             if (!wasHolding)
             {
                 #region Weapon Shortcuts
-                if (Input.GetKeyDown(KeyCode.Alpha1))
+                if (switchWeaponLock == false)
                 {
-                    if (weaponStorge.Count > 0)
+                    if (Input.GetKeyDown(KeyCode.Alpha1))
                     {
-                        ChangeWeapon(0, 0);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    if (weaponStorge.Count > 1)
-                    {
-                        ChangeWeapon(0, 1);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha3))
-                {
-                    if (weaponStorge.Count > 2)
-                    {
-                        ChangeWeapon(0, 2);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha4))
-                {
-                    if (weaponStorge.Count > 3)
-                    {
-                        ChangeWeapon(0, 3);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha5))
-                {
-                    if (weaponStorge.Count > 4)
-                    {
-                        ChangeWeapon(0, 4);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha6))
-                {
-                    if (weaponStorge.Count > 5)
-                    {
-                        ChangeWeapon(0, 5);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha7))
-                {
-                    if (weaponStorge.Count > 6)
-                    {
-                        ChangeWeapon(0, 6);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha8))
-                {
-                    if (weaponStorge.Count > 7)
-                    {
-                        ChangeWeapon(0, 7);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha9))
-                {
-                    if (weaponStorge.Count > 8)
-                    {
-                        ChangeWeapon(0, 8);
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.Alpha0))
-                {
-                    if (weaponStorge.Count > 9)
-                    {
-                        ChangeWeapon(0, 9);
-                    }
-                }
-                #endregion
+                        int foundIndex = findWeapon("Axe", false);
 
-                if (Input.GetAxis("Mouse ScrollWheel") > 0 && !switchWeaponLock)
-                {
-                    ChangeWeapon(1);
-                }
-                else if (Input.GetAxis("Mouse ScrollWheel") < 0 && !switchWeaponLock)
-                {
-                    ChangeWeapon(-1);
-                }
-                else if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_QUICKCYCLE)) && !switchingWeapons)
-                {
-                    ChangeWeapon(1);
+                        if (foundIndex != -1)
+                        {
+                            ChangeWeapon(0, foundIndex);
+                        }
+                        else
+                        {
+                            findWeapon("Fist", true);
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha2))
+                    {
+                        findWeapon("Pistol", true);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha3))
+                    {
+                        findWeapon("Shotgun", true);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha4))
+                    {
+                        findWeapon("Machine Gun", true);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha5))
+                    {
+                        findWeapon("Pulse Rifle", true);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha6))
+                    {
+                        findWeapon("Grenade", true);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha7))
+                    {
+                        findWeapon("Rocket Launcher", true);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.Alpha8))
+                    {
+                        findWeapon("Disruptor", true);
+                    }
+                    #endregion
+
+                    if (Input.GetAxis("Mouse ScrollWheel") > 0 && !switchWeaponLock)
+                    {
+                        ChangeWeapon(1);
+                    }
+                    else if (Input.GetAxis("Mouse ScrollWheel") < 0 && !switchWeaponLock)
+                    {
+                        ChangeWeapon(-1);
+                    }
+                    else if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), GameVars.instance.saveManager.INPUT_QUICKCYCLE)) && !switchingWeapons)
+                    {
+                        ChangeWeapon(1);
+                    }
                 }
 
                 if (bulletHoles.Count > 50)
@@ -296,7 +270,22 @@ namespace VHS
         #endregion
 
 
-        #region Custom methods        
+        #region Custom methods    
+        public int findWeapon(string weaponName, bool doSwap)
+        {
+            for(int i = 0; i < weaponStorge.Count; i++)
+            {
+                if(weaponStorge[i].GetComponent<WeaponController>().weaponParams.weaponName == weaponName)
+                {
+                    if (doSwap)
+                    {
+                        ChangeWeapon(0, i);
+                    }
+                    return i;
+                }
+            }
+            return -1;
+        }
         public IEnumerator PlayerDie()
         {
             if (!hasPlayerDied)
