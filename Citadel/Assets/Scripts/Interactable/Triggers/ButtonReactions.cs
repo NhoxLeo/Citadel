@@ -634,7 +634,7 @@ namespace VHS
             {
                 foreach (ReactionAudio reactionAudio in audio.audioList)
                 {
-                    GameVars.instance.audioManager.PlaySFX(reactionAudio.audioClip, reactionAudio.volume, transform.position);
+                    StartCoroutine(SingleAudioPlay(reactionAudio));
                 }
 
                 audioReady = true;
