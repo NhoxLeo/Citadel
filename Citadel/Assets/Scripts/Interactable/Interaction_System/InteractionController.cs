@@ -71,7 +71,7 @@ namespace VHS
         private float m_holdTimer = 0f;
         private bool canPlayDamageSound = true;
 
-        private Coroutine regenCoroutine;
+        private Coroutine regenCoroutine, vignetteCoroutine;
         private bool waitingToUpdateUI;
 
         private float damageSoundTimer;
@@ -203,7 +203,13 @@ namespace VHS
 
             if (playerHealth < maxHealth)
             {
-                vignette.color = new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1));
+                if (vignette.color != new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1)))
+                {
+                    if (vignetteCoroutine == null)
+                    {
+                        vignetteCoroutine = StartCoroutine(LerpDamage());
+                    }
+                }
                 if(regenCoroutine == null)
                 {
                     regenCoroutine = StartCoroutine(RegenHealth());
@@ -271,6 +277,23 @@ namespace VHS
 
 
         #region Custom methods    
+        public IEnumerator LerpDamage()
+        {
+            float t = 0f;
+            while (vignette.color != new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1)))
+            {
+                t += Time.deltaTime / 3;
+                vignette.color = Color.Lerp(vignette.color, (new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1))), t);
+
+                if (vignette.color != new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1)))
+                {
+                    vignetteCoroutine = null;
+                }
+
+                yield return null;
+            }
+        }
+
         public int findWeapon(string weaponName, bool doSwap)
         {
             for(int i = 0; i < weaponStorge.Count; i++)
@@ -416,6 +439,18 @@ namespace VHS
         {
             if (!hasPlayerDied)
             {
+                float vignetteAlpha = (((((playerHealth / maxHealth) - 1) * -1) + 0.1f) * 2);
+                if(vignetteAlpha > 0.8f)
+                {
+                    vignetteAlpha = 0.8f;
+                }
+
+                if(vignetteAlpha < 0.3)
+                {
+                    vignetteAlpha = 0.3f;
+                }
+
+                vignette.color = new Color(0, 0, 0, vignetteAlpha);
                 hudController.DoUiFade(HUDController.FadeState.IN);
                 damage = damage + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.enemyDamagePercent * damage) * GameVars.instance.difficultyManager.GetDifficultyScaler() * -1));
                 playerHealth -= damage;

@@ -26,9 +26,10 @@ public class PlayerDamageTrigger : MonoBehaviour
             InteractionController.instance.TakeDamage(damageAmount);
             StartCoroutine(ResetTrigger());
         }
-        else if(doesDamageEnemies && other.gameObject.layer == 12)
+
+        if(doesDamageEnemies && other.transform.gameObject.layer == 12)
         {
-            AIController controller = other.gameObject.GetComponent<AIController>();
+            AIController controller = other.transform.parent.gameObject.GetComponent<AIController>();
 
             if(controller)
             {

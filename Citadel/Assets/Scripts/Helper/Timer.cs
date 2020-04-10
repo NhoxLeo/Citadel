@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour
     // ActivateTimer()
     public void ActivateTimer()
     {
-        Debug.Log("\tTimer.Activate() called!");
+        //Debug.Log("\tTimer.Activate() called!");
         if (disabled)
         {
             disabled = false;
@@ -59,7 +59,7 @@ public class Timer : MonoBehaviour
     // DisableTimer()
     public void DisableTimer()
     {
-        Debug.Log("Timer.Disable() called!");
+        //Debug.Log("Timer.Disable() called!");
         disabled = true;
     }
 
