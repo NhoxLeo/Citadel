@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Camera))]
 public class MenuCamera : MonoBehaviour
 {
+    public Animator motionAnimator;
+    private bool hasSkipped = false;
     [SerializeField] private Transform[] cameraPositions;
     
     private const float lerpTime = 2;
@@ -47,6 +49,15 @@ public class MenuCamera : MonoBehaviour
                 p = p * p * (3 - 2 * p);
                 transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, p);
                 transform.localPosition = Vector3.Lerp(transform.localPosition, Vector3.zero, p);
+            }
+        }
+
+        if(motionAnimator && !hasSkipped)
+        {
+            if(Input.GetKeyUp(KeyCode.Escape))
+            {
+                hasSkipped = true;
+                motionAnimator.SetTrigger("Skip");
             }
         }
     }
