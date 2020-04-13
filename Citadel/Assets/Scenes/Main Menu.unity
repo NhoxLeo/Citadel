@@ -4498,7 +4498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 515dbbb1eecf35f40ad03e18c465e86e, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 54d73e0fff2f7bc48bafa736e91a96d6, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
@@ -5316,11 +5316,6 @@ PrefabInstance:
       propertyPath: unlockedName
       value: Power Up
       objectReference: {fileID: 0}
-    - target: {fileID: 6019119811173877760, guid: 06af82d0508a8084ba9e57e4a8a2b00e,
-        type: 3}
-      propertyPath: m_CullTransparentMesh
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2727682525538298799, guid: 06af82d0508a8084ba9e57e4a8a2b00e,
         type: 3}
       propertyPath: m_Color.a
@@ -5355,6 +5350,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.a
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6019119811173877760, guid: 06af82d0508a8084ba9e57e4a8a2b00e,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 06af82d0508a8084ba9e57e4a8a2b00e, type: 3}
@@ -9564,7 +9564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 515dbbb1eecf35f40ad03e18c465e86e, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 54d73e0fff2f7bc48bafa736e91a96d6, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
