@@ -52,7 +52,7 @@ public class HUDController : MonoBehaviour
         }
     }
 
-    public void DoUiFade(FadeState newFadeState)
+    public void DoUiFade(FadeState newFadeState, bool instant = false)
     {
         if (fadeState != FadeState.NONE)
         {
@@ -63,25 +63,39 @@ public class HUDController : MonoBehaviour
                     StopCoroutine(fadeCoroutine);
                     isLerpingFade = false;
                 }
-                StartFade(newFadeState);
+                StartFade(newFadeState, instant);
             }
         }
         else
         {
-            StartFade(newFadeState);
+            StartFade(newFadeState, instant);
         }
     }
 
-    private void StartFade(FadeState newFadeState)
+    private void StartFade(FadeState newFadeState, bool instant = false)
     {
         fadeState = newFadeState;
-        if (newFadeState == FadeState.IN)
+        if (instant == false)
         {
-            fadeCoroutine = StartCoroutine(FadeUI(MAX_OPACTIY));
+            if (newFadeState == FadeState.IN)
+            {
+                fadeCoroutine = StartCoroutine(FadeUI(MAX_OPACTIY));
+            }
+            if (newFadeState == FadeState.OUT)
+            {
+                fadeCoroutine = StartCoroutine(FadeUI(MIN_OPACTIY));
+            }
         }
-        if (newFadeState == FadeState.OUT)
+        else
         {
-            fadeCoroutine = StartCoroutine(FadeUI(MIN_OPACTIY));
+            if (newFadeState == FadeState.IN)
+            {
+                currentOpacity = MAX_OPACTIY;
+            }
+            if (newFadeState == FadeState.OUT)
+            {
+                currentOpacity = MIN_OPACTIY;
+            }
         }
     }
 
@@ -92,7 +106,7 @@ public class HUDController : MonoBehaviour
             yield return new WaitForSeconds(durationBeforeFade);
             if(fadeState == FadeState.NONE)
             {
-                DoUiFade(FadeState.OUT);
+                DoUiFade(FadeState.OUT, false);
             }
         }
     }

@@ -2033,7 +2033,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 425783
+    m_Bits: 1474359
   m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2378,10 +2378,10 @@ MonoBehaviour:
   weaponStorageParent: {fileID: 618959486}
   bulletLayers:
     serializedVersion: 2
-    m_Bits: 23041
+    m_Bits: 1071617
   punchLayers:
     serializedVersion: 2
-    m_Bits: 23297
+    m_Bits: 1071873
   backupAudioManager: {fileID: 5534128214759634240, guid: 63bff7a5e5ae63f4297c654d31183ec9,
     type: 3}
   hudController: {fileID: 7631799064817501257}
@@ -8060,6 +8060,31 @@ PrefabInstance:
         type: 3}
       propertyPath: buttonScaler.z
       value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432155482780607840, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432155482780607840, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882664031872242220, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882664031872242220, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882664031872242220, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8a1bfd7a3ccd4e47b3094faca2eb032, type: 3}

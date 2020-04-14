@@ -285,13 +285,15 @@ namespace VHS
                 t += Time.deltaTime / 3;
                 vignette.color = Color.Lerp(vignette.color, (new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1))), t);
 
-                if (vignette.color != new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1)))
+                if (vignette.color == new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1)))
                 {
+                    vignette.color = new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1));
                     vignetteCoroutine = null;
                 }
 
                 yield return null;
             }
+            vignette.color = new Color(0, 0, 0, (((playerHealth / maxHealth) - 1) * -1));
         }
 
         public int findWeapon(string weaponName, bool doSwap)
@@ -314,6 +316,8 @@ namespace VHS
             if (!hasPlayerDied)
             {
                 hasPlayerDied = true;
+                playerHealth = 0;
+                hudController.DoUiFade(HUDController.FadeState.OUT, true);
                 playerDamageAnimator.SetBool("HasDied", true);
                 playerDeathAnimator.SetBool("Die", true);
 
@@ -451,7 +455,11 @@ namespace VHS
                 }
 
                 vignette.color = new Color(0, 0, 0, vignetteAlpha);
-                hudController.DoUiFade(HUDController.FadeState.IN);
+                if(vignetteCoroutine != null)
+                {
+                    StopCoroutine(vignetteCoroutine);
+                }
+                vignetteCoroutine = StartCoroutine(LerpDamage());
                 damage = damage + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.enemyDamagePercent * damage) * GameVars.instance.difficultyManager.GetDifficultyScaler() * -1));
                 playerHealth -= damage;
                 GameVars.instance.totalDamageTaken += damage;
@@ -459,6 +467,11 @@ namespace VHS
                 {
                     canPlayDamageSound = false;
                     GameVars.instance.audioManager.PlaySFX(playerDamageAudio, 1, transform.position);
+                }
+
+                if (!hasPlayerDied && playerHealth > 0)
+                {
+                    hudController.DoUiFade(HUDController.FadeState.IN);
                 }
             }
         }
@@ -468,8 +481,12 @@ namespace VHS
             if(playerHealth < maxHealth && !hasPlayerDied)
             {
                 yield return new WaitForSeconds(playerRegenRatePerSec);
-                playerHealth += playerRegenIncrement + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.regenSpeedPercent * playerRegenIncrement) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
-                if(playerHealth >= maxHealth)
+                if(!hasPlayerDied)
+                {
+                    playerHealth += playerRegenIncrement + ((int)Mathf.Ceil((GameVars.instance.difficultyManager.regenSpeedPercent * playerRegenIncrement) * GameVars.instance.difficultyManager.GetDifficultyScaler()));
+                }
+
+                if (playerHealth >= maxHealth)
                 {
                     playerHealth = maxHealth;
                     regenCoroutine = null;

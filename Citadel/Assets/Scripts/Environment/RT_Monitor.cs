@@ -25,7 +25,7 @@ public class RT_Monitor : MonoBehaviour
     {
         yield return new WaitUntil(() => InteractionController.instance);
 
-        renderTexture = new RenderTexture(1920, 1080, 16, RenderTextureFormat.ARGB32);
+        renderTexture = new RenderTexture(352, 240, 8, RenderTextureFormat.ARGB32);
 
         renderCamera.targetTexture = renderTexture;
 

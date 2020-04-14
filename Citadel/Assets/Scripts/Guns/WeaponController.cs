@@ -274,6 +274,7 @@ public class WeaponController : MonoBehaviour
                     {
                         GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
                         bulletHole.transform.parent = hitInfo.transform;
+                        bulletHole.transform.GetChild(0).GetChild(0).transform.Rotate(0, 0, Random.Range(0, 360f));
                         InteractionController.instance.bulletHoles.Add(bulletHole);
                     }
 
