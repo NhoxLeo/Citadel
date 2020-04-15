@@ -165,9 +165,10 @@ GameObject:
   - component: {fileID: 4657636852582608}
   - component: {fileID: 33094491628704728}
   - component: {fileID: 23901495839984312}
-  - component: {fileID: 994471891961852711}
-  - component: {fileID: 8751789886390590370}
-  - component: {fileID: 2975431052021645631}
+  - component: {fileID: 7338671197899619972}
+  - component: {fileID: 4415552143750161290}
+  - component: {fileID: 93930551796684703}
+  - component: {fileID: 7743435977152117105}
   m_Layer: 9
   m_Name: SM_Veh_Future_01
   m_TagString: Untagged
@@ -236,8 +237,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &994471891961852711
-BoxCollider:
+--- !u!136 &7338671197899619972
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -246,11 +247,12 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 2.5598278, y: 0.9146913, z: 5.2145576}
-  m_Center: {x: -0.015989304, y: 0.43492776, z: -0.089915276}
---- !u!65 &8751789886390590370
-BoxCollider:
+  m_Radius: 0.92127144
+  m_Height: 2.56404
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.66127145, z: -0.6936089}
+--- !u!136 &4415552143750161290
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -259,11 +261,12 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.9042959, y: 0.3018036, z: 4.7695227}
-  m_Center: {x: -0.015486717, y: 1.0380988, z: -0.25822592}
---- !u!65 &2975431052021645631
-BoxCollider:
+  m_Radius: 0.6312388
+  m_Height: 5.06671
+  m_Direction: 2
+  m_Center: {x: -0.7, y: 0.58, z: -0.028305292}
+--- !u!136 &93930551796684703
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -272,6 +275,21 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.7568247, y: 0.6892679, z: 2.731942}
-  m_Center: {x: -0.05454454, y: 1.231831, z: -0.55227315}
+  m_Radius: 0.6312388
+  m_Height: 5.06671
+  m_Direction: 2
+  m_Center: {x: 0.76, y: 0.58, z: -0.028305292}
+--- !u!136 &7743435977152117105
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938635135940110}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.7218746
+  m_Height: 5.32328
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.4618746, z: -0.089464426}
