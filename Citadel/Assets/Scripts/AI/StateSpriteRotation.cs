@@ -53,6 +53,7 @@ public class StateSpriteRotation : MonoBehaviour
         {
             enemyAngle = enemyAngle*-1;
         }
+        //Debug.Log(enemyAngle);
         return enemyAngle;
     }
 

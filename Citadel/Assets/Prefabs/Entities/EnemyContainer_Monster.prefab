@@ -3315,7 +3315,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 1e+9
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -4199,6 +4199,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1382022823005713342}
     m_Modifications:
+    - target: {fileID: 4615371472851152418, guid: f83f10b4ef78519489628547e90594c9,
+        type: 3}
+      propertyPath: m_Name
+      value: MoveSoundsManager
+      objectReference: {fileID: 0}
     - target: {fileID: 4975437581620842459, guid: f83f10b4ef78519489628547e90594c9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4253,11 +4258,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4615371472851152418, guid: f83f10b4ef78519489628547e90594c9,
-        type: 3}
-      propertyPath: m_Name
-      value: MoveSoundsManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f83f10b4ef78519489628547e90594c9, type: 3}
