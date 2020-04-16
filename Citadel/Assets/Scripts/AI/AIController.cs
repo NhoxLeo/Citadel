@@ -505,6 +505,12 @@ public class AIController : MonoBehaviour
                 {
                     while (hasArrived == false)
                     {
+                        /*
+                        if (navMeshAgent.velocity.normalized != Vector3.zero)
+                        {
+                            transform.rotation = Quaternion.LookRotation(navMeshAgent.velocity.normalized, Vector3.up);
+                        }
+                        */
                         transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 
@@ -753,7 +759,7 @@ public class AIController : MonoBehaviour
                             lastKnownPlayerLocation = navMeshHit.position;
                         }
                     }
-                    transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
+                    //transform.rotation = Quaternion.LookRotation(player.transform.position - transform.position, Vector3.up);
                     transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
                     playerSpotted = true;
                 }
