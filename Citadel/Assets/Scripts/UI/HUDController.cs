@@ -23,6 +23,7 @@ public class HUDController : MonoBehaviour
     public enum FadeState { IN, OUT, NONE}
 
     private bool isLerpingFade = false;
+    private bool hudLock = false;
     private Coroutine fadeCoroutine;
     
     // Start is called before the first frame update
@@ -54,21 +55,24 @@ public class HUDController : MonoBehaviour
 
     public void DoUiFade(FadeState newFadeState, bool instant = false)
     {
-        if (fadeState != FadeState.NONE)
+        if (hudLock == false)
         {
-            if(fadeState != newFadeState)
+            if (fadeState != FadeState.NONE)
             {
-                if(fadeCoroutine != null)
+                if (fadeState != newFadeState)
                 {
-                    StopCoroutine(fadeCoroutine);
-                    isLerpingFade = false;
+                    if (fadeCoroutine != null)
+                    {
+                        StopCoroutine(fadeCoroutine);
+                        isLerpingFade = false;
+                    }
+                    StartFade(newFadeState, instant);
                 }
+            }
+            else
+            {
                 StartFade(newFadeState, instant);
             }
-        }
-        else
-        {
-            StartFade(newFadeState, instant);
         }
     }
 
@@ -88,6 +92,7 @@ public class HUDController : MonoBehaviour
         }
         else
         {
+            hudLock = true;
             if (newFadeState == FadeState.IN)
             {
                 currentOpacity = MAX_OPACTIY;

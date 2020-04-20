@@ -120,7 +120,7 @@ namespace VHS
 
         void HandleZoom()
         {
-            if (!GameVars.instance.isPaused)
+            if (GameVars.instance && !GameVars.instance.isPaused)
             {
                 if (InteractionController.instance.hasPlayerDied == false)
                 {
