@@ -217,6 +217,30 @@ MonoBehaviour:
   - {fileID: 6619722770920356550, guid: ca742be1192528f4abdba47ebc6aaa7d, type: 3}
   - {fileID: 1382022823005713337, guid: a938b69a79c2eaa4b8052ddff6e5292a, type: 3}
   - {fileID: 7330238777674970384, guid: 8c40773c36a71bc43844690e68397dde, type: 3}
+  wallTextures:
+  - possibleWallMats:
+    - wallMaterial: {fileID: 2100000, guid: 991ed73020bd6aa44bbd16edde4b3ee9, type: 2}
+      chosenPercent: 60
+    - wallMaterial: {fileID: 2100000, guid: 07c5ee6509ec80147a16b85e68305de8, type: 2}
+      chosenPercent: 50
+    - wallMaterial: {fileID: 2100000, guid: 671c5f2c8fa047e4aacd41cf9b5d0a3d, type: 2}
+      chosenPercent: 10
+    chosenPercent: 85
+    chosenMaterial: {fileID: 0}
+  - possibleWallMats:
+    - wallMaterial: {fileID: 2100000, guid: 2be3d8cd248051f41bc80c2d1ced3bba, type: 2}
+      chosenPercent: 100
+    chosenPercent: 15
+    chosenMaterial: {fileID: 0}
+  - possibleWallMats:
+    - wallMaterial: {fileID: 2100000, guid: 70ed463bbbba1d646a99c710542f8020, type: 2}
+      chosenPercent: 50
+    - wallMaterial: {fileID: 2100000, guid: 206fa0705c6ea2c4fa625b5f3514862c, type: 2}
+      chosenPercent: 50
+    - wallMaterial: {fileID: 2100000, guid: 1e84297957f7e8a489161ad9db296359, type: 2}
+      chosenPercent: 50
+    chosenPercent: 40
+    chosenMaterial: {fileID: 0}
   levelIndex: 0
 --- !u!4 &525835798
 Transform:

@@ -38,6 +38,10 @@ public class Level : MonoBehaviour
     public GameObject collectablePrefab;
     public List<GameObject> enemyPrefabs;
 
+    [Header("Variety References")]
+    [Space(10)]
+    public List<WallTexture> wallTextures;
+
     #region Stored Data
     [HideInInspector]
     public int levelIndex = 0;
@@ -58,6 +62,7 @@ public class Level : MonoBehaviour
     private Vector2 currentRoomSize, previousRoomSize;
     private List<GameObject> roomEnemies;
     private int currentRoomGeneratedIndex;
+    private WallTexture chosenWorldMat;
     #endregion
     #endregion
 
@@ -105,6 +110,27 @@ public class Level : MonoBehaviour
 
         roomItems = new List<GameObject>();
         roomEnemies = new List<GameObject>();
+
+        if (GameVars.instance && GameVars.instance.currentCrawlLevel == 0)
+        {
+            chosenWorldMat = wallTextures[0];
+        }
+        else
+        {
+            if (wallTextures != null && wallTextures.Count > 0)
+            {
+                do
+                {
+                    foreach (WallTexture wallTexture in wallTextures)
+                    {
+                        if (wallTexture.RollChance(wallTexture.chosenPercent))
+                        {
+                            chosenWorldMat = wallTexture;
+                        }
+                    }
+                } while (chosenWorldMat == null);
+            }
+        }
     }
 
     /// <summary>
@@ -205,10 +231,14 @@ public class Level : MonoBehaviour
         {
             for (int row = 0; row < tilesPerLine; row++)
             {
-                AddWall(new Vector2(row, col), wallPrefab, 1, Quaternion.identity);
+                AddWall(new Vector2(row, col), wallPrefab, 1, Quaternion.identity, false);
 
                 GameObject wallMesh = worldArray[row, col].gameObject.transform.GetChild(0).gameObject;
                 wallMesh.transform.localScale = new Vector3(gridSpotSize, wallMesh.transform.localScale.y, gridSpotSize);
+
+                wallMesh.GetComponent<Renderer>().sharedMaterial = chosenWorldMat.ChooseWallMat();
+                wallMesh.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial = wallMesh.GetComponent<Renderer>().sharedMaterial;
+
                 wallMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
 
                 worldArray[row, col].transform.parent = worldGeoContainer.transform;
@@ -244,7 +274,8 @@ public class Level : MonoBehaviour
             {
                 if (!((int)(currentRoom.x + q) > tilesPerLine - 2) && !((int)(currentRoom.y + i) > tilesPerLine - 2))
                 {
-                    DestroyWall(new Vector2((int)(currentRoom.x + q), (int)(currentRoom.y + i)));
+                    Vector2 currentWall = new Vector2((int)(currentRoom.x + q), (int)(currentRoom.y + i));
+                    DestroyWall(currentWall);
                 }
             }
         }
@@ -299,13 +330,12 @@ public class Level : MonoBehaviour
                 if (i == 2 && (indices != emptyTileIndices[0] && indices != emptyTileIndices[emptyTileIndices.Count - 1]))
                 {
                     DestroyWall(indices);
-                    AddWall(indices, doorPrefab, 1, Quaternion.identity);
+                    AddWall(indices, doorPrefab, 1, Quaternion.identity, true);
 
                     GameObject doorMesh = worldArray[(int)indices.x, (int)indices.y].gameObject.transform.GetChild(0).gameObject;
                     doorMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
 
                     worldArray[(int)indices.x, (int)indices.y].transform.parent = worldGeoContainer.transform;
-                    doorTileIndices.Add(indices);
                 }
                 else
                 {
@@ -322,13 +352,12 @@ public class Level : MonoBehaviour
                 if (i == 2 && (indices != emptyTileIndices[0] && indices != emptyTileIndices[emptyTileIndices.Count - 1]))
                 {
                     DestroyWall(indices);
-                    AddWall(indices, doorPrefab, 1, Quaternion.Euler(0, 90, 0));
+                    AddWall(indices, doorPrefab, 1, Quaternion.Euler(0, 90, 0), true);
 
                     GameObject doorMesh = worldArray[(int)indices.x, (int)indices.y].gameObject.transform.GetChild(0).gameObject;
                     doorMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
 
                     worldArray[(int)indices.x, (int)indices.y].transform.parent = worldGeoContainer.transform;
-                    doorTileIndices.Add(indices);
                 }
                 else
                 {
@@ -405,7 +434,7 @@ public class Level : MonoBehaviour
     /// <param name="objectToAdd"></param>
     /// <param name="yComponent"></param>
     /// <param name="rotation"></param>
-    private void AddWall(Vector2 worldArrayIndices, GameObject objectToAdd, float yComponent, Quaternion rotation)
+    private void AddWall(Vector2 worldArrayIndices, GameObject objectToAdd, float yComponent, Quaternion rotation, bool isDoor)
     {
         if (worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] != null)
         {
@@ -416,7 +445,24 @@ public class Level : MonoBehaviour
         {
             emptyTileIndices.Remove(worldArrayIndices);
         }
-        worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] = GameObject.Instantiate(objectToAdd, new Vector3((int)worldArrayIndices.x * gridSpotSize, yComponent, (int)worldArrayIndices.y * gridSpotSize), rotation);
+
+        GameObject newWall = GameObject.Instantiate(objectToAdd, new Vector3((int)worldArrayIndices.x * gridSpotSize, yComponent, (int)worldArrayIndices.y * gridSpotSize), rotation);
+
+        if (isDoor)
+        {
+            if(!doorTileIndices.Contains(worldArrayIndices))
+            {
+                doorTileIndices.Add(worldArrayIndices);
+            }
+        }
+        else
+        {
+            GameObject newWallMesh = newWall.transform.GetChild(0).gameObject;
+            newWallMesh.GetComponent<Renderer>().sharedMaterial = chosenWorldMat.ChooseWallMat();
+            newWallMesh.transform.GetChild(0).GetComponent<Renderer>().sharedMaterial = newWallMesh.GetComponent<Renderer>().sharedMaterial;
+        }
+
+        worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] = newWall;
     }
 
     /// <summary>
@@ -600,6 +646,69 @@ public class Level : MonoBehaviour
             GameVars.instance.saveManager.UpdateSaveData();
             GameVars.instance.currentCrawlLevel = 0;
         }
+    }
+    #endregion
+
+    #region Classes
+    [System.Serializable]
+    public class WallTexture
+    {
+        [Header("WallTexture Settings")]
+        #region WallTexture
+        [Tooltip("The possible mat varients on this WallTexture")]
+        public List<WallMat> possibleWallMats;
+        [Tooltip("Chance of this WallTexture being chosen")]
+        [Range(0, 100)]
+        public int chosenPercent = 100;
+        #endregion
+
+        #region WallTexture Data
+        [HideInInspector]
+        public Material chosenMaterial;
+        #endregion
+
+        public Material ChooseWallMat()
+        {
+            chosenMaterial = null;
+            do
+            {
+                foreach(WallMat wallMat in possibleWallMats)
+                {
+                    if(RollChance(wallMat.chosenPercent))
+                    {
+                        chosenMaterial = wallMat.wallMaterial;
+                        return wallMat.wallMaterial;
+                    }
+                }
+            } while (chosenMaterial == null);
+
+            return null;
+        }
+
+        public bool RollChance(int chance)
+        {
+            if (chosenPercent > 0)
+            {
+                if (Random.Range(0, 101) <= chance)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    [System.Serializable]
+    public class WallMat
+    {
+        [Header("WallTexture Settings")]
+        #region WallMat
+        [Tooltip("The mat for this possible WallMat")]
+        public Material wallMaterial;
+        [Tooltip("Chance of this mat being chosen")]
+        [Range(0, 100)]
+        public int chosenPercent = 100;
+        #endregion
     }
     #endregion
 }
