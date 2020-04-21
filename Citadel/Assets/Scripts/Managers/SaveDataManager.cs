@@ -25,6 +25,8 @@ public class SaveDataManager : MonoBehaviour
     public string INPUT_MAP = "M";
     public float SENSITIVITY = 120;
 
+    public int crawlHighScore = 0;
+
     public bool hasReadData = false;
 
     // Start is called before the first frame update
@@ -77,9 +79,13 @@ public class SaveDataManager : MonoBehaviour
                         //Debug.Log("Level "+currentIndex+" is Unlocked");
                         levelsUnlockStatus[currentIndex] = true;
                     }
-                    else
+                    else if (inp_ln == "False")
                     {
                         levelsUnlockStatus[currentIndex] = false;
+                    }
+                    else
+                    {
+                        crawlHighScore = int.Parse(inp_ln);
                     }
                     currentIndex++;
                 }
@@ -182,6 +188,7 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(false); //Level4
                 writer.WriteLine(false); //Level5
                 writer.WriteLine(false); //Level6
+                writer.WriteLine(0); //CrawlHighScore
                 writer.Close();
             }
         }
@@ -236,6 +243,7 @@ public class SaveDataManager : MonoBehaviour
                 {
                     writer.WriteLine(levelStatus);
                 }
+                writer.WriteLine(crawlHighScore);
                 writer.Close();
             }
             else

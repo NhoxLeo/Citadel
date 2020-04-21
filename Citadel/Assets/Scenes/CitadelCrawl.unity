@@ -180,32 +180,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSpotSize: 5
-  tilesPerLine: {x: 24, y: 24}
-  SPAWN_BUFFER: 8
+  tilesPerLine: 25
+  SPAWN_BUFFER: 2
+  COLLECTABLE_SPAWN_CHANCE: 3
+  ENEMY_SPAWN_CHANCE: 2
+  WEAPON_SPAWN_CHANCE: 2
   MAX_ROOMS: 10
   MINIMUM_ROOMS: 8
   MAX_ROOM_SIZE: 6
   MINIMUM_ROOM_SIZE: 3
-  COLLECTABLE_SPAWN_CHANCE: 3
-  ENEMY_SPAWN_CHANCE: 2
-  WEAPON_SPAWN_CHANCE: 3
   worldGeoContainer: {fileID: 1931920992}
+  worldNavMeshContainer: {fileID: 961495968}
   worldEnemiesContainer: {fileID: 1651997665}
   worldWeaponsContainer: {fileID: 364806565}
   worldCollectablesContainer: {fileID: 953137658}
-  worldNavMeshContainer: {fileID: 961495968}
+  mapGameObject: {fileID: 600742727}
   playerPrefab: {fileID: 2882282971457573383, guid: 51167e04776c1e94ba6bd24ea1487c77,
     type: 3}
-  map: {fileID: 600742727}
+  portalPrefab: {fileID: 2582076821104525644, guid: a90d0332b385b4d4cb93e0128d90a29c,
+    type: 3}
   wallPrefab: {fileID: 2582076821104525644, guid: 8aa1d537019ba1b4aa07712429fc270e,
     type: 3}
   doorPrefab: {fileID: 7404463947975433591, guid: 2c6c452823aaecc4abe70fd82b4e07c0,
     type: 3}
   floorPrefab: {fileID: 7066667598975107651, guid: fc49c769b92acc44ab91b14f44156186,
     type: 3}
-  portalPrefab: {fileID: 2582076821104525644, guid: a90d0332b385b4d4cb93e0128d90a29c,
-    type: 3}
   ceilingPrefab: {fileID: 9047927770411653907, guid: 82be80a21922bc746bf76fd2dc8902d2,
+    type: 3}
+  weaponPrefab: {fileID: 7155567566384901454, guid: f6e30195d2bf9044db189f781245b23e,
     type: 3}
   collectablePrefab: {fileID: 3416353974979127329, guid: 6b5ab8d3f336f7b4692af55aa1c851f9,
     type: 3}
@@ -215,8 +217,7 @@ MonoBehaviour:
   - {fileID: 6619722770920356550, guid: ca742be1192528f4abdba47ebc6aaa7d, type: 3}
   - {fileID: 1382022823005713337, guid: a938b69a79c2eaa4b8052ddff6e5292a, type: 3}
   - {fileID: 7330238777674970384, guid: 8c40773c36a71bc43844690e68397dde, type: 3}
-  weaponPrefab: {fileID: 7155567566384901454, guid: f6e30195d2bf9044db189f781245b23e,
-    type: 3}
+  levelIndex: 0
 --- !u!4 &525835798
 Transform:
   m_ObjectHideFlags: 0

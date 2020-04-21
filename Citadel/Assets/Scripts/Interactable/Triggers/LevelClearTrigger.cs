@@ -60,6 +60,11 @@ public class LevelClearTrigger : MonoBehaviour
         }
         else if (clearTriggerType == ClearTriggerType.Crawl)
         {
+            if (GameVars.instance.crawlManager)
+            {
+                GameVars.instance.crawlManager.IncrementLevelScore();
+            }
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }

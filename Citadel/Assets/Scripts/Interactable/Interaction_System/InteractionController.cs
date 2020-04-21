@@ -337,8 +337,18 @@ namespace VHS
                         }
                     }
                 }
-                yield return new WaitForSeconds(5);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+                if (GameVars.instance.crawlManager)
+                {
+                    GameVars.instance.crawlManager.AttemptUpdateScore();
+                    yield return new WaitForSeconds(5);
+                    SceneManager.LoadScene("Main Menu");
+                }
+                else
+                {
+                    yield return new WaitForSeconds(5);
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
             }
         }
 

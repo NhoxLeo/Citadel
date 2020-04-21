@@ -11,12 +11,14 @@ public class GameVars : MonoBehaviour
     public SaveDataManager saveManager;
     public DifficultyManager difficultyManager;
     public LevelManager currentLevelManager;
+    public Level crawlManager;
     public List<LevelManager> levels;
 
     [HideInInspector]
     public bool isPaused;
     public bool wasLevelBeaten;
     public bool firstTimeSettingsSliders = true, firstTimeSettingsControls = true;
+    public int currentCrawlLevel;
     public static GameVars instance; //Singleton
 
     //In level data
@@ -165,6 +167,13 @@ public class GameVars : MonoBehaviour
         {
             saveManager.ReadSaveData();
         }
+
+        /*
+        if (crawlManager)
+        {
+            crawlManager.levelIndex = currentCrawlLevel;
+        }
+        */
     }
 
     private void ResetLevelData()

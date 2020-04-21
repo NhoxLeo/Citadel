@@ -5,44 +5,48 @@ using UnityEngine.AI;
 
 public class Level : MonoBehaviour
 {
+    #region Variables & Inspector Options
     [Header("World Options")]
-    public int gridSpotSize = 32;
-    public Vector2 tilesPerLine = new Vector2(25, 25);
-    public int SPAWN_BUFFER = 8; //How far away can things spawn from the player & the portal
+    public int gridSpotSize = 32; //How wide a single grid slot is in unity units
+    public float tilesPerLine = 25; //How many grid slots there are per axis in the world array
+    public int SPAWN_BUFFER = 3; //How far away can things spawn from the player & the portal
+    public int COLLECTABLE_SPAWN_CHANCE = 3, ENEMY_SPAWN_CHANCE = 2, WEAPON_SPAWN_CHANCE = 3; //Decimal Spawn Chances
 
     [Header("Room Options")]
     [Space(10)]
-    public int MAX_ROOMS = 10, MINIMUM_ROOMS = 8;
-    public int MAX_ROOM_SIZE = 6, MINIMUM_ROOM_SIZE = 3;
-    public int COLLECTABLE_SPAWN_CHANCE = 3, ENEMY_SPAWN_CHANCE = 2, WEAPON_SPAWN_CHANCE = 3; //Decimal Chance
+    public int MAX_ROOMS = 10, MINIMUM_ROOMS = 8; //Total Rooms that can spawn
+    public int MAX_ROOM_SIZE = 6, MINIMUM_ROOM_SIZE = 3; //Room Size Cap
 
     [Header("World References")]
     [Space(10)]
     public GameObject worldGeoContainer;
+    public GameObject worldNavMeshContainer;
     public GameObject worldEnemiesContainer;
     public GameObject worldWeaponsContainer;
     public GameObject worldCollectablesContainer;
-    public GameObject worldNavMeshContainer;
 
     [Header("Entity References")]
     [Space(10)]
+    public GameObject mapGameObject;
     public GameObject playerPrefab;
-    public GameObject map;
+    public GameObject portalPrefab;
     public GameObject wallPrefab;
     public GameObject doorPrefab;
     public GameObject floorPrefab;
-    public GameObject portalPrefab;
     public GameObject ceilingPrefab;
+    public GameObject weaponPrefab;
     public GameObject collectablePrefab;
     public List<GameObject> enemyPrefabs;
-    public GameObject weaponPrefab;
+
+    #region Stored Data
+    [HideInInspector]
+    public int levelIndex = 0;
 
     //World Data
-    private int levelIndex = 0;
     private GameObject[,] worldArray;
-    private Vector2 WORLD_SIZE;
     private List<Vector2> emptyTileIndices;
     private List<Vector2> doorTileIndices;
+    private Vector2 WORLD_SIZE;
     private bool changeRoomColor;
     private Color worldColor = Color.white;
     private bool worldGeoCompleted = false, readyToBuild = false;
@@ -54,8 +58,13 @@ public class Level : MonoBehaviour
     private Vector2 currentRoomSize, previousRoomSize;
     private List<GameObject> roomEnemies;
     private int currentRoomGeneratedIndex;
+    #endregion
+    #endregion
 
-    // Start is called before the first frame update
+    #region Unity Methods
+    /// <summary>
+    /// Start is called before the first frame update
+    /// </summary>
     void Start()
     {
         InitLevel();
@@ -76,12 +85,21 @@ public class Level : MonoBehaviour
         }
     }
     */
+    #endregion
 
-    private void InitLevel()
+    /// <summary>
+    /// Initializes a new Level and sets up all needed values
+    /// </summary>
+    public void InitLevel()
     {
-        //Set up
-        worldArray = new GameObject[(int)tilesPerLine.x, (int)tilesPerLine.y];
-        WORLD_SIZE = new Vector2(gridSpotSize * tilesPerLine.x, gridSpotSize * tilesPerLine.y);
+        //Set up  
+        if(GameVars.instance)
+        {
+            GameVars.instance.crawlManager = this;
+        }
+        /* if (GameVars.instance) { levelIndex = GameVars.instance.currentCrawlLevel; } */
+        worldArray = new GameObject[(int)tilesPerLine, (int)tilesPerLine];
+        WORLD_SIZE = new Vector2(gridSpotSize * tilesPerLine, gridSpotSize * tilesPerLine);
         emptyTileIndices = new List<Vector2>();
         doorTileIndices = new List<Vector2>();
 
@@ -89,15 +107,18 @@ public class Level : MonoBehaviour
         roomEnemies = new List<GameObject>();
     }
 
-    private void ResetLevel()
+    /// <summary>
+    /// Resets the current Level by clearing out all the values and then initializing
+    /// </summary>
+    public void ResetLevel()
     {
         worldGeoCompleted = false;
         currentRoomGeneratedIndex = 0;
 
         //Clear
-        for (int col = 0; col < tilesPerLine.x; col++)
+        for (int col = 0; col < tilesPerLine; col++)
         {
-            for (int row = 0; row < tilesPerLine.y; row++)
+            for (int row = 0; row < tilesPerLine; row++)
             {
                 Destroy(worldArray[row, col]);
             }
@@ -122,33 +143,7 @@ public class Level : MonoBehaviour
         readyToBuild = true;
     }
 
-    private void ClearGameObjectList(List<GameObject> listToClear)
-    {
-        for(int i = 0; i < listToClear.Count; i++)
-        {
-            Destroy(listToClear[i]);
-        }
-    }
-
-    private void ResetNavMesh()
-    {
-        NavMeshSurface[] navMeshesToBake = worldNavMeshContainer.GetComponents<NavMeshSurface>();
-        foreach (NavMeshSurface surface in navMeshesToBake)
-        {
-            surface.RemoveData();
-            surface.BuildNavMesh();
-        }
-
-        /*
-        NavMeshObstacle[] wallObstacles = worldGeoContainer.transform.GetComponentsInChildren<NavMeshObstacle>();
-
-        for (int i = 0; i < wallObstacles.Length; i++)
-        {
-            Destroy(wallObstacles[i]);
-        }
-        */
-    }
-
+    #region Main Generation Methods
     /// <summary>
     /// Creates a randomized level
     /// </summary>
@@ -185,7 +180,7 @@ public class Level : MonoBehaviour
 
         yield return new WaitUntil(() => ((currentRoomGeneratedIndex) == numberOfRooms));
 
-        map.SetActive(true);
+        mapGameObject.SetActive(true);
         ClearInvisibleGeo();
 
         yield return new WaitUntil(() => worldGeoCompleted == true);
@@ -201,77 +196,45 @@ public class Level : MonoBehaviour
         portal = GameObject.Instantiate(portalPrefab, new Vector3(emptyTileIndices[emptyTileIndices.Count - 1].x * gridSpotSize, 1.5f, emptyTileIndices[emptyTileIndices.Count - 1].y * gridSpotSize), Quaternion.identity);
     }
 
-    public void ClearInvisibleGeo()
+    /// <summary>
+    /// Fills worldArray with Wall gameObjects
+    /// </summary>
+    private void FillWorld()
     {
-        for (int col = 0; col < tilesPerLine.x; col++)
+        for (int col = 0; col < tilesPerLine; col++)
         {
-            for (int row = 0; row < tilesPerLine.y; row++)
+            for (int row = 0; row < tilesPerLine; row++)
             {
-                bool cardinalsFull = true;
-                bool diagonalsFull = true;
+                AddWall(new Vector2(row, col), wallPrefab, 1, Quaternion.identity);
 
-                //Cardinals
-                if (col < worldArray.GetLength(0) - 1 && (worldArray[(int)row, (int)col + 1] == null)) { cardinalsFull = false; }//Bottom
-                if (col > 0 && (worldArray[(int)row, (int)col - 1] == null)) { cardinalsFull = false; }//Top
-                if (row > 0 && (worldArray[(int)row - 1, (int)col] == null)) { cardinalsFull = false; }//Left
-                if (row < worldArray.GetLength(0) - 1 && (worldArray[(int)row + 1, (int)col] == null)) { cardinalsFull = false; }//Right 
+                GameObject wallMesh = worldArray[row, col].gameObject.transform.GetChild(0).gameObject;
+                wallMesh.transform.localScale = new Vector3(gridSpotSize, wallMesh.transform.localScale.y, gridSpotSize);
+                wallMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
 
-                //Diagonals
-                if ((col > 0 && row < worldArray.GetLength(0) - 1) && ((worldArray[(int)row + 1, (int)col - 1] == null))) { diagonalsFull = false; }//Top Right
-                if ((col > 0 && row > 0) && ((worldArray[(int)row - 1, (int)col - 1] == null))) { diagonalsFull = false; }//Top Left
-                if ((row > 0 && col < worldArray.GetLength(0) - 1) && ((worldArray[(int)row - 1, (int)col + 1] == null))) { diagonalsFull = false; }//Bottom Left 
-                if ((row < worldArray.GetLength(0) - 1 && col < worldArray.GetLength(0) - 1) && ((worldArray[(int)row + 1, (int)col + 1] == null))) { diagonalsFull = false; }//Bottom Right
-
-                if(cardinalsFull && diagonalsFull)
-                {
-                    Destroy(worldArray[row, col]);
-                }
+                worldArray[row, col].transform.parent = worldGeoContainer.transform;
             }
         }
 
-        for (int q = 0; q < 3; q++)
-        {
-            for (int i = 0; i < doorTileIndices.Count; i++)
-            {
-                bool sidesFull = true;
-                bool topBottomFull = true;
+        worldFloor = GameObject.Instantiate(floorPrefab, new Vector3(0, -0.5f, 0), Quaternion.identity);
+        GameObject floorMesh = worldFloor.transform.GetChild(0).gameObject;
+        floorMesh.transform.localScale = new Vector3(WORLD_SIZE.x, floorMesh.transform.localScale.y, WORLD_SIZE.y);
+        floorMesh.transform.position = new Vector3((gridSpotSize * (tilesPerLine - 1)) / 2, floorMesh.transform.position.y, (gridSpotSize * (tilesPerLine - 1)) / 2);
+        floorMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
 
-                if (worldArray[(int)doorTileIndices[i].x, (int)doorTileIndices[i].y + 1] == null && CheckIfSpaceIsEmpty(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y + 1))) { topBottomFull = false; }//Bottom
-                if (worldArray[(int)doorTileIndices[i].x, (int)doorTileIndices[i].y - 1] == null && CheckIfSpaceIsEmpty(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y - 1))) { topBottomFull = false; }//Top
-
-                if (worldArray[(int)doorTileIndices[i].x - 1, (int)doorTileIndices[i].y] == null && CheckIfSpaceIsEmpty(new Vector2((int)doorTileIndices[i].x - 1, (int)doorTileIndices[i].y))) { sidesFull = false; }//Left
-                if (worldArray[(int)doorTileIndices[i].x + 1, (int)doorTileIndices[i].y] == null && CheckIfSpaceIsEmpty(new Vector2((int)doorTileIndices[i].x + 1, (int)doorTileIndices[i].y))) { sidesFull = false; }//Right 
-
-                if (!sidesFull && !topBottomFull)
-                {
-                    Destroy(worldArray[(int)doorTileIndices[i].x, (int)doorTileIndices[i].y]);
-                }
-            }
-        }
-
-        worldGeoCompleted = true;
+        worldCeil = GameObject.Instantiate(ceilingPrefab, new Vector3(0, wallPrefab.transform.GetChild(0).localScale.y + 1, 0), Quaternion.identity);
+        GameObject ceilMesh = worldCeil.transform.GetChild(0).gameObject;
+        ceilMesh.transform.localScale = new Vector3(WORLD_SIZE.x, ceilMesh.transform.localScale.y, WORLD_SIZE.y);
+        ceilMesh.transform.position = new Vector3((gridSpotSize * (tilesPerLine - 1)) / 2, ceilMesh.transform.position.y, (gridSpotSize * (tilesPerLine - 1)) / 2);
+        ceilMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
     }
-
-    public bool CheckIfSpaceIsEmpty(Vector2 placeToCheck)
-    {
-        for (int i = 0; i < doorTileIndices.Count; i++)
-        {
-            if(doorTileIndices[i].x == placeToCheck.x && doorTileIndices[i].y == placeToCheck.y)
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     /// <summary>
     /// Creates rooms and calls tunnelCreate()
     /// </summary>
-    public void CreateRoom()
+    private void CreateRoom()
     {
-        currentRoom.x = (int)(Random.Range(1, tilesPerLine.x - 1));
-        currentRoom.y = (int)(Random.Range(1, tilesPerLine.y - 1));
+        currentRoom.x = (int)(Random.Range(1, tilesPerLine - 1));
+        currentRoom.y = (int)(Random.Range(1, tilesPerLine - 1));
 
         currentRoomSize = new Vector2(Random.Range(MINIMUM_ROOM_SIZE, MAX_ROOM_SIZE), Random.Range(MINIMUM_ROOM_SIZE, MAX_ROOM_SIZE));
 
@@ -279,7 +242,7 @@ public class Level : MonoBehaviour
         {
             for (int q = 0; q < currentRoomSize.y; q++)
             {
-                if (!((int)(currentRoom.x + q) > tilesPerLine.x - 2) && !((int)(currentRoom.y + i) > tilesPerLine.y - 2))
+                if (!((int)(currentRoom.x + q) > tilesPerLine - 2) && !((int)(currentRoom.y + i) > tilesPerLine - 2))
                 {
                     DestroyWall(new Vector2((int)(currentRoom.x + q), (int)(currentRoom.y + i)));
                 }
@@ -294,7 +257,7 @@ public class Level : MonoBehaviour
     /// <summary>
     /// Connects the previousRoom created to the currentRoom at a randomX position within the currentRoom and previousRoom
     /// </summary>
-    public void CreateTunnel()
+    private void CreateTunnel()
     {
         if (previousRoom.x != 0 && previousRoom.y != 0)
         {
@@ -309,13 +272,13 @@ public class Level : MonoBehaviour
             {
                 previousOffSet.x = Random.Range(0, (int)(previousRoomSize.x - 1));
                 previousOffSet.y = Random.Range(0, (int)(previousRoomSize.y - 1));
-            } while (!(previousOffSet.x + previousRoom.x < tilesPerLine.x - 1 && previousOffSet.y + previousRoom.y < tilesPerLine.y - 1));
+            } while (!(previousOffSet.x + previousRoom.x < tilesPerLine - 1 && previousOffSet.y + previousRoom.y < tilesPerLine - 1));
 
             do
             {
                 currentOffSet.x = Random.Range(0, (int)(currentRoomSize.x - 1));
                 currentOffSet.y = Random.Range(0, (int)(currentRoomSize.y - 1));
-            } while (!(currentOffSet.x + currentRoom.x < tilesPerLine.x - 1 && currentOffSet.y + currentRoom.y < tilesPerLine.y - 1));
+            } while (!(currentOffSet.x + currentRoom.x < tilesPerLine - 1 && currentOffSet.y + currentRoom.y < tilesPerLine - 1));
 
             //Creating Offset vectors
             Vector2 randomPreviousRoom = new Vector2((previousRoom.x + previousOffSet.x), (previousRoom.y + previousOffSet.y));
@@ -333,10 +296,10 @@ public class Level : MonoBehaviour
             for (int i = 0; i <= magnatudeX; i++)
             {
                 Vector2 indices = new Vector2((int)(randomPreviousRoom.x + (i * direction.x)), (int)(randomPreviousRoom.y));
-                if(i == 2)
+                if (i == 2 && (indices != emptyTileIndices[0] && indices != emptyTileIndices[emptyTileIndices.Count - 1]))
                 {
-                    DestroyWall(indices, true);
-                    worldArray[(int)indices.x, (int)indices.y] = GameObject.Instantiate(doorPrefab, new Vector3((int)indices.x * gridSpotSize, 1, (int)indices.y * gridSpotSize), Quaternion.identity);
+                    DestroyWall(indices);
+                    AddWall(indices, doorPrefab, 1, Quaternion.identity);
 
                     GameObject doorMesh = worldArray[(int)indices.x, (int)indices.y].gameObject.transform.GetChild(0).gameObject;
                     doorMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
@@ -355,11 +318,11 @@ public class Level : MonoBehaviour
             for (int i = 0; i <= magnatudeY; i++)
             {
                 Vector2 indices = new Vector2((int)(randomPreviousRoom.x), (int)(randomPreviousRoom.y + (i * direction.y)));
-                
-                if (i == 2)
+
+                if (i == 2 && (indices != emptyTileIndices[0] && indices != emptyTileIndices[emptyTileIndices.Count - 1]))
                 {
-                    DestroyWall(indices, true);
-                    worldArray[(int)indices.x, (int)indices.y] = GameObject.Instantiate(doorPrefab, new Vector3((int)indices.x * gridSpotSize, 1, (int)indices.y * gridSpotSize), Quaternion.Euler(0, 90, 0));
+                    DestroyWall(indices);
+                    AddWall(indices, doorPrefab, 1, Quaternion.Euler(0, 90, 0));
 
                     GameObject doorMesh = worldArray[(int)indices.x, (int)indices.y].gameObject.transform.GetChild(0).gameObject;
                     doorMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
@@ -377,70 +340,23 @@ public class Level : MonoBehaviour
     }
 
     /// <summary>
-    /// Destroy a wall & add it to the emptyTitles array
-    /// </summary>
-    /// <param name="worldArrayIndices"></param>
-    private void DestroyWall(Vector2 worldArrayIndices, bool dontAddToList = false)
-    {
-        if (dontAddToList == false)
-        {
-            if (worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] != null)
-            {
-                emptyTileIndices.Add(new Vector2((int)worldArrayIndices.x, (int)worldArrayIndices.y));
-            }
-        }
-        Destroy(worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y]);
-    }
-
-    /// <summary>
-    /// Fills worldArray with Wall gameObjects
-    /// </summary>
-    public void FillWorld()
-    {
-        for (int col = 0; col < tilesPerLine.x; col++)
-        {
-            for (int row = 0; row < tilesPerLine.y; row++)
-            {
-                worldArray[row, col] = GameObject.Instantiate(wallPrefab, new Vector3(row * gridSpotSize, 1, col * gridSpotSize), Quaternion.identity);
-
-                GameObject wallMesh = worldArray[row, col].gameObject.transform.GetChild(0).gameObject;
-                wallMesh.transform.localScale = new Vector3(gridSpotSize, wallMesh.transform.localScale.y, gridSpotSize);
-                wallMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
-
-                worldArray[row, col].transform.parent = worldGeoContainer.transform;
-            }
-        }
-
-        worldFloor = GameObject.Instantiate(floorPrefab, new Vector3(0, -0.5f, 0), Quaternion.identity);
-        GameObject floorMesh = worldFloor.transform.GetChild(0).gameObject;
-        floorMesh.transform.localScale = new Vector3(WORLD_SIZE.x, floorMesh.transform.localScale.y, WORLD_SIZE.y);
-        floorMesh.transform.position = new Vector3((gridSpotSize * (tilesPerLine.x - 1)) / 2, floorMesh.transform.position.y, (gridSpotSize * (tilesPerLine.y - 1)) / 2);
-        floorMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
-
-        worldCeil = GameObject.Instantiate(ceilingPrefab, new Vector3(0, wallPrefab.transform.GetChild(0).localScale.y+1, 0), Quaternion.identity);
-        GameObject ceilMesh = worldCeil.transform.GetChild(0).gameObject;
-        ceilMesh.transform.localScale = new Vector3(WORLD_SIZE.x, ceilMesh.transform.localScale.y, WORLD_SIZE.y);
-        ceilMesh.transform.position = new Vector3((gridSpotSize * (tilesPerLine.x - 1)) / 2, ceilMesh.transform.position.y, (gridSpotSize * (tilesPerLine.y - 1)) / 2);
-        ceilMesh.GetComponent<Renderer>().sharedMaterial.color = worldColor;
-    }
-
-    /// <summary>
     /// Fills empty spaces in the level with Items & Enemies
     /// </summary>
-    public void FillRooms()
+    private void FillRooms()
     {
-        for (int i = SPAWN_BUFFER; i < emptyTileIndices.Count - SPAWN_BUFFER; i++)
+        RemoveInvalidEmptySpaces();
+        for (int i = 1; i < emptyTileIndices.Count - 2; i++)
         {
             int itemSpawnChance = (int)(Random.Range(0, 100));
             int enemySpawnChance = (int)(Random.Range(0, 100));
             int weaponSpawnChance = (int)(Random.Range(0, 100));
 
-            if(weaponSpawnChance <= WEAPON_SPAWN_CHANCE)
+            if (weaponSpawnChance <= WEAPON_SPAWN_CHANCE)
             {
                 int weaponChooseChance = Random.Range(0, 100);
                 int whichWeaponToSpawn = 0;
 
-                if(weaponChooseChance <= 35) //35% - Pistol
+                if (weaponChooseChance <= 35) //35% - Pistol
                 {
                     whichWeaponToSpawn = 0;
                 }
@@ -469,7 +385,7 @@ public class Level : MonoBehaviour
                 newWeapon.GetComponent<PlayerPickup>().currentPickUpIndex = whichWeaponToSpawn;
                 newWeapon.transform.parent = worldWeaponsContainer.transform;
                 roomItems.Add(newWeapon);
-            }       
+            }
             else if (enemySpawnChance <= ENEMY_SPAWN_CHANCE) //Spawn Enemies
             {
                 int whichEnemyToSpawn = Random.Range(0, enemyPrefabs.Count);
@@ -479,4 +395,211 @@ public class Level : MonoBehaviour
             }
         }
     }
+    #endregion
+
+    #region Generation Helper Methods
+    /// <summary>
+    /// Adds a wall & removes it from the emptyTiles array
+    /// </summary>
+    /// <param name="worldArrayIndices"></param>
+    /// <param name="objectToAdd"></param>
+    /// <param name="yComponent"></param>
+    /// <param name="rotation"></param>
+    private void AddWall(Vector2 worldArrayIndices, GameObject objectToAdd, float yComponent, Quaternion rotation)
+    {
+        if (worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] != null)
+        {
+            DestroyWall(worldArrayIndices);
+        }
+
+        if (emptyTileIndices.Contains(worldArrayIndices))
+        {
+            emptyTileIndices.Remove(worldArrayIndices);
+        }
+        worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] = GameObject.Instantiate(objectToAdd, new Vector3((int)worldArrayIndices.x * gridSpotSize, yComponent, (int)worldArrayIndices.y * gridSpotSize), rotation);
+    }
+
+    /// <summary>
+    /// Destroy a wall & add it to the emptyTiles array
+    /// </summary>
+    /// <param name="worldArrayIndices"></param>
+    private void DestroyWall(Vector2 worldArrayIndices)
+    {
+        if (worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y] != null)
+        {
+            Destroy(worldArray[(int)worldArrayIndices.x, (int)worldArrayIndices.y]);
+        }
+
+        if (!emptyTileIndices.Contains(worldArrayIndices))
+        {
+            emptyTileIndices.Add(worldArrayIndices);
+        }
+
+        if (doorTileIndices.Contains(worldArrayIndices))
+        {
+            doorTileIndices.Remove(worldArrayIndices);
+        }
+    }
+
+    /// <summary>
+    /// Checks if a given vector2 is within the doorTiles array
+    /// </summary>
+    /// <param name="placeToCheck"></param>
+    /// <returns></returns>
+    private bool IsSpaceDoor(Vector2 placeToCheck)
+    {
+        if (doorTileIndices.Contains(placeToCheck))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if a given vector2 is within the emptyTiles array
+    /// </summary>
+    /// <param name="placeToCheck"></param>
+    /// <returns></returns>
+    private bool IsSpaceEmpty(Vector2 placeToCheck)
+    {
+        if (emptyTileIndices.Contains(placeToCheck))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Removes any empty spaces that are within the SPAWN_BUFFER range from either the first emptyTile or the last one
+    /// </summary>
+    private void RemoveInvalidEmptySpaces()
+    {
+        for (int i = emptyTileIndices.Count - 2; i > 0; i--)
+        {
+            if (Vector2.Distance(emptyTileIndices[0], emptyTileIndices[i]) < SPAWN_BUFFER)
+            {
+                emptyTileIndices.Remove(emptyTileIndices[i]);
+            }
+            else if (Vector2.Distance(emptyTileIndices[emptyTileIndices.Count - 1], emptyTileIndices[i]) < SPAWN_BUFFER)
+            {
+                emptyTileIndices.Remove(emptyTileIndices[i]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Removes all walls that are outside of the level bounds and would not be seen by the player
+    /// </summary>
+    private void ClearInvisibleGeo()
+    {
+        for (int col = 0; col < tilesPerLine; col++)
+        {
+            for (int row = 0; row < tilesPerLine; row++)
+            {
+                bool cardinalsFull = true;
+                bool diagonalsFull = true;
+
+                //Cardinals
+                if (col < worldArray.GetLength(0) - 1 && IsSpaceEmpty(new Vector2((int)row, (int)col + 1))) { cardinalsFull = false; }//Bottom
+                if (col > 0 && IsSpaceEmpty(new Vector2((int)row, (int)col - 1))) { cardinalsFull = false; }//Top
+                if (row > 0 && IsSpaceEmpty(new Vector2((int)row - 1, (int)col))) { cardinalsFull = false; }//Left
+                if (row < worldArray.GetLength(0) - 1 && IsSpaceEmpty(new Vector2((int)row + 1, (int)col))) { cardinalsFull = false; }//Right 
+
+                //Diagonals
+                if ((col > 0 && row < worldArray.GetLength(0) - 1) && IsSpaceEmpty(new Vector2((int)row + 1, (int)col - 1))) { diagonalsFull = false; }//Top Right
+                if ((col > 0 && row > 0) && IsSpaceEmpty(new Vector2((int)row - 1, (int)col - 1))) { diagonalsFull = false; }//Top Left
+                if ((row > 0 && col < worldArray.GetLength(0) - 1) && IsSpaceEmpty(new Vector2((int)row - 1, (int)col + 1))) { diagonalsFull = false; }//Bottom Left 
+                if ((row < worldArray.GetLength(0) - 1 && col < worldArray.GetLength(0) - 1) && IsSpaceEmpty(new Vector2((int)row + 1, (int)col + 1))) { diagonalsFull = false; }//Bottom Right
+
+                if (cardinalsFull && diagonalsFull)
+                {
+                    Destroy(worldArray[row, col]);
+                }
+            }
+        }
+
+        for (int i = doorTileIndices.Count - 1; i > -1; i--)
+        {
+            bool topBottomEmpty = false;
+            bool sidesEmpty = false;
+
+            if (IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y + 1)) || (!IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y + 1)) && IsSpaceDoor(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y + 1)))) { topBottomEmpty = true; }//Bottom
+            if (IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y - 1)) || (!IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y - 1)) && IsSpaceDoor(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y - 1)))) { topBottomEmpty = true; }//Top
+
+            if (IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x - 1, (int)doorTileIndices[i].y)) || (!IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x - 1, (int)doorTileIndices[i].y)) && IsSpaceDoor(new Vector2((int)doorTileIndices[i].x - 1, (int)doorTileIndices[i].y)))) { sidesEmpty = true; }//Left
+            if (IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x + 1, (int)doorTileIndices[i].y)) || (!IsSpaceEmpty(new Vector2((int)doorTileIndices[i].x + 1, (int)doorTileIndices[i].y)) && IsSpaceDoor(new Vector2((int)doorTileIndices[i].x + 1, (int)doorTileIndices[i].y)))) { sidesEmpty = true; }//Right 
+
+            if (sidesEmpty && topBottomEmpty)
+            {
+                DestroyWall(new Vector2((int)doorTileIndices[i].x, (int)doorTileIndices[i].y));
+            }
+        }
+
+        worldGeoCompleted = true;
+    }
+    #endregion
+
+    #region Helper Methods
+    /// <summary>
+    /// Clears a given list of gameObject by making sure to destroy each one before removing it
+    /// </summary>
+    /// <param name="listToClear"></param>
+    private void ClearGameObjectList(List<GameObject> listToClear)
+    {
+        for (int i = 0; i < listToClear.Count; i++)
+        {
+            Destroy(listToClear[i]);
+        }
+    }
+
+    /// <summary>
+    /// Clears the current NavMesh and then immediately rebakes it
+    /// </summary>
+    private void ResetNavMesh()
+    {
+        NavMeshSurface[] navMeshesToBake = worldNavMeshContainer.GetComponents<NavMeshSurface>();
+        foreach (NavMeshSurface surface in navMeshesToBake)
+        {
+            surface.RemoveData();
+            surface.BuildNavMesh();
+        }
+
+        /*
+        NavMeshObstacle[] wallObstacles = worldGeoContainer.transform.GetComponentsInChildren<NavMeshObstacle>();
+
+        for (int i = 0; i < wallObstacles.Length; i++)
+        {
+            Destroy(wallObstacles[i]);
+        }
+        */
+    }
+
+    /// <summary>
+    /// Increments the current level score
+    /// </summary>
+    public void IncrementLevelScore()
+    {
+        if (GameVars.instance)
+        {
+            GameVars.instance.currentCrawlLevel += 1;
+        }
+    }
+
+    /// <summary>
+    /// Attempts to update the player's highscore if it is higher than what is currently saved
+    /// </summary>
+    public void AttemptUpdateScore()
+    {
+        if (GameVars.instance)
+        {
+            if (GameVars.instance.saveManager.crawlHighScore < GameVars.instance.currentCrawlLevel)
+            {
+                GameVars.instance.saveManager.crawlHighScore = GameVars.instance.currentCrawlLevel;
+            }
+
+            GameVars.instance.saveManager.UpdateSaveData();
+            GameVars.instance.currentCrawlLevel = 0;
+        }
+    }
+    #endregion
 }
