@@ -183,8 +183,10 @@ MonoBehaviour:
   tilesPerLine: 25
   SPAWN_BUFFER: 2
   COLLECTABLE_SPAWN_CHANCE: 3
-  ENEMY_SPAWN_CHANCE: 2
+  ENEMY_SPAWN_CHANCE: 3
   WEAPON_SPAWN_CHANCE: 2
+  MAX_ENEMIES: 10
+  MAX_GUNS: 8
   MAX_ROOMS: 10
   MINIMUM_ROOMS: 8
   MAX_ROOM_SIZE: 6
@@ -376,7 +378,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 18455
+    m_Bits: 16407
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
@@ -405,7 +407,7 @@ MonoBehaviour:
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
     serializedVersion: 2
-    m_Bits: 18455
+    m_Bits: 16407
   m_UseGeometry: 0
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using VHS;
 
 public class Level : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Level : MonoBehaviour
     public float tilesPerLine = 25; //How many grid slots there are per axis in the world array
     public int SPAWN_BUFFER = 3; //How far away can things spawn from the player & the portal
     public int COLLECTABLE_SPAWN_CHANCE = 3, ENEMY_SPAWN_CHANCE = 2, WEAPON_SPAWN_CHANCE = 3; //Decimal Spawn Chances
+    public int MAX_ENEMIES = 10, MAX_GUNS = 8;
 
     [Header("Room Options")]
     [Space(10)]
@@ -63,6 +65,8 @@ public class Level : MonoBehaviour
     private List<GameObject> roomEnemies;
     private int currentRoomGeneratedIndex;
     private WallTexture chosenWorldMat;
+    private Vector2 farthestPoint;
+    private float playerStartingHealth = 100;
     #endregion
     #endregion
 
@@ -101,6 +105,7 @@ public class Level : MonoBehaviour
         if(GameVars.instance)
         {
             GameVars.instance.crawlManager = this;
+            playerStartingHealth = GameVars.instance.currentCrawlHealth;
         }
         /* if (GameVars.instance) { levelIndex = GameVars.instance.currentCrawlLevel; } */
         worldArray = new GameObject[(int)tilesPerLine, (int)tilesPerLine];
@@ -215,11 +220,12 @@ public class Level : MonoBehaviour
 
         //Player spawns in first empty postion in worldArray
         player = GameObject.Instantiate(playerPrefab, new Vector3(emptyTileIndices[0].x * gridSpotSize, 1, emptyTileIndices[0].y * gridSpotSize), Quaternion.identity);
+        InteractionController.instance.playerHealth = playerStartingHealth;
 
         FillRooms();
 
         //Stairs spawn in last empty position in worldArray
-        portal = GameObject.Instantiate(portalPrefab, new Vector3(emptyTileIndices[emptyTileIndices.Count - 1].x * gridSpotSize, 1.5f, emptyTileIndices[emptyTileIndices.Count - 1].y * gridSpotSize), Quaternion.identity);
+        portal = GameObject.Instantiate(portalPrefab, new Vector3(farthestPoint.x * gridSpotSize, 1.5f, farthestPoint.y * gridSpotSize), Quaternion.identity);
     }
 
     /// <summary>
@@ -374,53 +380,58 @@ public class Level : MonoBehaviour
     private void FillRooms()
     {
         RemoveInvalidEmptySpaces();
-        for (int i = 1; i < emptyTileIndices.Count - 2; i++)
+        for (int i = 1; i < emptyTileIndices.Count - 1; i++)
         {
-            int itemSpawnChance = (int)(Random.Range(0, 100));
-            int enemySpawnChance = (int)(Random.Range(0, 100));
-            int weaponSpawnChance = (int)(Random.Range(0, 100));
-
-            if (weaponSpawnChance <= WEAPON_SPAWN_CHANCE)
+            if (emptyTileIndices[i] != farthestPoint)
             {
-                int weaponChooseChance = Random.Range(0, 100);
-                int whichWeaponToSpawn = 0;
+                int itemSpawnChance = (int)(Random.Range(0, 100));
+                int enemySpawnChance = (int)(Random.Range(0, 100));
+                int weaponSpawnChance = (int)(Random.Range(0, 100));
 
-                if (weaponChooseChance <= 35) //35% - Pistol
+                if (weaponSpawnChance <= WEAPON_SPAWN_CHANCE && MAX_GUNS > 0)
                 {
-                    whichWeaponToSpawn = 0;
-                }
-                else if (weaponChooseChance > 35 && weaponChooseChance <= 60) //25% - Shotgun
-                {
-                    whichWeaponToSpawn = 1;
-                }
-                else if (weaponChooseChance > 60 && weaponChooseChance <= 75) //15% - Machine Gun
-                {
-                    whichWeaponToSpawn = 6;
-                }
-                else if (weaponChooseChance > 75 && weaponChooseChance <= 85) //10% - Pulse Rifle
-                {
-                    whichWeaponToSpawn = 5;
-                }
-                else if (weaponChooseChance > 85 && weaponChooseChance <= 90) //5% - Rocket Launcher
-                {
-                    whichWeaponToSpawn = 2;
-                }
-                else if (weaponChooseChance > 90 && weaponChooseChance <= 100) //10% - Grenades
-                {
-                    whichWeaponToSpawn = 4;
-                }
+                    MAX_GUNS -= 1;
+                    int weaponChooseChance = Random.Range(0, 100);
+                    int whichWeaponToSpawn = 0;
 
-                GameObject newWeapon = GameObject.Instantiate(weaponPrefab, new Vector3(emptyTileIndices[i].x * gridSpotSize, 2, emptyTileIndices[i].y * gridSpotSize), Quaternion.identity);
-                newWeapon.GetComponent<PlayerPickup>().currentPickUpIndex = whichWeaponToSpawn;
-                newWeapon.transform.parent = worldWeaponsContainer.transform;
-                roomItems.Add(newWeapon);
-            }
-            else if (enemySpawnChance <= ENEMY_SPAWN_CHANCE) //Spawn Enemies
-            {
-                int whichEnemyToSpawn = Random.Range(0, enemyPrefabs.Count);
-                GameObject newEnemy = GameObject.Instantiate(enemyPrefabs[whichEnemyToSpawn], new Vector3((emptyTileIndices[i].x * gridSpotSize), 2, (emptyTileIndices[i].y * gridSpotSize)), Quaternion.identity);
-                newEnemy.transform.parent = worldEnemiesContainer.transform;
-                roomEnemies.Add(newEnemy);
+                    if (weaponChooseChance <= 35) //35% - Pistol
+                    {
+                        whichWeaponToSpawn = 0;
+                    }
+                    else if (weaponChooseChance > 35 && weaponChooseChance <= 60) //25% - Shotgun
+                    {
+                        whichWeaponToSpawn = 1;
+                    }
+                    else if (weaponChooseChance > 60 && weaponChooseChance <= 75) //15% - Machine Gun
+                    {
+                        whichWeaponToSpawn = 6;
+                    }
+                    else if (weaponChooseChance > 75 && weaponChooseChance <= 85) //10% - Pulse Rifle
+                    {
+                        whichWeaponToSpawn = 5;
+                    }
+                    else if (weaponChooseChance > 85 && weaponChooseChance <= 90) //5% - Rocket Launcher
+                    {
+                        whichWeaponToSpawn = 2;
+                    }
+                    else if (weaponChooseChance > 90 && weaponChooseChance <= 100) //10% - Grenades
+                    {
+                        whichWeaponToSpawn = 4;
+                    }
+
+                    GameObject newWeapon = GameObject.Instantiate(weaponPrefab, new Vector3(emptyTileIndices[i].x * gridSpotSize, 2, emptyTileIndices[i].y * gridSpotSize), Quaternion.identity);
+                    newWeapon.GetComponent<PlayerPickup>().currentPickUpIndex = whichWeaponToSpawn;
+                    newWeapon.transform.parent = worldWeaponsContainer.transform;
+                    roomItems.Add(newWeapon);
+                }
+                else if (enemySpawnChance <= ENEMY_SPAWN_CHANCE && MAX_ENEMIES > 0) //Spawn Enemies
+                {
+                    MAX_ENEMIES -= 1;
+                    int whichEnemyToSpawn = Random.Range(0, enemyPrefabs.Count);
+                    GameObject newEnemy = GameObject.Instantiate(enemyPrefabs[whichEnemyToSpawn], new Vector3((emptyTileIndices[i].x * gridSpotSize), 2, (emptyTileIndices[i].y * gridSpotSize)), Quaternion.identity);
+                    newEnemy.transform.parent = worldEnemiesContainer.transform;
+                    roomEnemies.Add(newEnemy);
+                }
             }
         }
     }
@@ -520,17 +531,38 @@ public class Level : MonoBehaviour
     /// </summary>
     private void RemoveInvalidEmptySpaces()
     {
-        for (int i = emptyTileIndices.Count - 2; i > 0; i--)
+        farthestPoint = emptyTileIndices[FindFarthestIndex(emptyTileIndices[0])];
+
+        for (int i = emptyTileIndices.Count - 1; i > 0; i--)
         {
-            if (Vector2.Distance(emptyTileIndices[0], emptyTileIndices[i]) < SPAWN_BUFFER)
+            if (emptyTileIndices[i] != farthestPoint)
             {
-                emptyTileIndices.Remove(emptyTileIndices[i]);
-            }
-            else if (Vector2.Distance(emptyTileIndices[emptyTileIndices.Count - 1], emptyTileIndices[i]) < SPAWN_BUFFER)
-            {
-                emptyTileIndices.Remove(emptyTileIndices[i]);
+                if (Mathf.Abs(Vector2.Distance(emptyTileIndices[0], emptyTileIndices[i])) < SPAWN_BUFFER)
+                {
+                    emptyTileIndices.Remove(emptyTileIndices[i]);
+                }
+                else if (Mathf.Abs(Vector2.Distance(farthestPoint, emptyTileIndices[i])) < SPAWN_BUFFER)
+                {
+                    emptyTileIndices.Remove(emptyTileIndices[i]);
+                }
             }
         }
+    }
+
+    private int FindFarthestIndex(Vector2 starting)
+    {
+        int currentFarthest = 0;
+        float currentDistance = 0;
+        for(int i = 0; i < emptyTileIndices.Count; i++)
+        {
+            float newDistance = Mathf.Abs(Vector2.Distance(starting, emptyTileIndices[i]));
+            if (newDistance > currentDistance)
+            {
+                currentDistance = newDistance;
+                currentFarthest = i;
+            }
+        }
+        return currentFarthest;
     }
 
     /// <summary>
@@ -628,6 +660,7 @@ public class Level : MonoBehaviour
         if (GameVars.instance)
         {
             GameVars.instance.currentCrawlLevel += 1;
+            GameVars.instance.currentCrawlHealth = InteractionController.instance.playerHealth;
         }
     }
 
