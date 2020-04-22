@@ -26,6 +26,8 @@ public class Level : MonoBehaviour
     public GameObject worldEnemiesContainer;
     public GameObject worldWeaponsContainer;
     public GameObject worldCollectablesContainer;
+    public GameObject worldInteractablePropsContainer;
+    public GameObject worldStaticPropsContainer;
 
     [Header("Entity References")]
     [Space(10)]
@@ -40,6 +42,12 @@ public class Level : MonoBehaviour
     public GameObject collectablePrefab;
     public List<GameObject> enemyPrefabs;
 
+    [Header("Prop References")]
+    [Space(10)]
+    public GameObject ceilingLampPrefab;
+    public GameObject cratePrefab;
+
+
     [Header("Variety References")]
     [Space(10)]
     public List<WallTexture> wallTextures;
@@ -52,6 +60,8 @@ public class Level : MonoBehaviour
     private GameObject[,] worldArray;
     private List<Vector2> emptyTileIndices;
     private List<Vector2> doorTileIndices;
+    private List<Vector2> propTileIndices;
+    private List<Vector2> entityTileIndices;
     private Vector2 WORLD_SIZE;
     private bool changeRoomColor;
     private Color worldColor = Color.white;
@@ -105,13 +115,18 @@ public class Level : MonoBehaviour
         if(GameVars.instance)
         {
             GameVars.instance.crawlManager = this;
-            playerStartingHealth = GameVars.instance.currentCrawlHealth;
+            if (GameVars.instance.currentCrawlLevel > 0)
+            {
+                playerStartingHealth = GameVars.instance.currentCrawlHealth;
+            }
         }
         /* if (GameVars.instance) { levelIndex = GameVars.instance.currentCrawlLevel; } */
         worldArray = new GameObject[(int)tilesPerLine, (int)tilesPerLine];
         WORLD_SIZE = new Vector2(gridSpotSize * tilesPerLine, gridSpotSize * tilesPerLine);
         emptyTileIndices = new List<Vector2>();
         doorTileIndices = new List<Vector2>();
+        propTileIndices = new List<Vector2>();
+        entityTileIndices = new List<Vector2>();
 
         roomItems = new List<GameObject>();
         roomEnemies = new List<GameObject>();
@@ -157,6 +172,8 @@ public class Level : MonoBehaviour
 
         emptyTileIndices.Clear();
         doorTileIndices.Clear();
+        propTileIndices.Clear();
+        entityTileIndices.Clear();
 
         ClearGameObjectList(roomEnemies);
         ClearGameObjectList(roomItems);
@@ -222,10 +239,24 @@ public class Level : MonoBehaviour
         player = GameObject.Instantiate(playerPrefab, new Vector3(emptyTileIndices[0].x * gridSpotSize, 1, emptyTileIndices[0].y * gridSpotSize), Quaternion.identity);
         InteractionController.instance.playerHealth = playerStartingHealth;
 
+        GameObject newWeapon = GameObject.Instantiate(weaponPrefab, new Vector3(emptyTileIndices[0].x * gridSpotSize, 2, emptyTileIndices[0].y * gridSpotSize), Quaternion.identity);
+        newWeapon.GetComponent<PlayerPickup>().currentPickUpIndex = 0;
+        newWeapon.transform.parent = worldWeaponsContainer.transform;
+        roomItems.Add(newWeapon);
+
         FillRooms();
+
+        for(int i = 0; i < roomItems.Count; i++)
+        {
+            if(Vector3.Distance(roomItems[i].transform.position,new Vector3(farthestPoint.x * gridSpotSize, roomItems[i].transform.position.y, farthestPoint.y * gridSpotSize)) < 1f)
+            {
+                Destroy(roomItems[i]);
+            }
+        }
 
         //Stairs spawn in last empty position in worldArray
         portal = GameObject.Instantiate(portalPrefab, new Vector3(farthestPoint.x * gridSpotSize, 1.5f, farthestPoint.y * gridSpotSize), Quaternion.identity);
+
     }
 
     /// <summary>
@@ -282,6 +313,29 @@ public class Level : MonoBehaviour
                 {
                     Vector2 currentWall = new Vector2((int)(currentRoom.x + q), (int)(currentRoom.y + i));
                     DestroyWall(currentWall);
+
+                    if (i == ((int)currentRoomSize.y / 2) && q == ((int)currentRoomSize.x / 2))
+                    {
+                        if (!propTileIndices.Contains(currentWall))
+                        {
+                            GameObject newLamp = Instantiate(ceilingLampPrefab, new Vector3((currentRoom.x + q) * gridSpotSize, wallPrefab.transform.GetChild(0).localScale.y + 1, (currentRoom.y + i) * gridSpotSize), Quaternion.identity);
+                            newLamp.transform.parent = worldStaticPropsContainer.transform;
+                            propTileIndices.Add(currentWall);
+                        }
+                    }
+                    else if(currentWall != emptyTileIndices[0] && !entityTileIndices.Contains(currentWall))
+                    {
+                        if (i != 0 && q != 0)
+                        {
+                            if (Random.Range(0, 100) <= 6)
+                            {
+                                GameObject newCrate = Instantiate(cratePrefab, new Vector3((currentRoom.x + q) * gridSpotSize, 1.5f, (currentRoom.y + i) * gridSpotSize), Quaternion.identity);
+                                newCrate.transform.parent = worldInteractablePropsContainer.transform;
+                                propTileIndices.Add(currentWall);
+                                roomItems.Add(newCrate);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -382,55 +436,84 @@ public class Level : MonoBehaviour
         RemoveInvalidEmptySpaces();
         for (int i = 1; i < emptyTileIndices.Count - 1; i++)
         {
-            if (emptyTileIndices[i] != farthestPoint)
+            if (!entityTileIndices.Contains(emptyTileIndices[i]) && !propTileIndices.Contains(emptyTileIndices[i]))
             {
-                int itemSpawnChance = (int)(Random.Range(0, 100));
-                int enemySpawnChance = (int)(Random.Range(0, 100));
-                int weaponSpawnChance = (int)(Random.Range(0, 100));
-
-                if (weaponSpawnChance <= WEAPON_SPAWN_CHANCE && MAX_GUNS > 0)
+                if (emptyTileIndices[i] != farthestPoint)
                 {
-                    MAX_GUNS -= 1;
-                    int weaponChooseChance = Random.Range(0, 100);
-                    int whichWeaponToSpawn = 0;
+                    int itemSpawnChance = (int)(Random.Range(0, 100));
+                    int enemySpawnChance = (int)(Random.Range(0, 100));
+                    int weaponSpawnChance = (int)(Random.Range(0, 100));
 
-                    if (weaponChooseChance <= 35) //35% - Pistol
+                    if (weaponSpawnChance <= WEAPON_SPAWN_CHANCE && MAX_GUNS > 0)
                     {
-                        whichWeaponToSpawn = 0;
-                    }
-                    else if (weaponChooseChance > 35 && weaponChooseChance <= 60) //25% - Shotgun
-                    {
-                        whichWeaponToSpawn = 1;
-                    }
-                    else if (weaponChooseChance > 60 && weaponChooseChance <= 75) //15% - Machine Gun
-                    {
-                        whichWeaponToSpawn = 6;
-                    }
-                    else if (weaponChooseChance > 75 && weaponChooseChance <= 85) //10% - Pulse Rifle
-                    {
-                        whichWeaponToSpawn = 5;
-                    }
-                    else if (weaponChooseChance > 85 && weaponChooseChance <= 90) //5% - Rocket Launcher
-                    {
-                        whichWeaponToSpawn = 2;
-                    }
-                    else if (weaponChooseChance > 90 && weaponChooseChance <= 100) //10% - Grenades
-                    {
-                        whichWeaponToSpawn = 4;
-                    }
+                        MAX_GUNS -= 1;
+                        int weaponChooseChance = Random.Range(0, 100);
+                        int whichWeaponToSpawn = 0;
 
-                    GameObject newWeapon = GameObject.Instantiate(weaponPrefab, new Vector3(emptyTileIndices[i].x * gridSpotSize, 2, emptyTileIndices[i].y * gridSpotSize), Quaternion.identity);
-                    newWeapon.GetComponent<PlayerPickup>().currentPickUpIndex = whichWeaponToSpawn;
-                    newWeapon.transform.parent = worldWeaponsContainer.transform;
-                    roomItems.Add(newWeapon);
-                }
-                else if (enemySpawnChance <= ENEMY_SPAWN_CHANCE && MAX_ENEMIES > 0) //Spawn Enemies
-                {
-                    MAX_ENEMIES -= 1;
-                    int whichEnemyToSpawn = Random.Range(0, enemyPrefabs.Count);
-                    GameObject newEnemy = GameObject.Instantiate(enemyPrefabs[whichEnemyToSpawn], new Vector3((emptyTileIndices[i].x * gridSpotSize), 2, (emptyTileIndices[i].y * gridSpotSize)), Quaternion.identity);
-                    newEnemy.transform.parent = worldEnemiesContainer.transform;
-                    roomEnemies.Add(newEnemy);
+                        if (weaponChooseChance <= 35) //35% - Pistol
+                        {
+                            whichWeaponToSpawn = 0;
+                        }
+                        else if (weaponChooseChance > 35 && weaponChooseChance <= 60) //25% - Shotgun
+                        {
+                            whichWeaponToSpawn = 1;
+                        }
+                        else if (weaponChooseChance > 60 && weaponChooseChance <= 75) //15% - Machine Gun
+                        {
+                            whichWeaponToSpawn = 6;
+                        }
+                        else if (weaponChooseChance > 75 && weaponChooseChance <= 85) //10% - Pulse Rifle
+                        {
+                            whichWeaponToSpawn = 5;
+                        }
+                        else if (weaponChooseChance > 85 && weaponChooseChance <= 90) //5% - Rocket Launcher
+                        {
+                            whichWeaponToSpawn = 2;
+                        }
+                        else if (weaponChooseChance > 90 && weaponChooseChance <= 100) //10% - Grenades
+                        {
+                            whichWeaponToSpawn = 4;
+                        }
+
+                        GameObject newWeapon = GameObject.Instantiate(weaponPrefab, new Vector3(emptyTileIndices[i].x * gridSpotSize, 2, emptyTileIndices[i].y * gridSpotSize), Quaternion.identity);
+                        newWeapon.GetComponent<PlayerPickup>().currentPickUpIndex = whichWeaponToSpawn;
+                        newWeapon.transform.parent = worldWeaponsContainer.transform;
+                        roomItems.Add(newWeapon);
+                        entityTileIndices.Add(new Vector2(emptyTileIndices[i].x, emptyTileIndices[i].y));
+                    }
+                    else if (enemySpawnChance <= ENEMY_SPAWN_CHANCE && MAX_ENEMIES > 0) //Spawn Enemies
+                    {
+                        MAX_ENEMIES -= 1;
+
+                        int enemyChooseChance = Random.Range(0, 101);
+                        int whichEnemyToSpawn = 0;
+
+                        if (enemyChooseChance <= 40) //40% - Charger
+                        {
+                            whichEnemyToSpawn = 0;
+                        }
+                        else if (enemyChooseChance > 40 && enemyChooseChance <= 70) //30% - Grunt
+                        {
+                            whichEnemyToSpawn = 1;
+                        }
+                        else if (enemyChooseChance > 70 && enemyChooseChance <= 85) //15% - Elite
+                        {
+                            whichEnemyToSpawn = 2;
+                        }
+                        else if (enemyChooseChance > 85 && enemyChooseChance <= 95) //10% - Solider
+                        {
+                            whichEnemyToSpawn = 3;
+                        }
+                        else if (enemyChooseChance > 95 && enemyChooseChance <= 100) //5% - Monster
+                        {
+                            whichEnemyToSpawn = 4;
+                        }
+
+                        GameObject newEnemy = GameObject.Instantiate(enemyPrefabs[whichEnemyToSpawn], new Vector3((emptyTileIndices[i].x * gridSpotSize), 2, (emptyTileIndices[i].y * gridSpotSize)), Quaternion.identity);
+                        newEnemy.transform.parent = worldEnemiesContainer.transform;
+                        roomEnemies.Add(newEnemy);
+                        entityTileIndices.Add(new Vector2(emptyTileIndices[i].x, emptyTileIndices[i].y));
+                    }
                 }
             }
         }

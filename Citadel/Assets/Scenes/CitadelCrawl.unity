@@ -181,9 +181,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSpotSize: 5
   tilesPerLine: 25
-  SPAWN_BUFFER: 2
+  SPAWN_BUFFER: 4
   COLLECTABLE_SPAWN_CHANCE: 3
-  ENEMY_SPAWN_CHANCE: 3
+  ENEMY_SPAWN_CHANCE: 5
   WEAPON_SPAWN_CHANCE: 2
   MAX_ENEMIES: 10
   MAX_GUNS: 8
@@ -196,6 +196,8 @@ MonoBehaviour:
   worldEnemiesContainer: {fileID: 1651997665}
   worldWeaponsContainer: {fileID: 364806565}
   worldCollectablesContainer: {fileID: 953137658}
+  worldInteractablePropsContainer: {fileID: 1602855021}
+  worldStaticPropsContainer: {fileID: 972579576}
   mapGameObject: {fileID: 600742727}
   playerPrefab: {fileID: 2882282971457573383, guid: 51167e04776c1e94ba6bd24ea1487c77,
     type: 3}
@@ -215,10 +217,14 @@ MonoBehaviour:
     type: 3}
   enemyPrefabs:
   - {fileID: 4289423916794960452, guid: 12e830becfe0c3d4da9566dd205d0c21, type: 3}
-  - {fileID: 9083650707378479510, guid: 0e18384426a63b045aab4b886d557d0e, type: 3}
   - {fileID: 6619722770920356550, guid: ca742be1192528f4abdba47ebc6aaa7d, type: 3}
-  - {fileID: 1382022823005713337, guid: a938b69a79c2eaa4b8052ddff6e5292a, type: 3}
+  - {fileID: 9083650707378479510, guid: 0e18384426a63b045aab4b886d557d0e, type: 3}
   - {fileID: 7330238777674970384, guid: 8c40773c36a71bc43844690e68397dde, type: 3}
+  - {fileID: 1382022823005713337, guid: a938b69a79c2eaa4b8052ddff6e5292a, type: 3}
+  ceilingLampPrefab: {fileID: 7736760491241337301, guid: 0575fabf2338d984eb8717acfae3aedc,
+    type: 3}
+  cratePrefab: {fileID: 1074896141548266528, guid: abc5e6acf54870e428b2b8027c33cd04,
+    type: 3}
   wallTextures:
   - possibleWallMats:
     - wallMaterial: {fileID: 2100000, guid: 991ed73020bd6aa44bbd16edde4b3ee9, type: 2}
@@ -257,6 +263,7 @@ Transform:
   m_Children:
   - {fileID: 609746493}
   - {fileID: 1934385086}
+  - {fileID: 1226086431}
   - {fileID: 961495969}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -358,7 +365,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 525835798}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &961495970
 MonoBehaviour:
@@ -418,6 +425,36 @@ MonoBehaviour:
   m_VoxelSize: 0.1
   m_BuildHeightMesh: 0
   m_NavMeshData: {fileID: 23800000, guid: b9ebd5cb8534a374aa4918502ac038ba, type: 2}
+--- !u!1 &972579576
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 972579577}
+  m_Layer: 0
+  m_Name: Static
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &972579577
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972579576}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1226086431}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1034839730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -587,6 +624,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aab10d9b8c6955f4eb510ba3dbc35408, type: 3}
+--- !u!1 &1226086430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1226086431}
+  m_Layer: 0
+  m_Name: WorldProps
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1226086431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1226086430}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1602855022}
+  - {fileID: 972579577}
+  m_Father: {fileID: 525835798}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1602855021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1602855022}
+  m_Layer: 0
+  m_Name: Interactable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1602855022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602855021}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1226086431}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1651997665
 GameObject:
   m_ObjectHideFlags: 0

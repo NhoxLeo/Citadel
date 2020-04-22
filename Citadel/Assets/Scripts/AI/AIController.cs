@@ -202,7 +202,7 @@ public class AIController : MonoBehaviour
                         currentTarget = player;
                         if (enemyParams.equipSound)
                         {
-                            GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "Untagged", 0, 0.5f);
+                            GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "Untagged", 0, 0.7f);
                         }
                         SwitchState(AIState.Attack);
                     }
@@ -478,7 +478,7 @@ public class AIController : MonoBehaviour
                 UpdateSprite(idleState);
                 if (enemyParams.reloadSound)
                 {
-                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                 }
                 yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
             }
@@ -497,7 +497,7 @@ public class AIController : MonoBehaviour
                     UpdateSprite(idleState);
                     if (enemyParams.reloadSound)
                     {
-                        GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                        GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                     }
                     yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
                 }
@@ -532,7 +532,7 @@ public class AIController : MonoBehaviour
                                 UpdateSprite(idleState);
                                 if (enemyParams.reloadSound)
                                 {
-                                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                                 }
                                 yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
                             }
@@ -730,7 +730,7 @@ public class AIController : MonoBehaviour
             {
                 damageSoundObject.GetComponent<AudioSource>().Stop();
             }
-            damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.deathSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);
+            damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.deathSound, 0.8f, transform.position, "DamageSound", 0, 0.7f);
         }
         yield return new WaitForSeconds(enemyParams.dyingStateLength);
         SwitchState(AIState.Dead);
@@ -974,7 +974,7 @@ public class AIController : MonoBehaviour
 
                 if (enemyParams.damageSound && damageSoundObject == null)
                 {
-                    damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);
+                    damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.7f);
                 }
 
                 if (randomDamageState)
@@ -1015,7 +1015,7 @@ public class AIController : MonoBehaviour
 
             if (enemyParams.enemyType != Enemy.EnemyType.Melee)
             {
-                GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
             }
             if (attackParticle)
             {
@@ -1064,7 +1064,7 @@ public class AIController : MonoBehaviour
 
                         if (enemyParams.enemyType == Enemy.EnemyType.Melee)
                         {
-                            GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                            GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                         }
 
                         //Take Damange Here If Enemy
@@ -1093,7 +1093,7 @@ public class AIController : MonoBehaviour
                         {
                             if (enemyParams.missSound)
                             {
-                                GameVars.instance.audioManager.PlaySFX(enemyParams.missSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                                GameVars.instance.audioManager.PlaySFX(enemyParams.missSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                             }
                         }
                     }

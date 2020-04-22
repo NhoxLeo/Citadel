@@ -25,14 +25,18 @@ MonoBehaviour:
   attackForce: 2000
   doesNeedReload: 0
   reloadOnShot: 1
+  isRapidFire: 0
   roundsPerClip: 8
   totalAmmoOnInitialPickup: 75
   totalAmmoOnAmmoPickup: 35
   totalRoundsPerShot: 5
   spreadMaxDivation: 5
+  instantiationDistance: 0
   attackStateLength: 1.2
-  reloadStateLength: 1.2
+  reloadStateLength: 1.1
   shellEjectionDelay: 0.9
+  attackHitDelay: 0
   isMelee: 0
   isProjectile: 0
+  isRanged: 1
   isMultiShot: 1

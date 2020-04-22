@@ -19,7 +19,7 @@ public class GameVars : MonoBehaviour
     public bool wasLevelBeaten;
     public bool firstTimeSettingsSliders = true, firstTimeSettingsControls = true;
     public int currentCrawlLevel;
-    public float currentCrawlHealth;
+    public float currentCrawlHealth = 100;
     public static GameVars instance; //Singleton
 
     //In level data
