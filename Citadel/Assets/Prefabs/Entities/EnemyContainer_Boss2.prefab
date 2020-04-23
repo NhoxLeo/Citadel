@@ -9976,6 +9976,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: feea56c3d9c95f54cbba2e1a36ff59a4, type: 3}
   - {fileID: 21300000, guid: feea56c3d9c95f54cbba2e1a36ff59a4, type: 3}
   - {fileID: 21300000, guid: ded086b4c087ed3428ace518359c78c8, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -10073,6 +10074,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4712b160889bbdc42a0e1d88b15837d2, type: 3}
   - {fileID: 21300000, guid: 4712b160889bbdc42a0e1d88b15837d2, type: 3}
   - {fileID: 21300000, guid: a1053723d6d812344a6487130fb7ea03, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -10170,6 +10172,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 159a88eb4bde6644ebb3b92f18bf4ded, type: 3}
   - {fileID: 21300000, guid: 159a88eb4bde6644ebb3b92f18bf4ded, type: 3}
   - {fileID: 21300000, guid: f06572f563d0948419f63e83326ff552, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -10341,6 +10344,7 @@ MonoBehaviour:
   - {fileID: -1068007117787017705, guid: 87caa2cecfdc5b24794b03985828726a, type: 3}
   - {fileID: -1349985881187490902, guid: 87caa2cecfdc5b24794b03985828726a, type: 3}
   - {fileID: -1782875832163124553, guid: 87caa2cecfdc5b24794b03985828726a, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -10639,6 +10643,7 @@ MonoBehaviour:
   - {fileID: -1619271135154940435, guid: 11c076acebc4a2b4f94dae8b976aed6c, type: 3}
   - {fileID: 4416936338420017472, guid: 11c076acebc4a2b4f94dae8b976aed6c, type: 3}
   - {fileID: 3191734103204192602, guid: 11c076acebc4a2b4f94dae8b976aed6c, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -10736,6 +10741,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4712b160889bbdc42a0e1d88b15837d2, type: 3}
   - {fileID: 21300000, guid: 4712b160889bbdc42a0e1d88b15837d2, type: 3}
   - {fileID: 21300000, guid: a1053723d6d812344a6487130fb7ea03, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -10961,6 +10967,7 @@ MonoBehaviour:
   - {fileID: -6263280119043187233, guid: 036f1d1f2b0b40d4b90a08226c6300af, type: 3}
   - {fileID: -2110932351327654580, guid: 036f1d1f2b0b40d4b90a08226c6300af, type: 3}
   - {fileID: -7444798615996443394, guid: 036f1d1f2b0b40d4b90a08226c6300af, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -11272,6 +11279,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4cf9323af91408e4ab7401c93815ad0c, type: 3}
   - {fileID: 21300000, guid: 4cf9323af91408e4ab7401c93815ad0c, type: 3}
   - {fileID: 21300000, guid: 728499ac83bc24e489760ccce4b9987f, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -11446,7 +11454,7 @@ MonoBehaviour:
     m_Bits: 256
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 1071617
+    m_Bits: 1067521
   visibleTargets: []
 --- !u!195 &7821417854163970001
 NavMeshAgent:
@@ -11863,6 +11871,7 @@ MonoBehaviour:
   - {fileID: -1068007117787017705, guid: 87caa2cecfdc5b24794b03985828726a, type: 3}
   - {fileID: -1349985881187490902, guid: 87caa2cecfdc5b24794b03985828726a, type: 3}
   - {fileID: -1782875832163124553, guid: 87caa2cecfdc5b24794b03985828726a, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -11963,6 +11972,7 @@ MonoBehaviour:
   - {fileID: 4103992384508002911, guid: dd28372576e51a149b620a6f87566486, type: 3}
   - {fileID: 2738324496668467246, guid: dd28372576e51a149b620a6f87566486, type: 3}
   - {fileID: 7172280682863523199, guid: dd28372576e51a149b620a6f87566486, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -12061,6 +12071,7 @@ MonoBehaviour:
   - {fileID: -5397447677527380120, guid: 1dba13ed9ecf9164f9187075823283ff, type: 3}
   - {fileID: 2635189767772335769, guid: 1dba13ed9ecf9164f9187075823283ff, type: 3}
   - {fileID: 7483199494647593746, guid: 1dba13ed9ecf9164f9187075823283ff, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -12232,6 +12243,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: feea56c3d9c95f54cbba2e1a36ff59a4, type: 3}
   - {fileID: 21300000, guid: feea56c3d9c95f54cbba2e1a36ff59a4, type: 3}
   - {fileID: 21300000, guid: ded086b4c087ed3428ace518359c78c8, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -12330,6 +12342,7 @@ MonoBehaviour:
   - {fileID: -5397447677527380120, guid: 1dba13ed9ecf9164f9187075823283ff, type: 3}
   - {fileID: 2635189767772335769, guid: 1dba13ed9ecf9164f9187075823283ff, type: 3}
   - {fileID: 7483199494647593746, guid: 1dba13ed9ecf9164f9187075823283ff, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -12427,6 +12440,7 @@ MonoBehaviour:
   - {fileID: -2138340049805584962, guid: af7608e3500ee394197569bd1a2f72f0, type: 3}
   - {fileID: -2128849886728523826, guid: af7608e3500ee394197569bd1a2f72f0, type: 3}
   - {fileID: 6833111442172550968, guid: af7608e3500ee394197569bd1a2f72f0, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -13065,6 +13079,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 159a88eb4bde6644ebb3b92f18bf4ded, type: 3}
   - {fileID: 21300000, guid: 159a88eb4bde6644ebb3b92f18bf4ded, type: 3}
   - {fileID: 21300000, guid: f06572f563d0948419f63e83326ff552, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -13162,6 +13177,7 @@ MonoBehaviour:
   - {fileID: -2138340049805584962, guid: af7608e3500ee394197569bd1a2f72f0, type: 3}
   - {fileID: -2128849886728523826, guid: af7608e3500ee394197569bd1a2f72f0, type: 3}
   - {fileID: 6833111442172550968, guid: af7608e3500ee394197569bd1a2f72f0, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -13259,6 +13275,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4b18e566e00a28540b0d3985703377be, type: 3}
   - {fileID: 21300000, guid: 4b18e566e00a28540b0d3985703377be, type: 3}
   - {fileID: 21300000, guid: dd7aef3d42ff8da4b98a7b5f8c741864, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -13736,6 +13753,7 @@ MonoBehaviour:
   - {fileID: -6096582763311122721, guid: 260558d5226bbdc43b3aeb73fbe39e2f, type: 3}
   - {fileID: -3548197671963627854, guid: 260558d5226bbdc43b3aeb73fbe39e2f, type: 3}
   - {fileID: 6247073430704663540, guid: 260558d5226bbdc43b3aeb73fbe39e2f, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
