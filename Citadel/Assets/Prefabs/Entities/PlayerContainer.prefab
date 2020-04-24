@@ -2033,7 +2033,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1474359
+    m_Bits: 1998647
   m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -8046,21 +8046,6 @@ PrefabInstance:
       propertyPath: m_Value
       value: 120
       objectReference: {fileID: 0}
-    - target: {fileID: 3180473666713990582, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
-        type: 3}
-      propertyPath: buttonScaler.x
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 3180473666713990582, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
-        type: 3}
-      propertyPath: buttonScaler.y
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 3180473666713990582, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
-        type: 3}
-      propertyPath: buttonScaler.z
-      value: 0.85
-      objectReference: {fileID: 0}
     - target: {fileID: 3432155482780607840, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -8085,6 +8070,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180473666713990582, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: buttonScaler.x
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180473666713990582, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: buttonScaler.y
+      value: 0.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 3180473666713990582, guid: a8a1bfd7a3ccd4e47b3094faca2eb032,
+        type: 3}
+      propertyPath: buttonScaler.z
+      value: 0.85
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8a1bfd7a3ccd4e47b3094faca2eb032, type: 3}

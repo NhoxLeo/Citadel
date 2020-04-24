@@ -111,6 +111,7 @@ MonoBehaviour:
   outputRenderer: {fileID: 971844433}
   frames:
   - {fileID: 21300000, guid: beb668f5c07eb2340baabc80a50f5e73, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -251,6 +252,7 @@ MonoBehaviour:
   weaponState: 0
   isMelee: 0
   totalRounds: 0
+  currentLoadedRounds: 0
 --- !u!95 &5770213643924306870
 Animator:
   serializedVersion: 3
@@ -417,6 +419,7 @@ MonoBehaviour:
   - {fileID: -3305506371233042143, guid: 713ab52b1c5c9bb459cb66b73456f8e3, type: 3}
   - {fileID: 4683342360810348692, guid: 713ab52b1c5c9bb459cb66b73456f8e3, type: 3}
   - {fileID: -7467571220956082161, guid: 713ab52b1c5c9bb459cb66b73456f8e3, type: 3}
+  doLoop: 0
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1

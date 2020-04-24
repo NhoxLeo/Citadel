@@ -8,6 +8,7 @@ public class SpriteSheet : MonoBehaviour
     public float FPS = 35f;
     public Image outputRenderer;
     public Sprite[] frames;
+    public bool doLoop = true;
 
     [HideInInspector]
     public bool destroyThis = false;
@@ -71,7 +72,15 @@ public class SpriteSheet : MonoBehaviour
         CancelInvoke("Animate");
         if (currentFrame >= frames.Length)
         {
-            currentFrame = 0;
+            if (doLoop)
+            {
+                currentFrame = 0;
+            }
+            else
+            {
+                Stop();
+            }
+
         }
 
         outputRenderer.sprite = frames[currentFrame];

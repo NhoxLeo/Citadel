@@ -119,6 +119,7 @@ public class PauseMenu : MonoBehaviour
     public void Quit()
     {
         UpdateState(MenuState.ToMenu);
+        GameVars.instance.saveManager.UpdateSaveData();
     }
 
     public void UpdateState(MenuState newState)

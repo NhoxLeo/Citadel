@@ -3,9 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using VHS;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class LevelClearTrigger : MonoBehaviour
 {
+    public ClearTriggerType clearTriggerType = ClearTriggerType.Story;
+    public UnityEvent triggedOnEnter;
+
+    public enum ClearTriggerType { Story, Crawl}
+    
     private bool hasBeenTriggered;
     private void OnTriggerEnter(Collider col)
     {
@@ -18,6 +24,13 @@ public class LevelClearTrigger : MonoBehaviour
 
     private IEnumerator CompleteLevel()
     {
+        if(triggedOnEnter != null)
+        {
+            triggedOnEnter.Invoke();
+        }
+
+        InteractionController.instance.hudController.DoUiFade(HUDController.FadeState.OUT, true);
+
         InteractionController.instance.hasPlayerDied = true;
         InteractionController.instance.playerDamageAnimator.SetBool("HasDied", true);
 
@@ -41,6 +54,20 @@ public class LevelClearTrigger : MonoBehaviour
         GameVars.instance.wasLevelBeaten = true;
 
         yield return new WaitForSeconds(3);
-        SceneManager.LoadScene("Level Clear");
+        if (clearTriggerType == ClearTriggerType.Story)
+        {
+            SceneManager.LoadScene("Level Clear");
+        }
+        else if (clearTriggerType == ClearTriggerType.Crawl)
+        {
+            if(GameVars.instance.crawlManager == null)
+            {
+                GameVars.instance.crawlManager = GameObject.FindObjectOfType<Level>();
+            }
+            
+            GameVars.instance.crawlManager.IncrementLevelScore();
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

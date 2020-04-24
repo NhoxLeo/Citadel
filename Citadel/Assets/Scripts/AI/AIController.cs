@@ -202,7 +202,7 @@ public class AIController : MonoBehaviour
                         currentTarget = player;
                         if (enemyParams.equipSound)
                         {
-                            GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "Untagged", 0, 0.5f);
+                            GameVars.instance.audioManager.PlaySFX(enemyParams.equipSound, 0.8f, transform.position, "Untagged", 0, 0.7f);
                         }
                         SwitchState(AIState.Attack);
                     }
@@ -478,7 +478,7 @@ public class AIController : MonoBehaviour
                 UpdateSprite(idleState);
                 if (enemyParams.reloadSound)
                 {
-                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                 }
                 yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
             }
@@ -497,7 +497,7 @@ public class AIController : MonoBehaviour
                     UpdateSprite(idleState);
                     if (enemyParams.reloadSound)
                     {
-                        GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                        GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                     }
                     yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
                 }
@@ -532,7 +532,7 @@ public class AIController : MonoBehaviour
                                 UpdateSprite(idleState);
                                 if (enemyParams.reloadSound)
                                 {
-                                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
+                                    GameVars.instance.audioManager.PlaySFX(enemyParams.reloadSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
                                 }
                                 yield return new WaitForSeconds(enemyParams.attackDelayStateLength);
                             }
@@ -730,7 +730,7 @@ public class AIController : MonoBehaviour
             {
                 damageSoundObject.GetComponent<AudioSource>().Stop();
             }
-            damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.deathSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);
+            damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.deathSound, 0.8f, transform.position, "DamageSound", 0, 0.7f);
         }
         yield return new WaitForSeconds(enemyParams.dyingStateLength);
         SwitchState(AIState.Dead);
@@ -974,7 +974,7 @@ public class AIController : MonoBehaviour
 
                 if (enemyParams.damageSound && damageSoundObject == null)
                 {
-                    damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.5f);
+                    damageSoundObject = GameVars.instance.audioManager.PlaySFX(enemyParams.damageSound, 0.8f, transform.position, "DamageSound", 0, 0.7f);
                 }
 
                 if (randomDamageState)
@@ -1009,96 +1009,99 @@ public class AIController : MonoBehaviour
     /// </summary>
     public void EnemyAttack()
     {
-        UpdateSprite(attackState);
-
-        if (enemyParams.enemyType != Enemy.EnemyType.Melee)
+        if (InteractionController.instance.hasPlayerDied == false)
         {
-            GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
-        }
-        if (attackParticle)
-        {
-            Instantiate(attackParticle, transform.position, Quaternion.identity);
-        }
+            UpdateSprite(attackState);
 
-        RaycastHit hitInfo = new RaycastHit();
-        bool rayCast = false;
-
-        for (int i = 0; i < enemyParams.totalRoundsPerShot; i++)
-        {
-            if (enemyParams.enemyType != Enemy.EnemyType.Projectile)
+            if (enemyParams.enemyType != Enemy.EnemyType.Melee)
             {
-                if (enemyParams.enemyType == Enemy.EnemyType.Ranged)
+                GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
+            }
+            if (attackParticle)
+            {
+                Instantiate(attackParticle, transform.position, Quaternion.identity);
+            }
+
+            RaycastHit hitInfo = new RaycastHit();
+            bool rayCast = false;
+
+            for (int i = 0; i < enemyParams.totalRoundsPerShot; i++)
+            {
+                if (enemyParams.enemyType != Enemy.EnemyType.Projectile)
                 {
-                    Vector3 deviation3D = Random.insideUnitCircle * enemyParams.spreadMaxDivation;
-                    Quaternion rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
-                    forwardVector = rot * (player.transform.position - transform.position);
-
-                    rayCast = Physics.Raycast(transform.position, forwardVector, out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
-                }
-                else
-                {
-                    rayCast = Physics.SphereCast(transform.position, 0.5f, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
-                }
-
-                if (rayCast)
-                {
-                    if (hitInfo.rigidbody != null)
+                    if (enemyParams.enemyType == Enemy.EnemyType.Ranged)
                     {
-                        hitInfo.rigidbody.AddForce(-hitInfo.normal * enemyParams.attackForce);
+                        Vector3 deviation3D = Random.insideUnitCircle * enemyParams.spreadMaxDivation;
+                        Quaternion rot = Quaternion.LookRotation(Vector3.forward * (((enemyParams.attackRange) - Vector3.Distance(transform.position, player.transform.position)) - 30) + deviation3D);
+                        forwardVector = rot * (player.transform.position - transform.position);
+
+                        rayCast = Physics.Raycast(transform.position, forwardVector, out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
+                    }
+                    else
+                    {
+                        rayCast = Physics.SphereCast(transform.position, 0.5f, (player.transform.position - transform.position), out hitInfo, enemyParams.attackRange, enemyParams.damageMask);
                     }
 
-                    Breakable hitBreakable = hitInfo.collider.gameObject.GetComponent<Breakable>();
-                    if (hitBreakable)
+                    if (rayCast)
                     {
-                        hitBreakable.Impact(-hitInfo.normal * enemyParams.attackForce, enemyParams.attackDamage);
-                    }
-
-                    if ((hitInfo.transform.gameObject.layer == 0 || hitInfo.transform.gameObject.layer == 14) && enemyParams.enemyType == Enemy.EnemyType.Ranged)
-                    {
-                        GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
-                        bulletHole.transform.parent = hitInfo.transform;
-                        InteractionController.instance.bulletHoles.Add(bulletHole);
-                    }
-
-                    if (enemyParams.enemyType == Enemy.EnemyType.Melee)
-                    {
-                        GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
-                    }
-
-                    //Take Damange Here If Enemy
-                    if (hitInfo.transform.gameObject.layer == 12)
-                    {
-                        if (hitInfo.transform.parent)
+                        if (hitInfo.rigidbody != null)
                         {
-                            AIController controller = hitInfo.transform.parent.gameObject.GetComponent<AIController>();
-                            if (controller)
+                            hitInfo.rigidbody.AddForce(-hitInfo.normal * enemyParams.attackForce);
+                        }
+
+                        Breakable hitBreakable = hitInfo.collider.gameObject.GetComponent<Breakable>();
+                        if (hitBreakable)
+                        {
+                            hitBreakable.Impact(-hitInfo.normal * enemyParams.attackForce, enemyParams.attackDamage);
+                        }
+
+                        if ((hitInfo.transform.gameObject.layer == 0 || hitInfo.transform.gameObject.layer == 14) && enemyParams.enemyType == Enemy.EnemyType.Ranged)
+                        {
+                            GameObject bulletHole = Instantiate(InteractionController.instance.bulletHolePrefab, hitInfo.point - (-hitInfo.normal * 0.01f), Quaternion.LookRotation(-hitInfo.normal));
+                            bulletHole.transform.parent = hitInfo.transform;
+                            InteractionController.instance.bulletHoles.Add(bulletHole);
+                        }
+
+                        if (enemyParams.enemyType == Enemy.EnemyType.Melee)
+                        {
+                            GameVars.instance.audioManager.PlaySFX(enemyParams.attackSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
+                        }
+
+                        //Take Damange Here If Enemy
+                        if (hitInfo.transform.gameObject.layer == 12)
+                        {
+                            if (hitInfo.transform.parent)
                             {
-                                controller.TakeDamage(enemyParams.attackDamage, -hitInfo.normal * enemyParams.attackForce * 10);
+                                AIController controller = hitInfo.transform.parent.gameObject.GetComponent<AIController>();
+                                if (controller)
+                                {
+                                    controller.TakeDamage(enemyParams.attackDamage, -hitInfo.normal * enemyParams.attackForce * 10);
+                                }
+                            }
+                        }
+                        else if (hitInfo.transform.gameObject.layer == 8) //Player Damage
+                        {
+                            if (hitInfo.transform.parent)
+                            {
+                                InteractionController.instance.TakeDamage(enemyParams.attackDamage);
                             }
                         }
                     }
-                    else if (hitInfo.transform.gameObject.layer == 8) //Player Damage
+                    else
                     {
-                        if (hitInfo.transform.parent)
+                        if (enemyParams.enemyType == Enemy.EnemyType.Melee)
                         {
-                            InteractionController.instance.TakeDamage(enemyParams.attackDamage);
+                            if (enemyParams.missSound)
+                            {
+                                GameVars.instance.audioManager.PlaySFX(enemyParams.missSound, 0.8f, transform.position, "WeaponSound", 0, 0.7f);
+                            }
                         }
                     }
                 }
                 else
                 {
-                    if (enemyParams.enemyType == Enemy.EnemyType.Melee)
-                    {
-                        if (enemyParams.missSound)
-                        {
-                            GameVars.instance.audioManager.PlaySFX(enemyParams.missSound, 0.8f, transform.position, "WeaponSound", 0, 0.5f);
-                        }
-                    }
+                    FireProjectile();
                 }
-            }
-            else
-            {
-                FireProjectile();
             }
         }
     }
