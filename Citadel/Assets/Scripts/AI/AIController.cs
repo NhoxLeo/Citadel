@@ -270,7 +270,7 @@ public class AIController : MonoBehaviour
                         isLerpingFadeOut = false;
                     }
 
-                    movementAudioSource.volume = 0.5f;
+                    movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.7f);
                     movementAudioSource.Play();
                 }
                 else
@@ -281,13 +281,13 @@ public class AIController : MonoBehaviour
                         {
                             StopCoroutine(walkingSoundCoroutine);
                             isLerpingFadeOut = false;
-                            movementAudioSource.volume = 0.5f;
+                            movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.7f);
                             movementAudioSource.Play();
                         }
                     }
                     else
                     {
-                        movementAudioSource.volume = 0.5f;
+                        movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.7f);
                     }
                 }
 

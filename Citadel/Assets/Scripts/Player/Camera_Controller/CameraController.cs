@@ -52,6 +52,18 @@ namespace VHS
             sensitivity = new Vector2(GameVars.instance.saveManager.SENSITIVITY, GameVars.instance.saveManager.SENSITIVITY);
         }
 
+        public void UpdateSmoothing()
+        {
+            if (GameVars.instance.saveManager.SMOOTHING == true)
+            {
+                smoothAmount = new Vector2(30, 30);
+            }
+            else
+            {
+                smoothAmount = new Vector2(9999, 9999);
+            }
+        }
+
         void LateUpdate()
         {
             CalculateRotation();

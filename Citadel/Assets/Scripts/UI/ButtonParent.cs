@@ -110,7 +110,7 @@ public class ButtonParent : MonoBehaviour
     {
         if (GameVars.instance.audioManager)
         {
-            GameVars.instance.audioManager.PlaySFX(clickSound, 0.5f, transform.position);
+            GameVars.instance.audioManager.PlaySFX(clickSound, 0.5f, Camera.main.ScreenToWorldPoint(Vector3.zero, Camera.MonoOrStereoscopicEye.Mono));
         }
     }
 

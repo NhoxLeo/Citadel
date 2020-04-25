@@ -30,6 +30,8 @@ public class GameVars : MonoBehaviour
     [HideInInspector]
     public float totalDamageTaken;
 
+    private bool firstTimeReadIgnore = true;
+
     /// <summary>
     /// Define Singleton
     /// </summary>
@@ -105,12 +107,14 @@ public class GameVars : MonoBehaviour
                 if (ControlsUI.instance.sensitivitySlider.value != saveManager.SENSITIVITY)
                 {
                     ControlsUI.instance.sensitivitySlider.value = saveManager.SENSITIVITY;
+
+                    if (InteractionController.instance != null)
+                    {
+                        InteractionController.instance.transform.GetChild(0).GetComponent<CameraController>().UpdateSensitiviy();
+                    }
                 }
+
                 firstTimeSettingsControls = false;
-                if (InteractionController.instance != null)
-                {
-                    InteractionController.instance.transform.GetChild(0).GetComponent<CameraController>().UpdateSensitiviy();
-                }
             }
         }
 
@@ -164,9 +168,16 @@ public class GameVars : MonoBehaviour
             currentLevelManager = levels[GetMatchingSceneIndexByName(SceneManager.GetActiveScene().name)];
         }
 
-        if(SceneManager.GetActiveScene().name == "Main Menu")
+        if (firstTimeReadIgnore)
         {
-            saveManager.ReadSaveData();
+            firstTimeReadIgnore = false;
+        }
+        else
+        {
+            if (SceneManager.GetActiveScene().name == "Main Menu")
+            {
+                saveManager.ReadSaveData();
+            }
         }
 
         /*

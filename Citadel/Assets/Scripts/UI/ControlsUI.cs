@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using VHS;
 
 public class ControlsUI : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class ControlsUI : MonoBehaviour
     public ButtonParent shootButton;
     public ButtonParent quickCycleButton;
     public ButtonParent mapButton;
+    public ButtonParent smoothingButton;
     public Slider sensitivitySlider;
 
     [HideInInspector]
@@ -31,6 +33,7 @@ public class ControlsUI : MonoBehaviour
     //[HideInInspector]
     public bool currentlyWaiting;
     private Coroutine waitingForInputCoroutine;
+    private bool skipWait = false;
 
     private KeyCode[] keyCodes;
 
@@ -63,11 +66,14 @@ public class ControlsUI : MonoBehaviour
         uiElements.Add(shootButton);
         uiElements.Add(quickCycleButton);
         uiElements.Add(mapButton);
+        uiElements.Add(smoothingButton);
 
         for (int i = 0; i < uiElements.Count; i++)
         {
             uiElements[i].GetComponent<Button>().onClick.AddListener(UpdateInput);
         }
+
+        smoothingButton.GetComponent<Button>().onClick.AddListener(SkipWait);
 
         yield return new WaitUntil(() => (GameVars.instance && GameVars.instance.saveManager.hasReadData));
         UpdateButtonNames();
@@ -77,17 +83,26 @@ public class ControlsUI : MonoBehaviour
     {
         if (currentlyWaiting)
         {
-            if (Input.inputString != null)
-            {             
-                foreach (KeyCode keyCode in keyCodes)
+            if (!skipWait)
+            {
+                if (Input.inputString != null)
                 {
-                    if (Input.GetKey(keyCode))
+                    foreach (KeyCode keyCode in keyCodes)
                     {
-                        newInput = keyCode.ToString();
-                        currentlyWaiting = false;
-                        GotInput();
+                        if (Input.GetKey(keyCode))
+                        {
+                            newInput = keyCode.ToString();
+                            currentlyWaiting = false;
+                            GotInput();
+                        }
                     }
                 }
+            }
+            else
+            {
+                skipWait = false;
+                currentlyWaiting = false;
+                GotInput();
             }
         }
     }
@@ -111,6 +126,11 @@ public class ControlsUI : MonoBehaviour
         }
     }
 
+    public void SkipWait()
+    {
+        skipWait = true;
+    }
+
     public void UpdateButtonNames()
     {
         forwardButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_FORWARD.ToUpper();
@@ -125,6 +145,14 @@ public class ControlsUI : MonoBehaviour
         shootButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_SHOOT.ToUpper();
         quickCycleButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_QUICKCYCLE.ToUpper();
         mapButton.transform.GetChild(0).GetComponent<Text>().text = GameVars.instance.saveManager.INPUT_MAP.ToUpper();
+        if(GameVars.instance.saveManager.SMOOTHING == true)
+        {
+            smoothingButton.transform.GetChild(0).GetComponent<Text>().text = "ENABLED";
+        }
+        else
+        {
+            smoothingButton.transform.GetChild(0).GetComponent<Text>().text = "DISABLED";
+        }
     }
 
     public void GotInput()
@@ -180,6 +208,22 @@ public class ControlsUI : MonoBehaviour
                 else if (currentInput == mapButton)
                 {
                     GameVars.instance.saveManager.INPUT_MAP = newInput;
+                }
+                else if (currentInput == smoothingButton)
+                {
+                    if(GameVars.instance.saveManager.SMOOTHING == true)
+                    {
+                        GameVars.instance.saveManager.SMOOTHING = false;
+                    }
+                    else
+                    {
+                        GameVars.instance.saveManager.SMOOTHING = true;
+                    }
+
+                    if(InteractionController.instance)
+                    {
+                        InteractionController.instance.transform.GetChild(0).GetComponent<CameraController>().UpdateSmoothing();
+                    }
                 }
             }
 
