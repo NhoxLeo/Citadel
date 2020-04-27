@@ -128,7 +128,7 @@ public class Breakable : MonoBehaviour
             {
                 foreach (GameObject gib in objectGibs)
                 {
-                    GameObject objectGib = Instantiate(gib, RandomPointInBounds(GetComponent<Collider>().bounds), Random.rotation);
+                    GameObject objectGib = Instantiate(gib, RandomPointInBounds(GetComponent<Collider>().bounds), Quaternion.Euler(Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f), Random.Range(0.0f, 360.0f)));
                     objectGib.GetComponent<Rigidbody>().AddForce(impactForce * destructionForceMultiplier);
                 }
             }

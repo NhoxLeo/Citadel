@@ -136,6 +136,7 @@ MonoBehaviour:
   weaponState: 1
   isMelee: 1
   totalRounds: 0
+  currentLoadedRounds: 0
 --- !u!95 &1085078463956736564
 Animator:
   serializedVersion: 3
@@ -250,6 +251,7 @@ MonoBehaviour:
   - {fileID: -7863296267709453574, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
   - {fileID: -7604567081329240508, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
   - {fileID: -5906367577714461876, guid: 8230eac72052a0d408246ad44ea71f8b, type: 3}
+  doLoop: 0
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1

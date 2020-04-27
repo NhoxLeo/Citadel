@@ -211,7 +211,7 @@ namespace VHS
                 ApplyMovement();
 
 
-                if (m_currentSpeed >= walkSpeed && m_isGrounded)
+                if (m_currentSpeed >= crouchSpeed && m_isGrounded)
                 {
                     walkingTimer += Time.deltaTime;
                     if (walkingTimer >= stepSoundDelay)
@@ -238,7 +238,14 @@ namespace VHS
                             isLerpingFadeOut = false;
                         }
 
-                        movementAudioSource.volume = 0.5f;
+                        if(m_currentSpeed == crouchSpeed)
+                        {
+                            movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.2f);
+                        }
+                        else
+                        {
+                            movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.7f);
+                        }
                         movementAudioSource.Play();
                     }
                     else
@@ -249,13 +256,27 @@ namespace VHS
                             {
                                 StopCoroutine(walkingSoundCoroutine);
                                 isLerpingFadeOut = false;
-                                movementAudioSource.volume = 0.5f;
+                                if (m_currentSpeed == crouchSpeed)
+                                {
+                                    movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.2f);
+                                }
+                                else
+                                {
+                                    movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.7f);
+                                }
                                 movementAudioSource.Play();
                             }
                         }
                         else
                         {
-                            movementAudioSource.volume = 0.5f;
+                            if (m_currentSpeed == crouchSpeed)
+                            {
+                                movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.2f);
+                            }
+                            else
+                            {
+                                movementAudioSource.volume = GameVars.instance.audioManager.GetGlobalSFXVolume(0.7f);
+                            }
                         }
                     }
 

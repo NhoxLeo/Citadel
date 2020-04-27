@@ -23,6 +23,7 @@ public class HUDController : MonoBehaviour
     public enum FadeState { IN, OUT, NONE}
 
     private bool isLerpingFade = false;
+    private bool hudLock = false;
     private Coroutine fadeCoroutine;
     
     // Start is called before the first frame update
@@ -52,36 +53,54 @@ public class HUDController : MonoBehaviour
         }
     }
 
-    public void DoUiFade(FadeState newFadeState)
+    public void DoUiFade(FadeState newFadeState, bool instant = false)
     {
-        if (fadeState != FadeState.NONE)
+        if (hudLock == false)
         {
-            if(fadeState != newFadeState)
+            if (fadeState != FadeState.NONE)
             {
-                if(fadeCoroutine != null)
+                if (fadeState != newFadeState)
                 {
-                    StopCoroutine(fadeCoroutine);
-                    isLerpingFade = false;
+                    if (fadeCoroutine != null)
+                    {
+                        StopCoroutine(fadeCoroutine);
+                        isLerpingFade = false;
+                    }
+                    StartFade(newFadeState, instant);
                 }
-                StartFade(newFadeState);
+            }
+            else
+            {
+                StartFade(newFadeState, instant);
+            }
+        }
+    }
+
+    private void StartFade(FadeState newFadeState, bool instant = false)
+    {
+        fadeState = newFadeState;
+        if (instant == false)
+        {
+            if (newFadeState == FadeState.IN)
+            {
+                fadeCoroutine = StartCoroutine(FadeUI(MAX_OPACTIY));
+            }
+            if (newFadeState == FadeState.OUT)
+            {
+                fadeCoroutine = StartCoroutine(FadeUI(MIN_OPACTIY));
             }
         }
         else
         {
-            StartFade(newFadeState);
-        }
-    }
-
-    private void StartFade(FadeState newFadeState)
-    {
-        fadeState = newFadeState;
-        if (newFadeState == FadeState.IN)
-        {
-            fadeCoroutine = StartCoroutine(FadeUI(MAX_OPACTIY));
-        }
-        if (newFadeState == FadeState.OUT)
-        {
-            fadeCoroutine = StartCoroutine(FadeUI(MIN_OPACTIY));
+            hudLock = true;
+            if (newFadeState == FadeState.IN)
+            {
+                currentOpacity = MAX_OPACTIY;
+            }
+            if (newFadeState == FadeState.OUT)
+            {
+                currentOpacity = MIN_OPACTIY;
+            }
         }
     }
 
@@ -92,7 +111,7 @@ public class HUDController : MonoBehaviour
             yield return new WaitForSeconds(durationBeforeFade);
             if(fadeState == FadeState.NONE)
             {
-                DoUiFade(FadeState.OUT);
+                DoUiFade(FadeState.OUT, false);
             }
         }
     }

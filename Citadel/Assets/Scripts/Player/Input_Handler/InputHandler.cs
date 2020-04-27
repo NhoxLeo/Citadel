@@ -152,6 +152,8 @@ namespace VHS
                 movementInputData.InputVectorX = 0;
                 movementInputData.InputVectorY = 0;
                 movementInputData.RunReleased = true;
+                movementInputData.JumpClicked = false;
+                previousInputs += "####";
             }
         }
         #endregion

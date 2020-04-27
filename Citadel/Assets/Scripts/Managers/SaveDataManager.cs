@@ -11,6 +11,7 @@ public class SaveDataManager : MonoBehaviour
     public string prefPath;
     public List<bool> levelsUnlockStatus;
 
+    public string SAVEDATA_VERSION = "a1.7";
     public string INPUT_FORWARD = "W";
     public string INPUT_LEFT = "A";
     public string INPUT_BACKWARDS = "S";
@@ -24,8 +25,12 @@ public class SaveDataManager : MonoBehaviour
     public string INPUT_QUICKCYCLE = "Q";
     public string INPUT_MAP = "M";
     public float SENSITIVITY = 120;
+    public bool SMOOTHING = true;
+
+    public int crawlHighScore = 0;
 
     public bool hasReadData = false;
+    
 
     // Start is called before the first frame update
     private void Start()
@@ -71,16 +76,21 @@ public class SaveDataManager : MonoBehaviour
 
                 while (!reader.EndOfStream)
                 {
-                    string inp_ln = reader.ReadLine(); //Read In Achievement Data
+                    string inp_ln = reader.ReadLine(); //Read In Save Data
                     if (inp_ln == "True")
                     {
                         //Debug.Log("Level "+currentIndex+" is Unlocked");
                         levelsUnlockStatus[currentIndex] = true;
                     }
-                    else
+                    else if (inp_ln == "False")
                     {
                         levelsUnlockStatus[currentIndex] = false;
                     }
+                    else if (inp_ln != "")
+                    {
+                        crawlHighScore = int.Parse(inp_ln);
+                    }
+                    //Debug.Log("Data (" + currentIndex + "): " + inp_ln);
                     currentIndex++;
                 }
                 reader.Close();
@@ -113,48 +123,72 @@ public class SaveDataManager : MonoBehaviour
                 StreamReader reader = new StreamReader(Application.persistentDataPath + "/" + prefPath);
 
                 string inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_FORWARD = inp_ln; //Forward
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_LEFT = inp_ln; //Left
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_BACKWARDS = inp_ln; //Backwards
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_RIGHT = inp_ln; //Right
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_CROUCH = inp_ln; //Crouch
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_SPRINT = inp_ln; //Sprint
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_JUMP = inp_ln; //Jump
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_USE = inp_ln; //Use
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_RELOAD = inp_ln; //Reload
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_SHOOT = inp_ln; //Shoot
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_QUICKCYCLE = inp_ln; //Quick Cycle
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                INPUT_MAP = inp_ln; //MAP
 
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                if(SlidersUI.instance)                
-                {                  
-                    SlidersUI.instance.sfxSlider.value = float.Parse(inp_ln);
-                }
-                GameVars.instance.sfxVolumeScale = float.Parse(inp_ln); //SFX Volume
-
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                if (SlidersUI.instance)
+                if (inp_ln != SAVEDATA_VERSION)//Data Version
                 {
-                    SlidersUI.instance.musicSlider.value = float.Parse(inp_ln);
+                    reader.Close();
+
+                    WriteDefaultPrefValues();
+                    WriteDefaultSaveValues();
+
+                    ReadPrefData();
+                    ReadSaveData();
                 }
-                GameVars.instance.musicVolumeScale = float.Parse(inp_ln); //Music Volume
+                else
+                {
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_FORWARD = inp_ln; //Forward
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_LEFT = inp_ln; //Left
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_BACKWARDS = inp_ln; //Backwards
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_RIGHT = inp_ln; //Right
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_CROUCH = inp_ln; //Crouch
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_SPRINT = inp_ln; //Sprint
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_JUMP = inp_ln; //Jump
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_USE = inp_ln; //Use
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_RELOAD = inp_ln; //Reload
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_SHOOT = inp_ln; //Shoot
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_QUICKCYCLE = inp_ln; //Quick Cycle
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    INPUT_MAP = inp_ln; //MAP
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    if (SlidersUI.instance)
+                    {
+                        SlidersUI.instance.sfxSlider.value = float.Parse(inp_ln);
+                    }
+                    GameVars.instance.sfxVolumeScale = float.Parse(inp_ln); //SFX Volume
 
-                inp_ln = reader.ReadLine(); //Read In Pref Data
-                SENSITIVITY = float.Parse(inp_ln); //Sensitivty
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    if (SlidersUI.instance)
+                    {
+                        SlidersUI.instance.musicSlider.value = float.Parse(inp_ln);
+                    }
+                    GameVars.instance.musicVolumeScale = float.Parse(inp_ln); //Music Volume
 
-                reader.Close();
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    SENSITIVITY = float.Parse(inp_ln); //Sensitivty
+
+                    inp_ln = reader.ReadLine(); //Read In Pref Data
+                    if (inp_ln == "True")//SMOOTHING
+                    {
+                        SMOOTHING = true;
+                    }
+                    else
+                    {
+                        SMOOTHING = false;
+                    }
+
+                    reader.Close();
+                }              
             }
             else
             {
@@ -182,6 +216,7 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(false); //Level4
                 writer.WriteLine(false); //Level5
                 writer.WriteLine(false); //Level6
+                writer.WriteLine(0); //CrawlHighScore
                 writer.Close();
             }
         }
@@ -198,6 +233,7 @@ public class SaveDataManager : MonoBehaviour
             if (File.Exists(Application.persistentDataPath + "/" + prefPath))
             {
                 StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/" + prefPath, false);
+                writer.WriteLine(SAVEDATA_VERSION); //Data Version
                 writer.WriteLine(INPUT_FORWARD); //Forward
                 writer.WriteLine(INPUT_LEFT); //Left
                 writer.WriteLine(INPUT_BACKWARDS); //Backwards
@@ -215,6 +251,7 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(GameVars.instance.musicVolumeScale); //Music Volume
 
                 writer.WriteLine(SENSITIVITY); //Sensitivty
+                writer.WriteLine(SMOOTHING); //Smoothing
 
                 writer.Close();
             }
@@ -236,6 +273,7 @@ public class SaveDataManager : MonoBehaviour
                 {
                     writer.WriteLine(levelStatus);
                 }
+                writer.WriteLine(crawlHighScore);
                 writer.Close();
             }
             else
@@ -257,6 +295,7 @@ public class SaveDataManager : MonoBehaviour
             if (File.Exists(Application.persistentDataPath + "/" + prefPath))
             {
                 StreamWriter writer = new StreamWriter(Application.persistentDataPath + "/" + prefPath, false);
+                writer.WriteLine(SAVEDATA_VERSION); //Data Version
                 writer.WriteLine(INPUT_FORWARD); //Forward
                 writer.WriteLine(INPUT_LEFT); //Left
                 writer.WriteLine(INPUT_BACKWARDS); //Backwards
@@ -274,6 +313,7 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(GameVars.instance.musicVolumeScale); //Music Volume
 
                 writer.WriteLine(SENSITIVITY); //Sensitivty
+                writer.WriteLine(SMOOTHING); //Smoothing
 
                 writer.Close();
             }
@@ -302,6 +342,7 @@ public class SaveDataManager : MonoBehaviour
                 writer.WriteLine(true); //Level4
                 writer.WriteLine(true); //Level5
                 writer.WriteLine(true); //Level6
+                writer.WriteLine(0); //CrawlHS
                 writer.Close();
             }
         }

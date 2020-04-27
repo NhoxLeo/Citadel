@@ -103,6 +103,7 @@ MonoBehaviour:
   - {fileID: 1867912930241713268, guid: c6e7879d5b23356408f0feb451ba3b16, type: 3}
   - {fileID: -309294773050329997, guid: c6e7879d5b23356408f0feb451ba3b16, type: 3}
   - {fileID: 4700986801179590336, guid: c6e7879d5b23356408f0feb451ba3b16, type: 3}
+  doLoop: 1
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -263,6 +264,7 @@ MonoBehaviour:
   weaponState: 0
   isMelee: 0
   totalRounds: 0
+  currentLoadedRounds: 0
 --- !u!95 &-5137958019744808168
 Animator:
   serializedVersion: 3
@@ -379,6 +381,7 @@ MonoBehaviour:
   - {fileID: 3014936073166886246, guid: a0f2034757395b8459514f0381974ac6, type: 3}
   - {fileID: 8234481712898576870, guid: a0f2034757395b8459514f0381974ac6, type: 3}
   - {fileID: -814318788753724771, guid: a0f2034757395b8459514f0381974ac6, type: 3}
+  doLoop: 0
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1
@@ -518,6 +521,7 @@ MonoBehaviour:
   - {fileID: 6994392844393563131, guid: b0a9e5ea97175364f8a07d74af7aaf50, type: 3}
   - {fileID: -8920331105126478767, guid: b0a9e5ea97175364f8a07d74af7aaf50, type: 3}
   - {fileID: 6861380813310584758, guid: b0a9e5ea97175364f8a07d74af7aaf50, type: 3}
+  doLoop: 0
   destroyThis: 0
   currentFrame: 0
   startingFrame: -1

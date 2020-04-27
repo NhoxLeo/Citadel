@@ -50,6 +50,7 @@ public class LevelClearManager : MonoBehaviour
         {
             if(canExitMenu)
             {
+                canExitMenu = false;
                 if (GameVars.instance)
                 {
                     if ((GameVars.instance.GetMatchingSceneIndexByName(GameVars.instance.currentLevelManager.unitySceneName) + 1) < GameVars.instance.levels.Count)

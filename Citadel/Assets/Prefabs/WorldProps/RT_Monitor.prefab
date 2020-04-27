@@ -303,7 +303,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 1343285
   m_RenderingPath: 3
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -387,7 +387,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 515dbbb1eecf35f40ad03e18c465e86e, type: 2}
+  sharedProfile: {fileID: 11400000, guid: ade9bb3c0b2cfa7458011170c9352ecb, type: 2}
   isGlobal: 1
   blendDistance: 0
   weight: 1
@@ -517,6 +517,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderTarget: {fileID: 6323838355837562583}
   renderCamera: {fileID: 6323838355630787738}
+  doRenderOnce: 0
 --- !u!1 &6846854390643853630
 GameObject:
   m_ObjectHideFlags: 0
