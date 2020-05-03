@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -7383,6 +7383,36 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8631132038427200149, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631132038427200149, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631132038427200149, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631132038427200149, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631132038427200149, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8631132038427200149, guid: 51167e04776c1e94ba6bd24ea1487c77,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51167e04776c1e94ba6bd24ea1487c77, type: 3}
 --- !u!1 &253746978
@@ -8940,6 +8970,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ea8e6c8ccde6b84eab602a359aadfed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clearTriggerType: 0
+  triggedOnEnter:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!65 &330353711
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32247,7 +32283,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: ec949178ae594da408343b3897f048d7,
+      objectReference: {fileID: 23800000, guid: 09e94f94cf769a443843da5a5616781c,
         type: 2}
     - target: {fileID: 4217113817223185866, guid: 2e3399529322e164fad7c20ad991b152,
         type: 3}
@@ -32258,7 +32294,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: cf6e5afac9918fa46900765ef032f471,
+      objectReference: {fileID: 23800000, guid: 1cdc75afbca0d2348bf1ae8470495bb9,
         type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2e3399529322e164fad7c20ad991b152, type: 3}
